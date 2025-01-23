@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\ListarVisitantes;
 use App\Livewire\RegistroVisitanteComponent;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +23,5 @@ Route::middleware([
     })->name('dashboard');
 
     Route::get('/registroVisitante', RegistroVisitanteComponent::class)->name('visitantes.create');
+    Route::get('/verVisitantes', ListarVisitantes::class)->name('visitantes.listar');
 });

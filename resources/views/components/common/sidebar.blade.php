@@ -89,7 +89,7 @@
                             <a href="{{ route('visitantes.create') }}">Registro</a>
                         </li>
                         <li>
-                            <a href="/users/user-account-settings">Ver visitantes</a>
+                            <a href="{{ route('visitantes.listar') }}">Ver visitantes</a>
                         </li>
                     </ul>
                 </li>

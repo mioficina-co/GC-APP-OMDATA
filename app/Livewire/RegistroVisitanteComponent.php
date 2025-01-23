@@ -126,10 +126,9 @@ class RegistroVisitanteComponent extends Component
     ];
 
 
-    public function submitSignature()
+    public function submitSignature(visitasRepository $visitasRepository)
     {
         $this->validate();
-        $visitasRepository = new visitasRepository();
         $foto_visitante = $visitasRepository->tratamientoImagen($this->foto, '1051522305', 'foto');
         $firma_visitante = $visitasRepository->tratamientoImagen($this->firma, '1051522305', 'firma');
         // Guardar el visitante
@@ -164,6 +163,8 @@ class RegistroVisitanteComponent extends Component
             'firma_base64' => $firma_visitante,
             'acepta_politica' => true,
         ]);
+
+        redirect()->route('visitantes.listar');
     }
     /**
      * Renders the Livewire component for the visit registration form.

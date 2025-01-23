@@ -12,7 +12,7 @@
                                 <option value="">Seleccione un empleado</option>
                                 <!-- Valor vacío para opción por defecto -->
                                 @foreach ($empleados as $empleadosItem)
-                                    <option value="{{ $empleadosItem->id }}">{{ $empleadosItem->nombre }}</option>
+                                    <option value="{{ $empleadosItem->id }}">{{ $empleadosItem->nombre }} - {{ $empleadosItem->apellido }}</option>
                                     <!-- Usando el ID como valor -->
                                 @endforeach
                             </select>

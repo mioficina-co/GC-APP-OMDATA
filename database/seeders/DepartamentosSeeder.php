@@ -14,16 +14,19 @@ class DepartamentosSeeder extends Seeder
      */
     public function run(): void
     {
-        //
-        $faker = Factory::create();   
+        // Lista de departamentos de Colombia
+        $departamentos = [
+            'Amazonas', 'Antioquia', 'Arauca', 'Atlántico', 'Bolívar', 'Boyacá', 'Caldas', 'Caquetá', 'Casanare',
+            'Cauca', 'Cesar', 'Chocó', 'Córdoba', 'Cundinamarca', 'Guainía', 'Guaviare', 'Huila', 'La Guajira',
+            'Magdalena', 'Meta', 'Nariño', 'Norte de Santander', 'Putumayo', 'Quindío', 'Risaralda', 'San Andrés',
+            'Santander', 'Sucre', 'Tolima', 'Valle del Cauca', 'Vaupés', 'Vichada'
+        ];
 
-        $cantidad = 5;
-
-        for ($i = 0; $i < $cantidad; $i++) {
+        foreach ($departamentos as $departamento) {
             DB::table("departamentos")->insert([
-                "nombre"=> $faker->words(1, true),
-                "created_at"=> now(),
-                "updated_at"=> now(),
+                "nombre" => $departamento,
+                "created_at" => now(),
+                "updated_at" => now(),
             ]);
         }
     }
