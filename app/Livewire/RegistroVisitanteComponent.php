@@ -42,10 +42,18 @@ class RegistroVisitanteComponent extends Component
     private $visitante;
     private $visitas;
 
+    public $tipoDocumento, $departamentos, $razones, $paises, $empleados;
+
     public function mount(visitantes $visitante, visitas $visitas)
     {
         $this->visitante = $visitante;
         $this->visitas = $visitas;
+
+        $this->tipoDocumento = tiposDocumento::all();
+        $this->departamentos = departamentos::all();
+        $this->razones = razonvisita::all();
+        $this->paises = paises::all();
+        $this->empleados = empleados::all();
     }
 
     protected $rules = [
@@ -173,18 +181,12 @@ class RegistroVisitanteComponent extends Component
      */
     public function render()
     {
-
-        $tipoDocumento = tiposDocumento::all();
-        $departamentos = departamentos::all();
-        $razones = razonvisita::all();
-        $paises = paises::all();
-        $empleados = empleados::all();
         return view('livewire.registro-visitante-component', [
-            'tipoDocumento' => $tipoDocumento,
-            'empleados' => $empleados,
-            'paises' => $paises,
-            'razones' => $razones,
-            'departamentos' => $departamentos,
+            'tipoDocumento' => $this->tipoDocumento,
+            'empleados' => $this->empleados,
+            'paises' => $this->paises,
+            'razones' => $this->razones,
+            'departamentos' => $this->departamentos,
         ]);
     }
 

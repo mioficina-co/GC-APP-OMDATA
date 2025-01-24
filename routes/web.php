@@ -2,6 +2,7 @@
 
 use App\Livewire\ListarVisitantes;
 use App\Livewire\RegistroVisitanteComponent;
+use App\Livewire\RegistroEmpleadoComponent;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,4 +25,5 @@ Route::middleware([
 
     Route::get('/registroVisitante', RegistroVisitanteComponent::class)->name('visitantes.create');
     Route::get('/verVisitantes', ListarVisitantes::class)->name('visitantes.listar');
+    Route::get('/registroEmpleado', RegistroEmpleadoComponent::class)->name('empleados.create');
 });

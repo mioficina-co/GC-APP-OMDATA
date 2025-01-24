@@ -278,10 +278,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 mt-4">
+                    {{-- <div class="grid grid-cols-1 mt-4">
                         <textarea wire:model="pertenencias" id="ctnTextarea" rows="3" class="form-textarea w-full"
                             placeholder="Pertenencias del visitante"></textarea>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <!-- Sección 2 -->
