@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 100);
             $table->string('apellido', 100);
+            $table->string('documento', 20)->unique();
             $table->foreignId('departamento_id')->constrained('departamentos')->onDelete('cascade');
             $table->timestamps();
         });

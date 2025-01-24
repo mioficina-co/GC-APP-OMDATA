@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class empleados extends Model
 {
     //
+
+    protected $fillable = [
+        'nombre',
+        'apellido',
+        'documento',
+        'departamento_id',
+    ];
     public function visitas(){
         return $this->hasMany(Visitas::class,"empleado_id","id");
     }
