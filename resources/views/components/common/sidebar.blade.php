@@ -85,14 +85,18 @@
                         </div>
                     </button>
                     <ul x-cloak x-show="activeDropdown === 'users'" x-collapse class="sub-menu text-gray-500">
+
                         <li>
-                            <a href="{{ route('visitantes.create') }}">Registro</a>
+                            <a href="{{ route('empleados.create') }}">Registro empleados</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('visitantes.create') }}">Registro visitantes</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('empleados.listar') }}">Ver empleados</a>
                         </li>
                         <li>
                             <a href="{{ route('visitantes.listar') }}">Ver visitantes</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('empleados.create') }}">Registro empleados</a>
                         </li>
                     </ul>
                 </li>
