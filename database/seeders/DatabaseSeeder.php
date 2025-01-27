@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
             PaísesSeeder::class,
             RazonvisitaSeeder::class,
             TiposDocumnetoSeeder::class,
+            epsSeeder::class,
+            arlSeeder::class,
             VisitantesSeeder::class,
             VisitasSeeder::class,
         ]);
