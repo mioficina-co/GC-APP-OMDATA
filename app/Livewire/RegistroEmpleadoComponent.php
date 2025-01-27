@@ -45,12 +45,14 @@ class RegistroEmpleadoComponent extends Component
     public function registroEmpleado()
     {
         $this->validate();
-        Empleados::create([
-            'nombre' => $this->nombre,
-            'apellido' => $this->apellido,
-            'documento' => $this->documento,
-            'departamento_id' => $this->departamento_id,
-        ]);
+        Empleados::create(
+            [
+                'nombre' => $this->nombre,
+                'apellido' => $this->apellido,
+                'documento' => $this->documento,
+                'departamento_id' => $this->departamento_id,
+            ]
+        );
         session()->flash('success', 'Empleado registrado exitosamente.');
     }
 
@@ -78,21 +80,35 @@ class RegistroEmpleadoComponent extends Component
         $records = $csv->getRecords();
 
 
-        foreach ($records as $record) {
-            $validator = Validator::make($record, [
-                'Nombres' => 'required|string',
-                'Apellidos' => 'required|string',
-                'Documento' => 'required|string|unique:empleados,documento',
-                'Departamento' => 'required|exists:departamentos,id',
-            ]);
+        foreach ($records as $index => $record) {
+            $validator = Validator::make(
+                $record,
+                [
+                    'Nombres' => 'required|string',
+                    'Apellidos' => 'required|string',
+                    'Documento' => 'required|string|unique:empleados,documento',
+                    'Departamento' => 'required|exists:departamentos,id',
+                ],
+                [
+                    'Nombres.required' => 'El campo Nombres es obligatorio.',
+                    'Nombres.string' => 'El campo Nombres debe ser una cadena de texto.',
+                    'Apellidos.required' => 'El campo Apellidos es obligatorio.',
+                    'Apellidos.string' => 'El campo Apellidos debe ser una cadena de texto.',
+                    'Documento.required' => 'El campo Documento es obligatorio.',
+                    'Documento.string' => 'El campo Documento debe ser una cadena de texto.',
+                    'Documento.unique' => 'El Documento ya está registrado en nuestra base de datos.',
+                    'Departamento.required' => 'El campo Departamento es obligatorio.',
+                    'Departamento.exists' => 'El Departamento seleccionado no existe.',
+                ]
+            );
 
             if ($validator->fails()) {
-                // Si alguna fila no es válida, se puede guardar los errores
-                session()->flash('error', 'Error en la fila: ' . json_encode($record));
+                $errors = $validator->errors()->all();
+                $errorMessages = 'Errores en la fila ' . ($index + 1) . ': ' . json_encode($record) . ' | Errores: ' . json_encode($errors);
+                session()->flash('error', $errorMessages);
                 return;
             }
 
-            // Si es válido, registrar el empleado
             $departamento = departamentos::where('id', $record['Departamento'])->first();
 
             $deptar = empleados::create([

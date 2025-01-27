@@ -91,6 +91,9 @@
                         <li>
                             <a href="{{ route('visitantes.listar') }}">Ver visitantes</a>
                         </li>
+                        <li>
+                            <a href="{{ route('empleados.create') }}">Registro empleados</a>
+                        </li>
                     </ul>
                 </li>
             </ul>

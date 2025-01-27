@@ -130,7 +130,7 @@
                             </label>
 
                             <!-- Input de subida (oculto) -->
-                            <input id="file-upload" type="file" class="hidden" accept=".csv, .xlsx"
+                            <input id="file-upload" type="file" class="hidden" accept=".csv,.txt"
                                 wire:model="archivoEmpleados" />
 
                             <!-- Mensaje de error para el archivo -->

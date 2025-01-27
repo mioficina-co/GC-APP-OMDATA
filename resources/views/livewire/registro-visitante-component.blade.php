@@ -12,7 +12,8 @@
                                 <option value="">Seleccione un empleado</option>
                                 <!-- Valor vacío para opción por defecto -->
                                 @foreach ($empleados as $empleadosItem)
-                                    <option value="{{ $empleadosItem->id }}">{{ $empleadosItem->nombre }} - {{ $empleadosItem->apellido }}</option>
+                                    <option wire:key="$empleadosItem->id" value="{{ $empleadosItem->id }}">
+                                        {{ $empleadosItem->nombre }} - {{ $empleadosItem->apellido }}</option>
                                     <!-- Usando el ID como valor -->
                                 @endforeach
                             </select>
@@ -35,7 +36,8 @@
                             <select wire:model="departamento" class="form-select text-white-dark">
                                 <option value="">Seleccione un departamento</option>
                                 @foreach ($departamentos as $departamentoItem)
-                                    <option value="{{ $departamentoItem->id }}">{{ $departamentoItem->nombre }}</option>
+                                    <option wire:key="$departamentoItem->id" value="{{ $departamentoItem->id }}">
+                                        {{ $departamentoItem->nombre }}</option>
                                 @endforeach
                             </select>
 
@@ -57,7 +59,8 @@
                             <select wire:model="razonvisita" class="form-select text-white-dark">
                                 <option value="">Seleccione razón de la visita</option>
                                 @foreach ($razones as $razonesItem)
-                                    <option value="{{ $razonesItem->id }}">{{ $razonesItem->nombre }}</option>
+                                    <option wire:key="$razonesItem->id" value="{{ $razonesItem->id }}">
+                                        {{ $razonesItem->nombre }}</option>
                                     <!-- Usando el ID como valor -->
                                 @endforeach
                             </select>
@@ -78,7 +81,8 @@
                             <select wire:model="tipodocumento" name="tipodocumento" class="form-select text-white-dark">
                                 <option value="">Seleccione un tipo de documento</option>
                                 @foreach ($tipoDocumento as $tipoDocumentoItem)
-                                    <option value="{{ $tipoDocumentoItem->id }}">{{ $tipoDocumentoItem->nombre }}
+                                    <option wire:key="$tipoDocumentoItem->id" value="{{ $tipoDocumentoItem->id }}">
+                                        {{ $tipoDocumentoItem->nombre }}
                                     </option>
                                     <!-- Usando el ID como valor -->
                                 @endforeach
@@ -242,7 +246,8 @@
                                 <option value="">Seleccione país</option>
                                 <!-- Valor vacío para la opción por defecto -->
                                 @foreach ($paises as $item)
-                                    <option value="{{ $item->id }}">{{ $item->nombre }}</option>
+                                    <option wire:key="$item->id" value="{{ $item->id }}">{{ $item->nombre }}
+                                    </option>
                                     <!-- Asegúrate de usar un valor único como ID -->
                                 @endforeach
                             </select>
@@ -354,45 +359,6 @@
                     </div>
                 </div>
 
-                <!-- Sección 3 -->
-                <div class="mb-6">
-                    <h6 class="font-semibold text-lg dark:text-white-light mb-4">Fecha de ingreso y salida </h6>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                        <div class="col-span-1">
-                            <input id="fecha_inicio" class="form-input w-full"
-                                placeholder="Selecciona una fecha de inicio" wire:model="fecha_inicio" />
-                            <div class="text-sm text-red-600 mt-2">
-                                @error('fecha_inicio')
-                                    <p class="flex items-center space-x-2">
-                                        {{-- <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
-                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                        </svg> --}}
-                                        <span>{{ $message }}</span>
-                                    </p>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-span-1">
-                            <input id="fecha_fin" class="form-input w-full"
-                                placeholder="Selecciona una fecha de salida" wire:model="fecha_fin" />
-                            <div class="text-sm text-red-600 mt-2">
-                                @error('fecha_fin')
-                                    <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
-                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                        </svg>
-                                        <span>{{ $message }}</span>
-                                    </p>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Sección 4 -->
                 <div class="mb-6">
                     <h6 class="font-semibold text-lg dark:text-white-light mb-4">Captura foto del visitante</h6>
@@ -440,6 +406,68 @@
                                     @endif
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <!-- Caja con los términos y condiciones -->
+                    <div class="relative">
+                        <label for="terms" class="block text-lg font-semibold text-gray-700">Términos y
+                            Condiciones</label>
+                        <div class="mt-2 h-64 overflow-y-auto border p-4 rounded-lg bg-gray-50 text-sm text-gray-700"
+                            id="terms">
+                            <p>
+                                Aquí van los términos y condiciones. Puedes incluir todo el contenido legal necesario o
+                                un resumen. Esto es solo un ejemplo.
+                                <br><br>
+                                Este es el contenido adicional de los términos. Añade todo lo necesario. El usuario debe
+                                hacer scroll para leer todo el contenido.
+                                <br><br>
+                                Si el contenido es muy largo, puedes seguir agregando más texto aquí. El objetivo es que
+                                el usuario llegue al final para habilitar el botón de envío.
+                            </p>
+                            <p>
+                                Aquí van los términos y condiciones. Puedes incluir todo el contenido legal necesario o
+                                un resumen. Esto es solo un ejemplo.
+                                <br><br>
+                                Este es el contenido adicional de los términos. Añade todo lo necesario. El usuario debe
+                                hacer scroll para leer todo el contenido.
+                                <br><br>
+                                Si el contenido es muy largo, puedes seguir agregando más texto aquí. El objetivo es que
+                                el usuario llegue al final para habilitar el botón de envío.
+                            </p>
+                            <p>
+                                Aquí van los términos y condiciones. Puedes incluir todo el contenido legal necesario o
+                                un resumen. Esto es solo un ejemplo.
+                                <br><br>
+                                Este es el contenido adicional de los términos. Añade todo lo necesario. El usuario debe
+                                hacer scroll para leer todo el contenido.
+                                <br><br>
+                                Si el contenido es muy largo, puedes seguir agregando más texto aquí. El objetivo es que
+                                el usuario llegue al final para habilitar el botón de envío.
+                            </p>
+                            <p>
+                                Aquí van los términos y condiciones. Puedes incluir todo el contenido legal necesario o
+                                un resumen. Esto es solo un ejemplo.
+                                <br><br>
+                                Este es el contenido adicional de los términos. Añade todo lo necesario. El usuario debe
+                                hacer scroll para leer todo el contenido.
+                                <br><br>
+                                Si el contenido es muy largo, puedes seguir agregando más texto aquí. El objetivo es que
+                                el usuario llegue al final para habilitar el botón de envío.
+                            </p>
+                            <p>
+                                Aquí van los términos y condiciones. Puedes incluir todo el contenido legal necesario o
+                                un resumen. Esto es solo un ejemplo.
+                                <br><br>
+                                Este es el contenido adicional de los términos. Añade todo lo necesario. El usuario debe
+                                hacer scroll para leer todo el contenido.
+                                <br><br>
+                                Si el contenido es muy largo, puedes seguir agregando más texto aquí. El objetivo es que
+                                el usuario llegue al final para habilitar el botón de envío.
+                            </p>
+                            <!-- Puedes agregar más texto aquí para hacer que el scroll sea necesario -->
                         </div>
                     </div>
                 </div>
