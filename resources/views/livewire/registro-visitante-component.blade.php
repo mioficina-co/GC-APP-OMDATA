@@ -6,18 +6,18 @@
                 {{-- seccion numero 1 --}}
                 <div class="mb-6">
                     <h6 class="font-semibold text-lg dark:text-white-light mb-4">Datos Personales</h6>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                        <div>
-                            <select wire:model="empleado" class="form-select text-white-dark">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="col-span-1">
+                            <select wire:model.change="empleado" class="form-select text-white-dark">
                                 <option value="">Seleccione un empleado</option>
                                 <!-- Valor vacío para opción por defecto -->
                                 @foreach ($empleados as $empleadosItem)
-                                    <option wire:key="$empleadosItem->id" value="{{ $empleadosItem->id }}">
+                                    <option wire:key="empleado-{{ $empleadosItem->id }}"
+                                        value="{{ $empleadosItem->id }}">
                                         {{ $empleadosItem->nombre }} - {{ $empleadosItem->apellido }}</option>
                                     <!-- Usando el ID como valor -->
                                 @endforeach
                             </select>
-
                             <!-- Mensaje de error si no se selecciona ningun empleado -->
                             <div class="text-sm text-red-600 mt-2">
                                 @error('empleado')
@@ -33,15 +33,16 @@
                             </div>
                         </div>
                         <div>
-                            <select wire:model="departamento" class="form-select text-white-dark">
+                            <select wire:model="departamento" class="form-select text-white-dark" disabled>
                                 <option value="">Seleccione un departamento</option>
                                 @foreach ($departamentos as $departamentoItem)
-                                    <option wire:key="$departamentoItem->id" value="{{ $departamentoItem->id }}">
-                                        {{ $departamentoItem->nombre }}</option>
+                                    <option value="{{ $departamentoItem->id }}">
+                                        {{ $departamentoItem->nombre }}
+                                    </option>
                                 @endforeach
                             </select>
 
-                            <!-- Mensaje de error si no se selecciona ningun departamento -->
+                            {{-- <!-- Mensaje de error si no se selecciona ningun departamento -->
                             <div class="text-sm text-red-600 mt-2">
                                 @error('departamento')
                                     <p class="flex items-center space-x-2">
@@ -53,7 +54,7 @@
                                         <span>{{ $message }}</span>
                                     </p>
                                 @enderror
-                            </div>
+                            </div> --}}
                         </div>
                         <div>
                             <select wire:model="razonvisita" class="form-select text-white-dark">
@@ -66,6 +67,37 @@
                             </select>
                             <div class="text-sm text-red-600 mt-2">
                                 @error('razonvisita')
+                                    <p class="flex items-center space-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 12h7M15 12l-3-3M15 12l-3 3" />
+                                        </svg>
+                                        <span>{{ $message }}</span>
+                                    </p>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-span-1">
+                            <input type="text" placeholder="Nombre" class="form-input w-full" wire:model="nombre" />
+                            <div class="text-sm text-red-600 mt-2">
+                                @error('nombre')
+                                    <p class="flex items-center space-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 12h7M15 12l-3-3M15 12l-3 3" />
+                                        </svg>
+                                        <span>{{ $message }}</span>
+                                    </p>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-span-1">
+                            <input type="text" placeholder="Apellido" class="form-input w-full"
+                                wire:model="apellido" />
+                            <div class="text-sm text-red-600 mt-2">
+                                @error('apellido')
                                     <p class="flex items-center space-x-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
@@ -100,39 +132,6 @@
                                 @enderror
                             </div>
                         </div>
-
-                        <div class="col-span-1">
-                            <input type="text" placeholder="Nombre" class="form-input w-full" wire:model="nombre" />
-                            <div class="text-sm text-red-600 mt-2">
-                                @error('nombre')
-                                    <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                        </svg>
-                                        <span>{{ $message }}</span>
-                                    </p>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-span-1">
-                            <input type="text" placeholder="Apellido" class="form-input w-full"
-                                wire:model="apellido" />
-                            <div class="text-sm text-red-600 mt-2">
-                                @error('apellido')
-                                    <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                        </svg>
-                                        <span>{{ $message }}</span>
-                                    </p>
-                                @enderror
-                            </div>
-                        </div>
-
                         <div class="col-span-1">
                             <input type="text" placeholder="Numero de documento de identidad"
                                 class="form-input w-full" wire:model="numerodocumento" pattern="^\d{6,10}$"
@@ -183,7 +182,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div>
+                        {{-- <div>
                             <select wire:model="genero" class="form-select text-white-dark">
                                 <option value="">Seleccione género</option>
                                 <!-- Valor vacío para la opción por defecto -->
@@ -207,7 +206,7 @@
                                     </p>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="col-span-1">
                             <input type="text" placeholder="Compañía" class="form-input w-full"
@@ -243,10 +242,11 @@
                         </div>
                         <div class="col-span-1">
                             <select wire:model="pais" class="form-select text-white-dark">
-                                <option value="">Seleccione país</option>
+                                <option value="">Seleccione país de nacimiento</option>
                                 <!-- Valor vacío para la opción por defecto -->
                                 @foreach ($paises as $item)
-                                    <option wire:key="$item->id" value="{{ $item->id }}">{{ $item->nombre }}
+                                    <option wire:key="pais-{{ $item->id }}" value="{{ $item->id }}">
+                                        {{ $item->nombre }}
                                     </option>
                                     <!-- Asegúrate de usar un valor único como ID -->
                                 @endforeach
@@ -266,27 +266,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-span-1">
-                            <input type="text" placeholder="Total personas" class="form-input w-full"
-                                wire:model="totalpersonas" />
-                            <div class="text-sm text-red-600 mt-2">
-                                @error('totalpersonas')
-                                    <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
-                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                        </svg>
-                                        <span>{{ $message }}</span>
-                                    </p>
-                                @enderror
-                            </div>
-                        </div>
                     </div>
-                    {{-- <div class="grid grid-cols-1 mt-4">
-                        <textarea wire:model="pertenencias" id="ctnTextarea" rows="3" class="form-textarea w-full"
-                            placeholder="Pertenencias del visitante"></textarea>
-                    </div> --}}
                 </div>
 
                 <!-- Sección 2 -->
@@ -294,13 +274,22 @@
                     <h6 class="font-semibold text-lg dark:text-white-light mb-4">Información de emergencia y Cobertura
                         Médica</h6>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                        <div class="col-span-1">
-                            <input type="text" placeholder="eps" class="form-input w-full" wire:model="eps" />
+                        <div>
+                            <!-- Select para EPS -->
+                            <label for="eps" class="block text-sm font-medium text-gray-700">Seleccionar EPS</label>
+                            <select wire:model="eps_id" name="eps" class="form-select text-white-dark">
+                                <option value="">Seleccione una EPS</option>
+                                @foreach ($eps as $epsItem)
+                                    <option wire:key="{{ $epsItem->id }}" value="{{ $epsItem->id }}">
+                                        {{ $epsItem->nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
                             <div class="text-sm text-red-600 mt-2">
-                                @error('eps')
+                                @error('eps_id')
                                     <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
-                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 12h7M15 12l-3-3M15 12l-3 3" />
                                         </svg>
@@ -309,13 +298,23 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-span-1">
-                            <input type="text" placeholder="arl" class="form-input w-full" wire:model="arl" />
+
+                        <div>
+                            <!-- Select para ARL -->
+                            <label for="arl" class="block text-sm font-medium text-gray-700">Seleccionar ARL</label>
+                            <select wire:model="arl_id" name="arl" class="form-select text-white-dark">
+                                <option value="">Seleccione una ARL</option>
+                                @foreach ($arl as $arlItem)
+                                    <option wire:key="{{ $arlItem->id }}" value="{{ $arlItem->id }}">
+                                        {{ $arlItem->nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
                             <div class="text-sm text-red-600 mt-2">
-                                @error('arl')
+                                @error('arl_id')
                                     <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
-                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 12h7M15 12l-3-3M15 12l-3 3" />
                                         </svg>
@@ -371,24 +370,24 @@
                             </div>
 
                             <!-- Botón para capturar la foto -->
-                            <div class="text-center flex justify-center align-middle items-center  mb-6">
+                            <div class="text-center flex justify-center align-middle  mb-6">
                                 <button type="button"
                                     class="btn btn-primary py-2 px-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 transition duration-300"
                                     @click="capturePhoto()">
                                     Capturar Foto
                                 </button>
-                            </div>
-                            <div class="text-sm text-red-600 mt-2">
-                                @error('foto')
-                                    <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
-                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                        </svg>
-                                        <span>{{ $message }}</span>
-                                    </p>
-                                @enderror
+                                <div class="text-sm text-red-600 mt-2">
+                                    @error('foto')
+                                        <p class="flex items-center space-x-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 12h7M15 12l-3-3M15 12l-3 3" />
+                                            </svg>
+                                            <span>{{ $message }}</span>
+                                        </p>
+                                    @enderror
+                                </div>
                             </div>
 
                             <!-- Vista previa de la foto -->

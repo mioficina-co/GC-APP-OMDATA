@@ -1,8 +1,9 @@
 <?php
 
-use App\Livewire\ListarVisitantes;
+use App\Livewire\ListarVisitantesComponent;
 use App\Livewire\RegistroVisitanteComponent;
 use App\Livewire\RegistroEmpleadoComponent;
+use App\Livewire\ListarEmpleadosComponent;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,6 +25,7 @@ Route::middleware([
     })->name('dashboard');
 
     Route::get('/registroVisitante', RegistroVisitanteComponent::class)->name('visitantes.create');
-    Route::get('/verVisitantes', ListarVisitantes::class)->name('visitantes.listar');
+    Route::get('/verVisitantes', ListarVisitantesComponent::class)->name('visitantes.listar');
+    Route::get('/verEmpleados', ListarEmpleadosComponent::class)->name('empleados.listar');
     Route::get('/registroEmpleado', RegistroEmpleadoComponent::class)->name('empleados.create');
 });

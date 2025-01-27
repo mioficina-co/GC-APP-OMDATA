@@ -14,6 +14,7 @@ class empleados extends Model
         'apellido',
         'documento',
         'departamento_id',
+        'activo',
     ];
     public function visitas(){
         return $this->hasMany(Visitas::class,"empleado_id","id");

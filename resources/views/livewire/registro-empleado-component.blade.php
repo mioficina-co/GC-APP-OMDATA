@@ -23,7 +23,8 @@
                     <!-- Mensaje de error -->
                     @if (session()->has('error'))
                         <div wire:loading.remove
-                            class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg shadow">
+                            class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg shadow"
+                            role="alert">
                             <p class="font-medium">{{ session('error') }}</p>
                         </div>
                     @endif
@@ -31,16 +32,28 @@
                     <!-- Mensaje de éxito -->
                     @if (session()->has('success'))
                         <div wire:loading.remove
-                            class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg shadow">
+                            class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg shadow"
+                            role="status">
                             <p class="font-medium">{{ session('success') }}</p>
+                        </div>
+                    @endif
+
+                    <!-- Mensaje de información -->
+                    @if (session()->has('info'))
+                        <div wire:loading.remove
+                            class="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded-lg shadow"
+                            role="status">
+                            <p class="font-medium">{{ session('info') }}</p>
                         </div>
                     @endif
 
                     <!-- Indicador de carga -->
                     <div wire:loading wire:target="registroEmpleado, cargaMasiva, updatedarchivoEmpleados"
-                        class="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded-lg shadow">
+                        class="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded-lg shadow"
+                        role="status">
                         <p class="font-medium">Procesando, por favor espere...</p>
                     </div>
+
 
                 </div>
                 <div class="mb-5">
@@ -137,8 +150,8 @@
                             <div class="text-sm text-red-600 mt-2">
                                 @error('archivoEmpleados')
                                     <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 12h7M15 12l-3-3M15 12l-3 3" />
                                         </svg>

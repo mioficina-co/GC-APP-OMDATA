@@ -16,22 +16,30 @@ class visitantes extends Model
         "numero_documento",
         "telefono",
         "email",
-        "genero",
         "compania",
         "placa_vehiculo",
         "nombre_contacto_emergencia",
         "numero_contacto_emergencia",
-        "eps",
-        "arl",
+        "eps_id",
+        "arl_id",
         "tipos_documento_id",
         "pais_id",
-    ] ;
+        "activo"
+    ];
 
     public function visitas(){
-        return $this->hasMany(visitantes::class, "visitante_id","id") ;
+        return $this->hasMany(visitas::class, "visitante_id","id") ;
     }
 
     public function tiposDocumento(){
         return $this->belongsTo(tiposDocumento::class);
+    }
+
+    public function eps(){
+        return $this->belongsTo(eps::class);
+    }
+
+    public function arl(){
+        return $this->belongsTo(arl::class);
     }
 }
