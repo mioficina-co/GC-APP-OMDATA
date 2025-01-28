@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Models\Empleados;
-use App\Models\Departamentos;
+use App\Models\empleados as Empleados;
+use App\Models\departamentos as Departamentos;
 use League\Csv\Reader;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;

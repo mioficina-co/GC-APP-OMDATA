@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Empleados;
+use App\Models\empleados as Empleados;
 
 class ListarEmpleadosComponent extends Component
 {
