@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\empleados as Empleados;
+use App\Models\empleados;
 use App\Models\departamentos as Departamentos;
 use League\Csv\Reader;
 use Livewire\WithFileUploads;
@@ -33,7 +33,7 @@ class RegistroEmpleadoComponent extends Component
         'departamento_id.required' => 'El departamento es requerido',
     ];
 
-    public function mount(Empleados $empleados)
+    public function mount(empleados $empleados)
     {
         $this->departamentos = Departamentos::all();
         $this->empleados = $empleados;
@@ -47,7 +47,7 @@ class RegistroEmpleadoComponent extends Component
     public function registroEmpleado()
     {
         $this->validate();
-        Empleados::create([
+        empleados::create([
             'nombre' => $this->nombre,
             'apellido' => $this->apellido,
             'documento' => $this->documento,
@@ -113,7 +113,7 @@ class RegistroEmpleadoComponent extends Component
             $procesados = 0;
 
             // Obtener los documentos existentes en la base de datos
-            $existingDocuments = Empleados::pluck('documento')->toArray();
+            $existingDocuments = empleados::pluck('documento')->toArray();
 
             foreach ($records as $index => $record) {
                 $record = array_combine($formattedHeaders, $record);
@@ -147,7 +147,7 @@ class RegistroEmpleadoComponent extends Component
                 }
 
                 // Insertar los datos en la base de datos
-                Empleados::create([
+                empleados::create([
                     'nombre' => $record['nombres'],
                     'apellido' => $record['apellidos'],
                     'documento' => $record['documento'],
