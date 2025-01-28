@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\empleados;
-use App\Models\departamentos as Departamentos;
+use App\Models\departamentos;
 use League\Csv\Reader;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +35,7 @@ class RegistroEmpleadoComponent extends Component
 
     public function mount(empleados $empleados)
     {
-        $this->departamentos = Departamentos::all();
+        $this->departamentos = departamentos::all();
         $this->empleados = $empleados;
     }
 

@@ -3,19 +3,19 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\empleados as Empleados;
+use App\Models\empleados;
 
 class ListarEmpleadosComponent extends Component
 {
     public function render()
     {
-        $empleados = Empleados::all();
+        $empleados = empleados::all();
         return view('livewire.listar-empleados-component', compact('empleados'));
     }
 
     public function eliminar($id)
     {
-        $empleado = Empleados::find($id);
+        $empleado = empleados::find($id);
         if ($empleado) {
             $empleado->delete();
         }
@@ -26,7 +26,7 @@ class ListarEmpleadosComponent extends Component
     public function cambiarEstadoEmpleado($id)
     {
         try {
-            $empleado = Empleados::findOrFail($id);
+            $empleado = empleados::findOrFail($id);
             $empleado->update(['activo' => !$empleado->activo]);
             session()->flash('success', 'El estado del empleado ha sido actualizado.');
         } catch (\Exception $e) {
