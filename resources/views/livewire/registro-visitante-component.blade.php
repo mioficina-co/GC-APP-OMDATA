@@ -502,7 +502,7 @@
                     </div>
                 </div>
 
-                <div x-data="{ mostrarFirma: @entangle('aceptaPolitica') }" x-show="mostrarFirma" x-transition.opacity>
+
                     <div class="mb-6">
                         <h6 class="font-semibold text-lg dark:text-white-light mb-4">Firma</h6>
                         <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4 justify-center items-center text-center">
@@ -544,7 +544,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+
 
 
                 <!-- Botón de envío -->
