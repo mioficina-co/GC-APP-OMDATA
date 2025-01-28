@@ -502,50 +502,51 @@
                     </div>
                 </div>
 
-
-                <!-- Sección 5 -->
-                <div class="mb-6">
-                    <h6 class="font-semibold text-lg dark:text-white-light mb-4">Firma</h6>
-                    <div
-                        class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4 justify-center items-center text-center">
-                        <!-- Canvas para la firma -->
-                        <span class="text-sm text-gray-500">Dibuja tu firma con el mouse o el làpiz
-                            táctil.</span>
-                        <div class="mb-6 flex flex-col items-center justify-center">
-                            <canvas x-ref="canvas" class="border-4 border-gray-300 rounded-lg shadow-lg w-50"
-                                width="300" height="200"></canvas>
-                            @if ($firma)
-                                <span class="text-green-500">firma capturada</span>
-                            @endif
-                            <div class="text-sm text-red-600 mt-2">
-                                @error('firma')
-                                    <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
-                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                        </svg>
-                                        <span>{{ $message }}</span>
-                                    </p>
-                                @enderror
+                <div x-data="{ mostrarFirma: @entangle('aceptaPolitica') }" x-show="mostrarFirma" x-transition.opacity>
+                    <div class="mb-6">
+                        <h6 class="font-semibold text-lg dark:text-white-light mb-4">Firma</h6>
+                        <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4 justify-center items-center text-center">
+                            <span class="text-sm text-gray-500">Dibuja tu firma con el mouse o el lápiz táctil.</span>
+                            <div class="mb-6 flex flex-col items-center justify-center">
+                                <canvas x-ref="canvas" class="border-4 border-gray-300 rounded-lg shadow-lg w-50"
+                                    width="300" height="200"></canvas>
+                                @if ($firma)
+                                    <span class="text-green-500">Firma capturada</span>
+                                @endif
+                                <div class="text-sm text-red-600 mt-2">
+                                    @error('firma')
+                                        <p class="flex items-center space-x-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 12h7M15 12l-3-3M15 12l-3 3" />
+                                            </svg>
+                                            <span>{{ $message }}</span>
+                                        </p>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Botón para limpiar la firma -->
-                        <div class="flex justify-center items-center mb-6">
-                            <button type="button"
-                                class="btn btn-outline-primary py-2 px-6 border-2 border-blue-400 text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-gray-400 rounded-lg"
-                                @click="captureSignature">
-                                Capturar Firma
-                            </button>
-                            <button type="button"
-                                class="btn btn-outline-primary py-2 px-6 border-2 border-red-400 text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-gray-400 rounded-lg"
-                                @click="clear()">
-                                Limpiar
-                            </button>
+                            <!-- Botones de Captura y Limpieza -->
+                            <div class="flex justify-center items-center mb-6">
+                                <button type="button"
+                                    class="btn btn-outline-primary py-2 px-6 border-2 border-blue-400 text-gray-800
+                                    hover:bg-gray-100 focus:ring-2 focus:ring-gray-400 rounded-lg"
+                                    @click="captureSignature">
+                                    Capturar Firma
+                                </button>
+                                <button type="button"
+                                    class="btn btn-outline-primary py-2 px-6 border-2 border-red-400 text-gray-800
+                                    hover:bg-gray-100 focus:ring-2 focus:ring-gray-400 rounded-lg"
+                                    @click="clear()">
+                                    Limpiar
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+
                 <!-- Botón de envío -->
                 <div class="mt-6 grid sm:grid-cols-1">
                     <button type="submit" class="btn btn-primary">Enviar</button>
@@ -555,25 +556,29 @@
     </div>
 
     <script>
-        $wire.on('confirmacionGuardado', () => {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: 'No podrás revertir esta acción.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, eliminar!',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-
-                    $wire.dispatch('deleteUser');
-                }
-            });
-        });
-
         document.addEventListener('alpine:init', () => {
+
+            Livewire.on('confirmacionGuardado', () => {
+                Swal.fire({
+                    title: "¡Registro Exitoso!",
+                    text: "Gracias por registrarte. Ahora puedes disfrutar de todos nuestros servicios.",
+                    icon: "success",
+                    iconColor: "#4CAF50", // Personalización del color del icono
+                    confirmButtonText: "¡Genial!",
+                    confirmButtonColor: "#3085d6", // Color del botón
+                    background: "#f9f9f9", // Color de fondo de la alerta
+                    color: "#333", // Color del texto
+                    timer: 5000, // Tiempo en ms para cerrar automáticamente la alerta
+                    timerProgressBar: true,
+                    showClass: {
+                        popup: "animate__animated animate__fadeInDown" // Animación al aparecer
+                    },
+                    hideClass: {
+                        popup: "animate__animated animate__fadeOutUp" // Animación al desaparecer
+                    }
+                });
+            });
+
 
             Alpine.data('scrollHandler', () => ({
                 scrolledToBottom: false,

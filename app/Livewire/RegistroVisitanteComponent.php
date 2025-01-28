@@ -93,6 +93,8 @@ class RegistroVisitanteComponent extends Component
         'apellido.required' => 'El apellido es obligatorio.',
         'tipodocumento.required' => 'El tipo de documento es obligatorio.',
         'numerodocumento.required' => 'La cédula es obligatoria.',
+        'numerodocumento.regex' => 'La cédula debe tener entre 6 y 10 dígitos.',
+        'numerodocumento.unique' => 'La cédula ya se encuentra registrada.',
         'celular.required' => 'El celular es obligatorio.',
         'email.required' => 'El correo electrónico es obligatorio.',
         'eps_id.required' => 'La EPS es obligatoria.',
@@ -141,6 +143,7 @@ class RegistroVisitanteComponent extends Component
         });
 
         $this->resetForm();
+        $this->dispatch('confirmacionGuardado');
     }
 
     #[Layout('components.layouts.visitante')]
@@ -157,6 +160,7 @@ class RegistroVisitanteComponent extends Component
         ]);
     }
 
+
     public function updatedEmpleado($empleado)
     {
         if ($empleado) {
@@ -169,6 +173,9 @@ class RegistroVisitanteComponent extends Component
 
     public function resetForm()
     {
+
+        $this->foto = '';
+        $this->firma = '';
         $this->reset([
             'foto',
             'firma',

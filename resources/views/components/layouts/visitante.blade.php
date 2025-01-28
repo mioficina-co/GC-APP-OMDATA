@@ -92,7 +92,7 @@
         });
     </script>
 
-    <x-common.theme-customiser />
+    {{-- <x-common.theme-customiser /> --}}
 
     <div class="dvanimation p-6 animate__animated" :class="[$store.app.animation]">
         {{ $slot }}
