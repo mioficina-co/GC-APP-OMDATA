@@ -9,52 +9,47 @@
             </li>
         </ul>
         <div class="pt-5 grid grid-cols-1 lg:grid-cols-1 gap-6 justify-center">
-            <!-- Basic -->
-            <div class="panel col-span-1 lg:col-span-1 mx-60">
+            <div class="panel col-span-1 lg:col-span-1">
                 <div class="flex items-center justify-between mb-5">
                     <h5 class="font-semibold text-lg dark:text-white-light">Datos basicos registro de empleados</h5>
                     <a class="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
                         href="javascript:;" @click="toggleCode('code12')">
                         <span class="flex items-center">
+                            <!-- Mensaje de error -->
+                            @if (session()->has('error'))
+                                <div wire:loading.remove
+                                    class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg shadow"
+                                    role="alert">
+                                    <p class="font-medium">{{ session('error') }}</p>
+                                </div>
+                            @endif
 
+                            <!-- Mensaje de éxito -->
+                            @if (session()->has('success'))
+                                <div wire:loading.remove
+                                    class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg shadow"
+                                    role="status">
+                                    <p class="font-medium">{{ session('success') }}</p>
+                                </div>
+                            @endif
 
+                            <!-- Mensaje de información -->
+                            @if (session()->has('info'))
+                                <div wire:loading.remove
+                                    class="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded-lg shadow"
+                                    role="status">
+                                    <p class="font-medium">{{ session('info') }}</p>
+                                </div>
+                            @endif
+
+                            <!-- Indicador de carga -->
+                            <div wire:loading
+                                class="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded-lg shadow"
+                                role="status">
+                                <p class="font-medium">Procesando, por favor espere...</p>
+                            </div>
                         </span>
                     </a>
-                    <!-- Mensaje de error -->
-                    @if (session()->has('error'))
-                        <div wire:loading.remove
-                            class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg shadow"
-                            role="alert">
-                            <p class="font-medium">{{ session('error') }}</p>
-                        </div>
-                    @endif
-
-                    <!-- Mensaje de éxito -->
-                    @if (session()->has('success'))
-                        <div wire:loading.remove
-                            class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg shadow"
-                            role="status">
-                            <p class="font-medium">{{ session('success') }}</p>
-                        </div>
-                    @endif
-
-                    <!-- Mensaje de información -->
-                    @if (session()->has('info'))
-                        <div wire:loading.remove
-                            class="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded-lg shadow"
-                            role="status">
-                            <p class="font-medium">{{ session('info') }}</p>
-                        </div>
-                    @endif
-
-                    <!-- Indicador de carga -->
-                    <div wire:loading wire:target="registroEmpleado, cargaMasiva, updatedarchivoEmpleados"
-                        class="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded-lg shadow"
-                        role="status">
-                        <p class="font-medium">Procesando, por favor espere...</p>
-                    </div>
-
-
                 </div>
                 <div class="mb-5">
                     <form class="space-y-5" wire:submit.prevent="registroEmpleado">

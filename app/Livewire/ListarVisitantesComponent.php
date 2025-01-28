@@ -25,7 +25,7 @@ class ListarVisitantesComponent extends Component
         try {
             $visitante = visitantes::findOrFail($id);
             $visitante->update(['activo' => !$visitante->activo]);
-            // session()->flash('mensaje', 'El estado del visitante ha sido actualizado.');
+            session()->flash('success', 'El estado del visitante ha sido actualizado.');
         } catch (\Exception $e) {
             session()->flash('error', 'Error al actualizar el estado del visitante.');
         }

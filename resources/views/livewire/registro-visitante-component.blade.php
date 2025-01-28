@@ -1,8 +1,14 @@
 <div>
     {{-- The best athlete wants his opponent at his best. --}}
     <div class="panel lg:col-span-2">
+        @if (!$empleados->count())
+            <div class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg shadow" role="status">
+                No hay empleados registrados, en el sistema
+            </div>
+        @endif
         <div class="mb-5">
-            <form x-data="signaturePad()" wire:submit.prevent="submitSignature" x-init="init()">
+            <form x-data="formularioVisitante()" wire:submit.prevent="submitSignature" x-init="init()"
+                @submit.prevent="scrollToFirstError()">
                 {{-- seccion numero 1 --}}
                 <div class="mb-6">
                     <h6 class="font-semibold text-lg dark:text-white-light mb-4">Datos Personales</h6>
@@ -41,20 +47,6 @@
                                     </option>
                                 @endforeach
                             </select>
-
-                            {{-- <!-- Mensaje de error si no se selecciona ningun departamento -->
-                            <div class="text-sm text-red-600 mt-2">
-                                @error('departamento')
-                                    <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                        </svg>
-                                        <span>{{ $message }}</span>
-                                    </p>
-                                @enderror
-                            </div> --}}
                         </div>
                         <div>
                             <select wire:model="razonvisita" class="form-select text-white-dark">
@@ -182,31 +174,6 @@
                                 @enderror
                             </div>
                         </div>
-                        {{-- <div>
-                            <select wire:model="genero" class="form-select text-white-dark">
-                                <option value="">Seleccione género</option>
-                                <!-- Valor vacío para la opción por defecto -->
-                                <option value="masculino">Masculino</option>
-                                <option value="femenino">Femenino</option>
-                                <option value="no-binario">No Binario</option>
-                                <option value="otro">Otro</option>
-                                <option value="prefiero-no-decirlo">Prefiero no decirlo</option>
-                            </select>
-
-                            <!-- Mensaje de error si no se selecciona un género válido -->
-                            <div class="text-sm text-red-600 mt-2">
-                                @error('genero')
-                                    <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
-                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                        </svg>
-                                        <span>{{ $message }}</span>
-                                    </p>
-                                @enderror
-                            </div>
-                        </div> --}}
 
                         <div class="col-span-1">
                             <input type="text" placeholder="Compañía" class="form-input w-full"
@@ -276,7 +243,8 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                         <div>
                             <!-- Select para EPS -->
-                            <label for="eps" class="block text-sm font-medium text-gray-700">Seleccionar EPS</label>
+                            <label for="eps" class="block text-sm font-medium text-gray-700">Seleccionar
+                                EPS</label>
                             <select wire:model="eps_id" name="eps" class="form-select text-white-dark">
                                 <option value="">Seleccione una EPS</option>
                                 @foreach ($eps as $epsItem)
@@ -288,8 +256,8 @@
                             <div class="text-sm text-red-600 mt-2">
                                 @error('eps_id')
                                     <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 12h7M15 12l-3-3M15 12l-3 3" />
                                         </svg>
@@ -301,7 +269,8 @@
 
                         <div>
                             <!-- Select para ARL -->
-                            <label for="arl" class="block text-sm font-medium text-gray-700">Seleccionar ARL</label>
+                            <label for="arl" class="block text-sm font-medium text-gray-700">Seleccionar
+                                ARL</label>
                             <select wire:model="arl_id" name="arl" class="form-select text-white-dark">
                                 <option value="">Seleccione una ARL</option>
                                 @foreach ($arl as $arlItem)
@@ -313,8 +282,8 @@
                             <div class="text-sm text-red-600 mt-2">
                                 @error('arl_id')
                                     <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 12h7M15 12l-3-3M15 12l-3 3" />
                                         </svg>
@@ -363,113 +332,176 @@
                     <h6 class="font-semibold text-lg dark:text-white-light mb-4">Captura foto del visitante</h6>
                     <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4">
                         <div class="mb-8">
-                            <!-- Video para mostrar la cámara -->
-                            <div class="flex justify-center mb-4">
-                                <video id="video" class="rounded-lg shadow-md w-50 max-w-md" width="400"
-                                    height="300" autoplay></video>
+                            <!-- Contenedor para la cámara y la vista previa -->
+                            <div class="flex justify-center items-center mb-4 space-x-6">
+                                <!-- Video para mostrar la cámara -->
+                                <div class="flex justify-center">
+                                    <video id="video" class="rounded-lg shadow-md" width="300"
+                                        autoplay></video>
+                                </div>
+
+                                <!-- Vista previa de la foto -->
+                                <div class="flex flex-col justify-center items-center space-y-4">
+                                    <canvas id="photoCanvas" class="hidden rounded-lg shadow-md" width="300"
+                                        height="200"></canvas>
+                                    <img wire:ignore id="photoPreview" class="hidden mt-4 rounded-lg shadow-md"
+                                        width="300">
+                                </div>
                             </div>
 
                             <!-- Botón para capturar la foto -->
-                            <div class="text-center flex justify-center align-middle  mb-6">
+                            <div class="text-center mb-6 flex justify-center items-center">
                                 <button type="button"
                                     class="btn btn-primary py-2 px-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 transition duration-300"
                                     @click="capturePhoto()">
                                     Capturar Foto
                                 </button>
-                                <div class="text-sm text-red-600 mt-2">
-                                    @error('foto')
-                                        <p class="flex items-center space-x-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                            </svg>
-                                            <span>{{ $message }}</span>
-                                        </p>
-                                    @enderror
-                                </div>
                             </div>
 
-                            <!-- Vista previa de la foto -->
-                            <div class="flex flex-col justify-center items-center">
-                                <canvas id="photoCanvas" class="hidden rounded-lg shadow-md" width="400"
-                                    height="300"></canvas>
-                                <img wire:ignore id="photoPreview" class="hidden mt-4 rounded-lg shadow-md"
-                                    width="400" height="300">
+                            <div class="text-sm text-red-600 mt-2 flex justify-center items-center">
+                                @error('foto')
+                                    <p class="flex items-center space-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 12h7M15 12l-3-3M15 12l-3 3" />
+                                        </svg>
+                                        <span>{{ $message }}</span>
+                                    </p>
+                                @enderror
+                            </div>
 
-                                <div class="flex justify-center items-center mt-4">
-                                    @if ($foto)
-                                        <button type="button"
-                                            class="btn btn-outline-primary py-2 px-6 border-2 border-red-400 text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-gray-400 rounded-lg"
-                                            @click="clearPhoto()">Limpiar Foto</button>
-                                    @endif
-                                </div>
+                            <!-- Botón para limpiar la foto -->
+                            <div class="flex justify-center items-center mt-4">
+                                @if ($foto)
+                                    <button type="button"
+                                        class="btn btn-outline-primary py-2 px-6 border-2 border-red-400 text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-gray-400 rounded-lg"
+                                        @click="clearPhoto()">Limpiar Foto</button>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="mb-6">
+
+                <div x-data="scrollHandler()" class="mb-6">
                     <!-- Caja con los términos y condiciones -->
-                    <div class="relative">
-                        <label for="terms" class="block text-lg font-semibold text-gray-700">Términos y
+                    <div class="relative bg-white shadow-lg rounded-lg p-6 border border-gray-200">
+                        <label for="terms" class="block text-xl font-semibold text-gray-800 mb-4">Términos y
                             Condiciones</label>
-                        <div class="mt-2 h-64 overflow-y-auto border p-4 rounded-lg bg-gray-50 text-sm text-gray-700"
-                            id="terms">
-                            <p>
-                                Aquí van los términos y condiciones. Puedes incluir todo el contenido legal necesario o
-                                un resumen. Esto es solo un ejemplo.
-                                <br><br>
-                                Este es el contenido adicional de los términos. Añade todo lo necesario. El usuario debe
-                                hacer scroll para leer todo el contenido.
-                                <br><br>
-                                Si el contenido es muy largo, puedes seguir agregando más texto aquí. El objetivo es que
-                                el usuario llegue al final para habilitar el botón de envío.
-                            </p>
-                            <p>
-                                Aquí van los términos y condiciones. Puedes incluir todo el contenido legal necesario o
-                                un resumen. Esto es solo un ejemplo.
-                                <br><br>
-                                Este es el contenido adicional de los términos. Añade todo lo necesario. El usuario debe
-                                hacer scroll para leer todo el contenido.
-                                <br><br>
-                                Si el contenido es muy largo, puedes seguir agregando más texto aquí. El objetivo es que
-                                el usuario llegue al final para habilitar el botón de envío.
-                            </p>
-                            <p>
-                                Aquí van los términos y condiciones. Puedes incluir todo el contenido legal necesario o
-                                un resumen. Esto es solo un ejemplo.
-                                <br><br>
-                                Este es el contenido adicional de los términos. Añade todo lo necesario. El usuario debe
-                                hacer scroll para leer todo el contenido.
-                                <br><br>
-                                Si el contenido es muy largo, puedes seguir agregando más texto aquí. El objetivo es que
-                                el usuario llegue al final para habilitar el botón de envío.
-                            </p>
-                            <p>
-                                Aquí van los términos y condiciones. Puedes incluir todo el contenido legal necesario o
-                                un resumen. Esto es solo un ejemplo.
-                                <br><br>
-                                Este es el contenido adicional de los términos. Añade todo lo necesario. El usuario debe
-                                hacer scroll para leer todo el contenido.
-                                <br><br>
-                                Si el contenido es muy largo, puedes seguir agregando más texto aquí. El objetivo es que
-                                el usuario llegue al final para habilitar el botón de envío.
-                            </p>
-                            <p>
-                                Aquí van los términos y condiciones. Puedes incluir todo el contenido legal necesario o
-                                un resumen. Esto es solo un ejemplo.
-                                <br><br>
-                                Este es el contenido adicional de los términos. Añade todo lo necesario. El usuario debe
-                                hacer scroll para leer todo el contenido.
-                                <br><br>
-                                Si el contenido es muy largo, puedes seguir agregando más texto aquí. El objetivo es que
-                                el usuario llegue al final para habilitar el botón de envío.
-                            </p>
-                            <!-- Puedes agregar más texto aquí para hacer que el scroll sea necesario -->
+                        <div class="relative mt-2 h-64 overflow-y-auto border p-4 rounded-lg bg-gray-50 text-sm text-gray-700"
+                            id="terms" @scroll="checkScroll($event)">
+
+                            <div class="mb-6 flex justify-center items-center">
+                                <img src="{{ asset('assets/images/bg/politicas-2.png') }}"
+                                    alt="Imagen ilustrativa de términos y condiciones"
+                                    class="w-50 h-50 rounded-lg shadow-lg">
+                            </div>
+
+                            <h3 class="text-lg font-semibold text-gray-800 mb-3 relative z-10">Bienvenido:</h3>
+                            <p class="mb-4 relative z-10">Antes de continuar, por favor lea los siguientes Términos y
+                                Condiciones que rigen el uso de nuestros servicios. Si no está de acuerdo con los
+                                términos, no podrá acceder a los mismos.</p>
+
+                            <!-- Contenido de los términos con iconos -->
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
+                                    </svg>
+                                    <p class="mb-2">1. Al acceder a nuestros servicios, usted acepta cumplir con
+                                        todas nuestras políticas y procedimientos.</p>
+                                </div>
+
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
+                                    </svg>
+                                    <p class="mb-2">2. Nuestros servicios están sujetos a cambios periódicos. Le
+                                        recomendamos revisar regularmente esta página.</p>
+                                </div>
+
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
+                                    </svg>
+                                    <p class="mb-2">3. Nos comprometemos a proteger su privacidad y sus datos
+                                        personales. Para más detalles, consulte nuestra Política de Privacidad.</p>
+                                </div>
+
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
+                                    </svg>
+                                    <p class="mb-2">4. El uso de nuestros servicios está prohibido para menores de
+                                        edad sin la debida autorización.</p>
+                                </div>
+
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
+                                    </svg>
+                                    <p class="mb-2">5. El incumplimiento de los términos puede resultar en la
+                                        suspensión o cancelación de su acceso a nuestros servicios.</p>
+                                </div>
+
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
+                                    </svg>
+                                    <p class="mb-2">6. Nos reservamos el derecho de modificar, suspender o
+                                        descontinuar cualquier parte del servicio en cualquier momento.</p>
+                                </div>
+                            </div>
+
+                            <!-- Nota final -->
+                            <p class="mt-4 text-gray-600 relative z-10">Recuerde que el acceso y uso de nuestros
+                                servicios implica la aceptación de estos términos. Si tiene alguna pregunta, no dude en
+                                contactarnos.</p>
                         </div>
                     </div>
+
+                    <!-- Checkbox de aceptación de términos -->
+                    <div class="mb-5 py-3 flex justify-center">
+                        <label class="w-12 h-6 relative">
+                            <input wire:model="aceptaPolitica" x-bind:disabled="!scrolledToBottom" type="checkbox"
+                                class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer"
+                                id="custom_switch_checkbox1" />
+                            <span for="custom_switch_checkbox1"
+                                class="outline_checkbox bg-icon border-2 border-[#e6bc34] dark:border-white-dark block h-full before:absolute before:left-1 before:bg-[#e6bc34] dark:before:bg-white-dark before:bottom-1 before:w-4 before:h-4 before:bg-[{{ asset('assets/images/close.svg') }}] before:bg-no-repeat before:bg-center peer-checked:before:left-7 peer-checked:before:bg-[{{ asset('assets/images/checked.svg') }}] peer-checked:border-success peer-checked:before:bg-success before:transition-all before:duration-300">
+                            </span>
+                        </label>
+                        <h6 class="pl-4 text-gray-800">Para continuar, debe aceptar nuestros Términos y Condiciones.
+                        </h6>
+                    </div>
+
+                    <!-- Mensaje de error -->
+                    <div class="text-sm text-red-600 mt-2 flex justify-center">
+                        @error('aceptaPolitica')
+                            <p class="flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12h7M15 12l-3-3M15 12l-3 3" />
+                                </svg>
+                                <span>{{ $message }}</span>
+                            </p>
+                        @enderror
+                    </div>
                 </div>
+
 
                 <!-- Sección 5 -->
                 <div class="mb-6">
@@ -477,7 +509,7 @@
                     <div
                         class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4 justify-center items-center text-center">
                         <!-- Canvas para la firma -->
-                        <span class="text-sm text-gray-500">Dibuja tu firma con el mouse o el lápiz
+                        <span class="text-sm text-gray-500">Dibuja tu firma con el mouse o el làpiz
                             táctil.</span>
                         <div class="mb-6 flex flex-col items-center justify-center">
                             <canvas x-ref="canvas" class="border-4 border-gray-300 rounded-lg shadow-lg w-50"
@@ -521,9 +553,53 @@
             </form>
         </div>
     </div>
+
     <script>
+        $wire.on('confirmacionGuardado', () => {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: 'No podrás revertir esta acción.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $wire.dispatch('deleteUser');
+                }
+            });
+        });
+
         document.addEventListener('alpine:init', () => {
-            Alpine.data('signaturePad', () => ({
+
+            Alpine.data('scrollHandler', () => ({
+                scrolledToBottom: false,
+                atBottom: false,
+
+                checkScroll(event) {
+                    const element = event.target;
+                    const scrollPosition = Math.ceil(element.scrollTop + element.clientHeight);
+                    const isAtBottom = scrollPosition >= element.scrollHeight;
+
+                    if (isAtBottom) {
+                        this.scrolledToBottom = true;
+                        this.atBottom = true; // Marcar que se ha llegado al final
+                    } else if (!isAtBottom && this.atBottom) {
+                        // Solo deshabilitar el checkbox si nunca ha llegado al final
+                        this.scrolledToBottom = true; // Mantener habilitado
+                    } else {
+                        this.scrolledToBottom = false;
+                        this.atBottom = false; // No se ha llegado al final
+                    }
+                },
+            }));
+
+
+            Alpine.data('formularioVisitante', () => ({
+
                 signaturePad: null,
 
                 init() {
@@ -690,7 +766,17 @@
                     @this.set('foto', fotoBase64);
 
                     this.clear();
-                }
+                },
+                scrollToFirstError() {
+                    const firstError = document.querySelector('.text-red-600');
+                    if (firstError) {
+                        window.scrollTo({
+                            top: firstError.offsetTop -
+                                50, // Desplazamiento de 20px para margen
+                            behavior: 'smooth'
+                        });
+                    }
+                },
             }));
         });
     </script>

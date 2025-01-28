@@ -9,6 +9,23 @@
             </svg>
             Lista de Visitantes
         </h2>
+        <div class="w-full overflow-x-auto" wire:loading wire:target="cambiarEstadoVisitante">
+            <div class="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded-lg shadow" role="status">
+                Cambiando estado del visitante...
+            </div>
+        </div>
+        @if (session('success'))
+            <div wire:loading.remove class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg shadow"
+                role="status">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if (session('error'))
+            <div wire:loading.remove class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg shadow"
+                role="status">
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="overflow-x-auto">
             <table class="w-full table-auto border-collapse border border-gray-200 rounded-lg shadow-sm">
                 <thead class="bg-gray-50">

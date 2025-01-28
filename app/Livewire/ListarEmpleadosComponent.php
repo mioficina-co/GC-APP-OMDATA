@@ -28,7 +28,7 @@ class ListarEmpleadosComponent extends Component
         try {
             $empleado = Empleados::findOrFail($id);
             $empleado->update(['activo' => !$empleado->activo]);
-            // session()->flash('mensaje', 'El estado del empleado ha sido actualizado.');
+            session()->flash('success', 'El estado del empleado ha sido actualizado.');
         } catch (\Exception $e) {
             session()->flash('error', 'Error al actualizar el estado del empleado.');
         }

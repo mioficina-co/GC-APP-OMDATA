@@ -10,14 +10,19 @@
             Lista de Empleados
         </h2>
         <div class="w-full overflow-x-auto" wire:loading wire:target="cambiarEstadoEmpleado">
-            <div class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg shadow"
-                role="status">
+            <div class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg shadow" role="status">
                 Cambiando estado del empleado...
             </div>
         </div>
-
+        @if (session('success'))
+            <div wire:loading.remove
+                class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg shadow" role="status">
+                {{ session('success') }}
+            </div>
+        @endif
         @if (session('error'))
-            <div wire:loading.remove class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg shadow" role="status">
+            <div wire:loading.remove class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg shadow"
+                role="status">
                 {{ session('error') }}
             </div>
         @endif
@@ -84,26 +89,71 @@
                                             </svg>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a wire:click="eliminar({{ $empleadoItem->id }})" href="javascript:;"
-                                            x-tooltip="Eliminar">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-danger">
-                                                <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5"
-                                                    stroke-linecap="round" />
-                                                <path
-                                                    d="M18.8334 8.5L18.3735 15.3991C18.1965 18.054 18.108 19.3815 17.243 20.1907C16.378 21 15.0476 21 12.3868 21H11.6134C8.9526 21 7.6222 21 6.75719 20.1907C5.89218 19.3815 5.80368 18.054 5.62669 15.3991L5.16675 8.5"
-                                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                                <path opacity="0.5" d="M9.5 11L10 16" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round" />
-                                                <path opacity="0.5" d="M14.5 11L14 16" stroke="currentColor"
-                                                    stroke-width="1.5" stroke-linecap="round" />
-                                                <path opacity="0.5"
-                                                    d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6"
-                                                    stroke="currentColor" stroke-width="1.5" />
-                                            </svg>
-                                        </a>
-                                    </li>
+                                    <div x-data="modal">
+                                        <li><a href="javascript:;" x-tooltip="Eliminar" @click="toggle">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-danger">
+                                                    <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5"
+                                                        stroke-linecap="round" />
+                                                    <path
+                                                        d="M18.8334 8.5L18.3735 15.3991C18.1965 18.054 18.108 19.3815 17.243 20.1907C16.378 21 15.0476 21 12.3868 21H11.6134C8.9526 21 7.6222 21 6.75719 20.1907C5.89218 19.3815 5.80368 18.054 5.62669 15.3991L5.16675 8.5"
+                                                        stroke="currentColor" stroke-width="1.5"
+                                                        stroke-linecap="round" />
+                                                    <path opacity="0.5" d="M9.5 11L10 16" stroke="currentColor"
+                                                        stroke-width="1.5" stroke-linecap="round" />
+                                                    <path opacity="0.5" d="M14.5 11L14 16" stroke="currentColor"
+                                                        stroke-width="1.5" stroke-linecap="round" />
+                                                    <path opacity="0.5"
+                                                        d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6"
+                                                        stroke="currentColor" stroke-width="1.5" />
+                                                </svg>
+                                            </a></li>
+                                        {{-- <button type="button" class="btn btn-primary"
+                                            @click="toggle">Standard</button> --}}
+                                        <div class="fixed inset-0 bg-[black]/60 z-[999] hidden overflow-y-auto"
+                                            :class="open && '!block'">
+                                            <div class="flex items-start justify-center min-h-screen px-4"
+                                                @click.self="open = false">
+                                                <div x-show="open" x-transition x-transition.duration.300
+                                                    class="panel border-0 p-0 rounded-lg overflow-hidden w-full max-w-lg my-8">
+                                                    <div
+                                                        class="dark:text-white-dark/70 text-base font-medium text-[#1f2937] p-5">
+                                                        <div
+                                                            class="flex items-center justify-center w-16 h-16 rounded-full bg-[#f1f2f3] dark:bg-white/10 mx-auto">
+                                                            <svg width="28" height="28" viewBox="0 0 24 24"
+                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M19.0001 9.7041V9C19.0001 5.13401 15.8661 2 12.0001 2C8.13407 2 5.00006 5.13401 5.00006 9V9.7041C5.00006 10.5491 4.74995 11.3752 4.28123 12.0783L3.13263 13.8012C2.08349 15.3749 2.88442 17.5139 4.70913 18.0116C9.48258 19.3134 14.5175 19.3134 19.291 18.0116C21.1157 17.5139 21.9166 15.3749 20.8675 13.8012L19.7189 12.0783C19.2502 11.3752 19.0001 10.5491 19.0001 9.7041Z"
+                                                                    stroke="currentColor" stroke-width="1.5"></path>
+                                                                <path opacity="0.5"
+                                                                    d="M7.5 19C8.15503 20.7478 9.92246 22 12 22C14.0775 22 15.845 20.7478 16.5 19"
+                                                                    stroke="currentColor" stroke-width="1.5"
+                                                                    stroke-linecap="round"></path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                    <div class="p-5">
+                                                        <div class="text-white-dark text-center">
+                                                            <p class="text-xl font-semibold text-red-500">¿Estás seguro
+                                                                de eliminar este empleado?</p>
+                                                            <p class="mt-3 text-gray-700">Una vez que elimines a este
+                                                                empleado, no podrás deshacer esta acción. ¿Deseas
+                                                                continuar?</p>
+                                                        </div>
+                                                        <div class="flex justify-end items-center mt-8">
+                                                            <button type="button" class="btn btn-outline-danger"
+                                                                @click="toggle">Cancelar</button>
+                                                            <button type="button"
+                                                                wire:click="eliminar({{ $empleadoItem->id }})"
+                                                                class="btn btn-primary ltr:ml-4 rtl:mr-4"
+                                                                @click="toggle">Eliminar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
 
                                     <li>
                                         <div class="flex items-center space-x-1">
