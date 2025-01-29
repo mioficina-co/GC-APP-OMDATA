@@ -3,9 +3,10 @@
         <div class="relative bg-white flex w-full items-center px-5 py-2.5 dark:bg-[#0e1726]">
             <div class="horizontal-logo flex lg:hidden justify-between items-center ltr:mr-2 rtl:ml-2">
                 <a href="/" class="main-logo flex items-center shrink-0">
-                    <img class="w-8 ltr:-ml-1 rtl:-mr-1 inline" src="/assets/images/logo.svg" alt="image" />
+                    <img class="w-8 ltr:-ml-1 rtl:-mr-1 inline" src="/assets/images/logo_sm_omdata-alt.png"
+                        alt="image" />
                     <span
-                        class="text-2xl ltr:ml-1.5 rtl:mr-1.5  font-semibold  align-middle hidden md:inline dark:text-white-light transition-all duration-300">VRISTO</span>
+                        class="text-2xl ltr:ml-1.5 rtl:mr-1.5  font-semibold  align-middle hidden md:inline dark:text-white-light transition-all duration-300">GC-APP</span>
                 </a>
 
                 <a href="javascript:;"
@@ -22,7 +23,7 @@
             </div>
             <div class="ltr:mr-2 rtl:ml-2 hidden sm:block">
                 <ul class="flex items-center space-x-2 rtl:space-x-reverse dark:text-[#d0d2d6]">
-                    <li>
+                    {{-- <li>
                         <a href="/apps/calendar"
                             class="block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -38,8 +39,8 @@
                                     stroke-linecap="round" />
                             </svg>
                         </a>
-                    </li>
-                    <li>
+                    </li> --}}
+                    {{-- <li>
                         <a href="/apps/todolist"
                             class="block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -55,8 +56,8 @@
                                     stroke="currentColor" stroke-width="1.5" />
                             </svg>
                         </a>
-                    </li>
-                    <li><a href="/apps/chat"
+                    </li> --}}
+                    {{-- <li><a href="/apps/chat"
                             class="block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -67,7 +68,7 @@
                                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                             </svg>
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
             <div x-data="header"
@@ -79,7 +80,7 @@
                         <div class="relative">
                             <input type="text"
                                 class="form-input ltr:pl-9 rtl:pr-9 ltr:sm:pr-4 rtl:sm:pl-4 ltr:pr-9 rtl:pl-9 peer sm:bg-transparent bg-gray-100 placeholder:tracking-widest"
-                                placeholder="Search..." />
+                                placeholder="Busqueda..." />
                             <button type="button"
                                 class="absolute w-9 h-9 inset-0 ltr:right-auto rtl:left-auto appearance-none peer-focus:text-primary">
                                 <svg class="mx-auto" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -163,7 +164,7 @@
                     </a>
                 </div>
 
-                <div class="dropdown shrink-0" x-data="dropdown" @click.outside="open = false">
+                {{-- <div class="dropdown shrink-0" x-data="dropdown" @click.outside="open = false">
                     <a href="javascript:;"
                         class="block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
                         @click="toggle">
@@ -184,9 +185,9 @@
                             </li>
                         </template>
                     </ul>
-                </div>
+                </div> --}}
 
-                <div class="dropdown" x-data="dropdown" @click.outside="open = false">
+                {{-- <div class="dropdown" x-data="dropdown" @click.outside="open = false">
                     <a href="javascript:;"
                         class="block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
                         @click="toggle">
@@ -270,7 +271,7 @@
                             </li>
                         </template>
                     </ul>
-                </div>
+                </div> --}}
                 <div class="dropdown" x-data="dropdown" @click.outside="open = false">
 
                     <a href="javascript:;"
@@ -297,9 +298,10 @@
                         <li>
                             <div
                                 class="flex items-center px-4 py-2 justify-between font-semibold hover:!bg-transparent">
-                                <h4 class="text-lg">Notification</h4>
+                                <h4 class="text-lg">Notificación</h4>
                                 <template x-if="notifications.length">
-                                    <span class="badge bg-primary/80" x-text="notifications.length + 'New'"></span>
+                                    <span class="badge bg-primary/80"
+                                        x-text="notifications.length + ' Nuevas'"></span>
                                 </template>
                             </div>
                         </li>
@@ -309,7 +311,7 @@
                                     <div class="grid place-content-center rounded">
                                         <div class="w-12 h-12 relative">
                                             <img class="w-12 h-12 rounded-full object-cover"
-                                                :src="`/assets/images/${notification.profile}`" alt="image" />
+                                                :src="`/assets/images/${notification.profile}`" alt="imagen" />
                                             <span
                                                 class="bg-success w-2 h-2 rounded-full block absolute right-[6px] bottom-0"></span>
                                         </div>
@@ -339,8 +341,9 @@
                         <template x-if="notifications.length">
                             <li>
                                 <div class="p-4">
-                                    <button class="btn btn-primary block w-full btn-small" @click="toggle">Read All
-                                        Notifications</button>
+                                    <button class="btn btn-primary block w-full btn-small" @click="toggle">Leer todas
+                                        las
+                                        notificaciones</button>
                                 </div>
                             </li>
                         </template>
@@ -361,11 +364,12 @@
                                                 fill="currentColor" />
                                         </svg>
                                     </div>
-                                    No data available.
+                                    No hay datos disponibles.
                                 </div>
                             </li>
                         </template>
                     </ul>
+
                 </div>
                 <div class="dropdown flex-shrink-0" x-data="dropdown" @click.outside="open = false">
                     <a href="javascript:;" class="relative group" @click="toggle()">
@@ -381,11 +385,11 @@
                                         src="/assets/images/user-profile.jpeg" alt="image" />
                                 </div>
                                 <div class="ltr:pl-4 rtl:pr-4 truncate">
-                                    <h4 class="text-base">John Doe<span
+                                    <h4 class="text-base">{{ auth()->user()->name }}<span
                                             class="text-xs bg-success-light rounded text-success px-1 ltr:ml-2 rtl:ml-2">Pro</span>
                                     </h4>
                                     <a class="text-black/60  hover:text-primary dark:text-dark-light/60 dark:hover:text-white"
-                                        href="javascript:;">johndoe@gmail.com</a>
+                                        href="javascript:;">{{ auth()->user()->email }}</a>
                                 </div>
                             </div>
                         </li>
@@ -399,9 +403,9 @@
                                         d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z"
                                         stroke="currentColor" stroke-width="1.5" />
                                 </svg>
-                                Profile</a>
+                                Perfil</a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="/apps/mailbox" class="dark:hover:text-white" @click="toggle">
                                 <svg class="w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 shrink-0" width="18" height="18"
                                     viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -412,8 +416,8 @@
                                         d="M6 8L8.1589 9.79908C9.99553 11.3296 10.9139 12.0949 12 12.0949C13.0861 12.0949 14.0045 11.3296 15.8411 9.79908L18 8"
                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
-                                Inbox</a>
-                        </li>
+                                Bandeja entrada</a>
+                        </li> --}}
                         <li>
                             <a href="{{ route('logout') }}" @click.prevent="$root.submit(); toglgle"
                                 class="dark:hover:text-white" @click="toggle">
@@ -437,7 +441,7 @@
                                             fill="currentColor" />
                                     </g>
                                 </svg>
-                                Lock Screen</a>
+                                Pantalla de bloqueo</a>
                         </li>
                         <form action="{{ route('logout') }}" method="POST" x-data>
                             @csrf
@@ -453,7 +457,7 @@
                                         <path d="M12 15L12 2M12 2L15 5.5M12 2L9 5.5" stroke="currentColor"
                                             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
-                                    <span>Sign Out</span>
+                                    <span>Salir del sistema</span>
                                 </a>
                             </li>
                         </form>

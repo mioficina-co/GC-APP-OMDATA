@@ -13,7 +13,8 @@
                 <div class="mb-6">
                     <div class="flex items-center justify-between mb-5">
                         <h6 class="font-semibold text-lg dark:text-white-light mb-4">Registro visitante</h6>
-                        <a href="{{route('login')}}" class="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                        <a href="{{ route('login') }}"
+                            class="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
                             href="javascript:;" @click="toggleCode('code8')">
                             <span class="flex items-center">
                                 <button type="button" class="btn btn-primary">
@@ -572,6 +573,19 @@
     <script>
         document.addEventListener('alpine:init', () => {
 
+            Livewire.on('resetFirma', () => {
+                if (this.signaturePad) {
+                    this.signaturePad.clear();
+                    @this.set('firma', '');
+                }
+            });
+
+
+            Livewire.on('resetFoto', () => {
+                const photoPreview = document.getElementById('photoPreview');
+                photoPreview.classList.add('hidden');
+            });
+
             Livewire.on('confirmacionGuardado', () => {
                 Swal.fire({
                     title: "¡Registro Exitoso!",
@@ -670,7 +684,6 @@
                         this.signaturePad.clear();
                         @this.set('firma', '');
                     }
-                    Livewire.dispatch('resetFirmaLivewire');
                 },
 
                 captureSignature() {
@@ -678,7 +691,6 @@
                         const firmaBase64 = this.signature;
                         @this.set('firma', firmaBase64);
                     }
-                    Livewire.dispatch('updateFirma', firmaBase64);
                 },
 
                 get signature() {
@@ -782,8 +794,6 @@
                     photoPreview.classList.remove('hidden');
 
                     @this.set('foto', dataUrl);
-
-                    Livewire.dispatch('updateFoto', dataUrl);
                 },
 
                 clearPhoto() {
@@ -796,7 +806,9 @@
                     const context = photoCanvas.getContext('2d');
                     context.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
                     photoCanvas.classList.add('hidden');
-                    Livewire.dispatch('resetFotoLivewire');
+                    Livewire.on('resetFoto', () => {
+                        photoCanvas.classList.add('hidden');
+                    });
                 }
             }));
         });

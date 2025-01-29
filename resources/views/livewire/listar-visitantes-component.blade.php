@@ -31,12 +31,14 @@
                 <thead class="bg-gray-50">
                     <tr class="text-left text-sm font-semibold text-gray-700">
                         <th class="border-b px-4 py-3">#</th>
-                        <th class="border-b px-4 py-3">Nombre</th>
-                        <th class="border-b px-4 py-3">Apellido</th>
+                        <th class="border-b px-4 py-3">Nombre y apellido</th>
                         <th class="border-b px-4 py-3">Documento</th>
                         <th class="border-b px-4 py-3">Teléfono</th>
                         <th class="border-b px-4 py-3">Email</th>
-                        <th class="border-b px-4 py-3">Género</th>
+                        <th class="border-b px-4 py-3">EPS</th>
+                        <th class="border-b px-4 py-3">ARL</th>
+                        <th class="border-b px-4 py-3">Registrar salida</th>
+                        <th class="border-b px-4 py-3">Fecha de Creación</th>
                         <th class="border-b px-4 py-3">Placa Vehículo</th>
                         <th class="border-b px-4 py-3 text-center">Acciones</th>
                     </tr>
@@ -45,19 +47,28 @@
                     @foreach ($visitantes as $index => $visitante)
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 py-3 text-sm text-gray-600">{{ $index + 1 }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-600">
+                            {{-- <td class="px-4 py-3 text-sm text-gray-600">
                                 {{ $visitante->nombre }}
                                 @foreach ($visitante->visitas as $VisitasItem)
                                     <input type="image"
                                         src="{{ URL('storage/app/public/fotos/' . $VisitasItem->foto) }}"
                                         alt="">
                                 @endforeach
-                            </td>
-                            <td class="px-4 py-3 text-sm text-gray-600">{{ $visitante->apellido }}</td>
+                            </td> --}}
+                            <td class="px-4 py-3 text-sm text-gray-600">{{ $visitante->nombre }} <span>{{ $visitante->apellido }} </span> </td>
                             <td class="px-4 py-3 text-sm text-gray-600">{{ $visitante->numero_documento }}</td>
                             <td class="px-4 py-3 text-sm text-gray-600">{{ $visitante->telefono }}</td>
                             <td class="px-4 py-3 text-sm text-gray-600">{{ $visitante->email }}</td>
                             <td class="px-4 py-3 text-sm text-gray-600">{{ $visitante->eps->nombre }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">{{ $visitante->arl->nombre }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">
+                                <div class="mb-5">
+                                    <div class="flex flex-wrap items-center justify-center gap-2">
+                                        <button type="button" class="btn btn-info btn-sm">Registro salida</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">{{ $visitante->created_at }}</td>
                             <td class="px-4 py-3 text-sm text-gray-600">{{ $visitante->placa_vehiculo }}</td>
                             <td class="text-center">
                                 <ul class="flex items-center justify-center gap-2">

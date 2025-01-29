@@ -174,9 +174,6 @@ class RegistroVisitanteComponent extends Component
 
     public function resetForm()
     {
-
-        $this->foto = '';
-        $this->firma = '';
         $this->reset([
             'foto',
             'firma',
