@@ -8,9 +8,29 @@
         @endif
         <div class="mb-5">
             <form wire:submit.prevent="submitSignature">
+
                 {{-- seccion numero 1 --}}
                 <div class="mb-6">
-                    <h6 class="font-semibold text-lg dark:text-white-light mb-4">Datos Personales</h6>
+                    <div class="flex items-center justify-between mb-5">
+                        <h6 class="font-semibold text-lg dark:text-white-light mb-4">Registro visitante</h6>
+                        <a href="{{route('login')}}" class="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
+                            href="javascript:;" @click="toggleCode('code8')">
+                            <span class="flex items-center">
+                                <button type="button" class="btn btn-primary">
+
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="6" r="4" stroke="currentColor"
+                                            stroke-width="1.5" />
+                                        <path
+                                            d="M15 20.6151C14.0907 20.8619 13.0736 21 12 21C8.13401 21 5 19.2091 5 17C5 14.7909 8.13401 13 12 13C15.866 13 19 14.7909 19 17C19 17.3453 18.9234 17.6804 18.7795 18"
+                                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
+                                    Panel administración
+                                </button>
+                            </span>
+                        </a>
+                    </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div class="col-span-1">
                             <select wire:model.change="empleado" class="form-select text-white-dark">
@@ -113,8 +133,8 @@
                             <div class="text-sm text-red-600 mt-2">
                                 @error('tipodocumento')
                                     <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 12h7M15 12l-3-3M15 12l-3 3" />
                                         </svg>
@@ -130,8 +150,8 @@
                             <div class="text-sm text-red-600 mt-2">
                                 @error('numerodocumento')
                                     <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 12h7M15 12l-3-3M15 12l-3 3" />
                                         </svg>

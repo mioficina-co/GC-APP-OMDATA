@@ -8,7 +8,7 @@ use App\Livewire\PruebasComponent;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('visitantes.create');
 });
 
 Route::get('/index', function () {
