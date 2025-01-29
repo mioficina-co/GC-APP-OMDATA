@@ -99,48 +99,49 @@ class RegistroVisitanteComponent extends Component
         'email.required' => 'El correo electrónico es obligatorio.',
         'eps_id.required' => 'La EPS es obligatoria.',
         'arl_id.required' => 'La ARL es obligatoria.',
-        'aceptaPolitica.required' => 'Debe aceptar la política de tratamiento de datos.',
+        'aceptaPolitica.required' => 'Para continuar, asegúrate de leer toda la política de tratamiento de datos y luego marcar la casilla de aceptación.',
+        'aceptaPolitica.accepted' => 'Debe aceptar la politica de tratamiento de datos.',
     ];
 
     public function submitSignature(visitasRepository $visitasRepository)
     {
-        $this->validate();
+        // $this->validate();
 
-        DB::transaction(function () use ($visitasRepository) {
-            $foto_visitante = $visitasRepository->tratamientoImagen($this->foto, $this->numerodocumento, 'foto');
-            $firma_visitante = $visitasRepository->tratamientoImagen($this->firma, $this->numerodocumento, 'firma');
+        // DB::transaction(function () use ($visitasRepository) {
+        //     $foto_visitante = $visitasRepository->tratamientoImagen($this->foto, $this->numerodocumento, 'foto');
+        //     $firma_visitante = $visitasRepository->tratamientoImagen($this->firma, $this->numerodocumento, 'firma');
 
-            $visitante = visitantes::create([
-                'nombre' => $this->nombre,
-                'apellido' => $this->apellido,
-                'tipos_documento_id' => $this->tipodocumento,
-                'numero_documento' => $this->numerodocumento,
-                'genero' => $this->genero,
-                'telefono' => $this->celular,
-                'email' => $this->email,
-                'compania' => $this->compania,
-                'placa_vehiculo' => $this->placavehiculo,
-                'nombre_contacto_emergencia' => $this->contactoemergencia,
-                'numero_contacto_emergencia' => $this->numerocontactoemergencia,
-                'pais_id' => $this->pais,
-                'eps_id' => $this->eps_id,
-                'arl_id' => $this->arl_id,
-            ]);
+        //     $visitante = visitantes::create([
+        //         'nombre' => $this->nombre,
+        //         'apellido' => $this->apellido,
+        //         'tipos_documento_id' => $this->tipodocumento,
+        //         'numero_documento' => $this->numerodocumento,
+        //         'genero' => $this->genero,
+        //         'telefono' => $this->celular,
+        //         'email' => $this->email,
+        //         'compania' => $this->compania,
+        //         'placa_vehiculo' => $this->placavehiculo,
+        //         'nombre_contacto_emergencia' => $this->contactoemergencia,
+        //         'numero_contacto_emergencia' => $this->numerocontactoemergencia,
+        //         'pais_id' => $this->pais,
+        //         'eps_id' => $this->eps_id,
+        //         'arl_id' => $this->arl_id,
+        //     ]);
 
-            visitas::create([
-                'visitante_id' => $visitante->id,
-                'empleado_id' => $this->empleado,
-                'departamento_id' => $this->departamento,
-                'razon_id' => $this->razonvisita,
-                'fecha_inicio' => now(),
-                'fecha_fin' => $this->fecha_fin,
-                'total_visitantes' => $this->totalpersonas,
-                'pertenencias' => $this->pertenencias,
-                'foto' => $foto_visitante,
-                'firma_base64' => $firma_visitante,
-                'acepta_politica' => true,
-            ]);
-        });
+        //     visitas::create([
+        //         'visitante_id' => $visitante->id,
+        //         'empleado_id' => $this->empleado,
+        //         'departamento_id' => $this->departamento,
+        //         'razon_id' => $this->razonvisita,
+        //         'fecha_inicio' => now(),
+        //         'fecha_fin' => $this->fecha_fin,
+        //         'total_visitantes' => $this->totalpersonas,
+        //         'pertenencias' => $this->pertenencias,
+        //         'foto' => $foto_visitante,
+        //         'firma_base64' => $firma_visitante,
+        //         'acepta_politica' => true,
+        //     ]);
+        // });
 
         $this->resetForm();
         $this->dispatch('confirmacionGuardado');
@@ -202,6 +203,9 @@ class RegistroVisitanteComponent extends Component
             'arl_id',
             'aceptaPolitica',
         ]);
+
+        $this->dispatch('resetFirma');
+        $this->dispatch('resetFoto');
     }
 
 }

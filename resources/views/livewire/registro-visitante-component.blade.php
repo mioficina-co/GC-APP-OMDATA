@@ -7,8 +7,7 @@
             </div>
         @endif
         <div class="mb-5">
-            <form x-data="formularioVisitante()" wire:submit.prevent="submitSignature" x-init="init()"
-                @submit.prevent="scrollToFirstError()">
+            <form wire:submit.prevent="submitSignature">
                 {{-- seccion numero 1 --}}
                 <div class="mb-6">
                     <h6 class="font-semibold text-lg dark:text-white-light mb-4">Datos Personales</h6>
@@ -131,8 +130,8 @@
                             <div class="text-sm text-red-600 mt-2">
                                 @error('numerodocumento')
                                     <p class="flex items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
-                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 12h7M15 12l-3-3M15 12l-3 3" />
                                         </svg>
@@ -328,7 +327,7 @@
                 </div>
 
                 <!-- Sección 4 -->
-                <div class="mb-6">
+                <div class="mb-6" x-data="fotoHandler">
                     <h6 class="font-semibold text-lg dark:text-white-light mb-4">Captura foto del visitante</h6>
                     <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4">
                         <div class="mb-8">
@@ -384,172 +383,167 @@
                 </div>
 
 
-                <div x-data="scrollHandler()" class="mb-6">
-                    <!-- Caja con los términos y condiciones -->
-                    <div class="relative bg-white shadow-lg rounded-lg p-6 border border-gray-200">
-                        <label for="terms" class="block text-xl font-semibold text-gray-800 mb-4">Términos y
-                            Condiciones</label>
-                        <div class="relative mt-2 h-64 overflow-y-auto border p-4 rounded-lg bg-gray-50 text-sm text-gray-700"
-                            id="terms" @scroll="checkScroll($event)">
+                <div x-data="{ aceptaPolitica: @entangle('aceptaPolitica') }">
+                    <!-- Sección de Aceptación de Términos -->
+                    <div x-data="scrollHandler()" class="mb-6">
+                        <div class="relative bg-white shadow-lg rounded-lg p-6 border border-gray-200">
+                            <label class="block text-xl font-semibold text-gray-800 mb-4">Términos y
+                                Condiciones</label>
+                            <div class="relative mt-2 h-64 overflow-y-auto border p-4 rounded-lg bg-gray-50 text-sm text-gray-700"
+                                id="terms" @scroll="checkScroll($event)">
+                                <!-- Contenido de términos -->
 
-                            <div class="mb-6 flex justify-center items-center">
-                                <img src="{{ asset('assets/images/bg/politicas-2.png') }}"
-                                    alt="Imagen ilustrativa de términos y condiciones"
-                                    class="w-50 h-50 rounded-lg shadow-lg">
+                                <div class="mb-6 flex justify-center items-center">
+                                    <img src="{{ asset('assets/images/bg/politicas-2.png') }}"
+                                        alt="Imagen ilustrativa de términos y condiciones"
+                                        class="w-50 h-50 rounded-lg shadow-lg">
+                                </div>
+
+                                <h3 class="text-lg font-semibold text-gray-800 mb-3 relative z-10">Bienvenido:</h3>
+                                <p class="mb-4 relative z-10">Antes de continuar, por favor lea los siguientes Términos
+                                    y
+                                    Condiciones que rigen el uso de nuestros servicios. Si no está de acuerdo con los
+                                    términos, no podrá acceder a los mismos.</p>
+
+                                <!-- Contenido de los términos con iconos -->
+                                <div class="space-y-4">
+                                    <div class="flex items-center space-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
+                                        </svg>
+                                        <p class="mb-2">1. Al acceder a nuestros servicios, usted acepta cumplir con
+                                            todas nuestras políticas y procedimientos.</p>
+                                    </div>
+
+                                    <div class="flex items-center space-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
+                                        </svg>
+                                        <p class="mb-2">2. Nuestros servicios están sujetos a cambios periódicos. Le
+                                            recomendamos revisar regularmente esta página.</p>
+                                    </div>
+
+                                    <div class="flex items-center space-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
+                                        </svg>
+                                        <p class="mb-2">3. Nos comprometemos a proteger su privacidad y sus datos
+                                            personales. Para más detalles, consulte nuestra Política de Privacidad.</p>
+                                    </div>
+
+                                    <div class="flex items-center space-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
+                                        </svg>
+                                        <p class="mb-2">4. El uso de nuestros servicios está prohibido para menores
+                                            de
+                                            edad sin la debida autorización.</p>
+                                    </div>
+
+                                    <div class="flex items-center space-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
+                                        </svg>
+                                        <p class="mb-2">5. El incumplimiento de los términos puede resultar en la
+                                            suspensión o cancelación de su acceso a nuestros servicios.</p>
+                                    </div>
+
+                                    <div class="flex items-center space-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
+                                        </svg>
+                                        <p class="mb-2">6. Nos reservamos el derecho de modificar, suspender o
+                                            descontinuar cualquier parte del servicio en cualquier momento.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Nota final -->
+                                <p class="mt-4 text-gray-600 relative z-10">Recuerde que el acceso y uso de nuestros
+                                    servicios implica la aceptación de estos términos. Si tiene alguna pregunta, no dude
+                                    en
+                                    contactarnos.</p>
                             </div>
+                        </div>
 
-                            <h3 class="text-lg font-semibold text-gray-800 mb-3 relative z-10">Bienvenido:</h3>
-                            <p class="mb-4 relative z-10">Antes de continuar, por favor lea los siguientes Términos y
-                                Condiciones que rigen el uso de nuestros servicios. Si no está de acuerdo con los
-                                términos, no podrá acceder a los mismos.</p>
-
-                            <!-- Contenido de los términos con iconos -->
-                            <div class="space-y-4">
-                                <div class="flex items-center space-x-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <!-- Checkbox de aceptación de términos -->
+                        <div class="mb-5 py-3 flex justify-center">
+                            <label class="w-12 h-6 relative">
+                                <input wire:model="aceptaPolitica" x-bind:disabled="!scrolledToBottom" type="checkbox"
+                                    class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer" />
+                                <span
+                                    class="outline_checkbox bg-icon border-2 border-[#e6bc34] dark:border-white-dark block h-full
+                                    before:absolute before:left-1 before:bg-[#e6bc34] dark:before:bg-white-dark before:bottom-1
+                                    before:w-4 before:h-4 peer-checked:before:left-7 peer-checked:border-success
+                                    peer-checked:before:bg-success before:transition-all before:duration-300">
+                                </span>
+                            </label>
+                            <h6 class="pl-4 text-gray-800">Para continuar, debe aceptar nuestros Términos y
+                                Condiciones.</h6>
+                        </div>
+                        <div class="text-sm text-red-600 mt-2 flex justify-center items-center">
+                            @error('aceptaPolitica')
+                                <p class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
+                                            d="M15 12h7M15 12l-3-3M15 12l-3 3" />
                                     </svg>
-                                    <p class="mb-2">1. Al acceder a nuestros servicios, usted acepta cumplir con
-                                        todas nuestras políticas y procedimientos.</p>
-                                </div>
-
-                                <div class="flex items-center space-x-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
-                                    </svg>
-                                    <p class="mb-2">2. Nuestros servicios están sujetos a cambios periódicos. Le
-                                        recomendamos revisar regularmente esta página.</p>
-                                </div>
-
-                                <div class="flex items-center space-x-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
-                                    </svg>
-                                    <p class="mb-2">3. Nos comprometemos a proteger su privacidad y sus datos
-                                        personales. Para más detalles, consulte nuestra Política de Privacidad.</p>
-                                </div>
-
-                                <div class="flex items-center space-x-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
-                                    </svg>
-                                    <p class="mb-2">4. El uso de nuestros servicios está prohibido para menores de
-                                        edad sin la debida autorización.</p>
-                                </div>
-
-                                <div class="flex items-center space-x-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
-                                    </svg>
-                                    <p class="mb-2">5. El incumplimiento de los términos puede resultar en la
-                                        suspensión o cancelación de su acceso a nuestros servicios.</p>
-                                </div>
-
-                                <div class="flex items-center space-x-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
-                                    </svg>
-                                    <p class="mb-2">6. Nos reservamos el derecho de modificar, suspender o
-                                        descontinuar cualquier parte del servicio en cualquier momento.</p>
-                                </div>
-                            </div>
-
-                            <!-- Nota final -->
-                            <p class="mt-4 text-gray-600 relative z-10">Recuerde que el acceso y uso de nuestros
-                                servicios implica la aceptación de estos términos. Si tiene alguna pregunta, no dude en
-                                contactarnos.</p>
+                                    <span>{{ $message }}</span>
+                                </p>
+                            @enderror
                         </div>
                     </div>
 
-                    <!-- Checkbox de aceptación de términos -->
-                    <div class="mb-5 py-3 flex justify-center">
-                        <label class="w-12 h-6 relative">
-                            <input wire:model="aceptaPolitica" x-bind:disabled="!scrolledToBottom" type="checkbox"
-                                class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer"
-                                id="custom_switch_checkbox1" />
-                            <span for="custom_switch_checkbox1"
-                                class="outline_checkbox bg-icon border-2 border-[#e6bc34] dark:border-white-dark block h-full before:absolute before:left-1 before:bg-[#e6bc34] dark:before:bg-white-dark before:bottom-1 before:w-4 before:h-4 before:bg-[{{ asset('assets/images/close.svg') }}] before:bg-no-repeat before:bg-center peer-checked:before:left-7 peer-checked:before:bg-[{{ asset('assets/images/checked.svg') }}] peer-checked:border-success peer-checked:before:bg-success before:transition-all before:duration-300">
-                            </span>
-                        </label>
-                        <h6 class="pl-4 text-gray-800">Para continuar, debe aceptar nuestros Términos y Condiciones.
-                        </h6>
-                    </div>
-
-                    <!-- Mensaje de error -->
-                    <div class="text-sm text-red-600 mt-2 flex justify-center">
-                        @error('aceptaPolitica')
-                            <p class="flex items-center space-x-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                </svg>
-                                <span>{{ $message }}</span>
-                            </p>
-                        @enderror
-                    </div>
-                </div>
-
-
-                    <div class="mb-6">
+                    <!-- Sección de Firma (solo aparece si aceptaPolitica es true) -->
+                    <div class="mb-6" x-data="firmaHandler" x-show="aceptaPolitica" x-transition>
                         <h6 class="font-semibold text-lg dark:text-white-light mb-4">Firma</h6>
-                        <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4 justify-center items-center text-center">
+                        <div
+                            class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4 justify-center items-center text-center">
                             <span class="text-sm text-gray-500">Dibuja tu firma con el mouse o el lápiz táctil.</span>
+
                             <div class="mb-6 flex flex-col items-center justify-center">
                                 <canvas x-ref="canvas" class="border-4 border-gray-300 rounded-lg shadow-lg w-50"
-                                    width="300" height="200"></canvas>
+                                    width="300" height="200" x-bind:class="{ 'opacity-50': !aceptaPolitica }"
+                                    x-bind:disabled="!aceptaPolitica"></canvas>
                                 @if ($firma)
                                     <span class="text-green-500">Firma capturada</span>
                                 @endif
-                                <div class="text-sm text-red-600 mt-2">
-                                    @error('firma')
-                                        <p class="flex items-center space-x-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                            </svg>
-                                            <span>{{ $message }}</span>
-                                        </p>
-                                    @enderror
-                                </div>
                             </div>
 
                             <!-- Botones de Captura y Limpieza -->
                             <div class="flex justify-center items-center mb-6">
                                 <button type="button"
                                     class="btn btn-outline-primary py-2 px-6 border-2 border-blue-400 text-gray-800
-                                    hover:bg-gray-100 focus:ring-2 focus:ring-gray-400 rounded-lg"
-                                    @click="captureSignature">
+                                        hover:bg-gray-100 focus:ring-2 focus:ring-gray-400 rounded-lg"
+                                    @click="captureSignature" x-bind:disabled="!aceptaPolitica">
                                     Capturar Firma
                                 </button>
                                 <button type="button"
                                     class="btn btn-outline-primary py-2 px-6 border-2 border-red-400 text-gray-800
-                                    hover:bg-gray-100 focus:ring-2 focus:ring-gray-400 rounded-lg"
-                                    @click="clear()">
+                                        hover:bg-gray-100 focus:ring-2 focus:ring-gray-400 rounded-lg"
+                                    @click="clear()" x-bind:disabled="!aceptaPolitica">
                                     Limpiar
                                 </button>
                             </div>
                         </div>
                     </div>
-
-
+                </div>
 
                 <!-- Botón de envío -->
-                <div class="mt-6 grid sm:grid-cols-1">
-                    <button type="submit" class="btn btn-primary">Enviar</button>
+                <div x-data="scrollToError" class="mt-6 grid sm:grid-cols-1">
+                    <button type="submit" class="btn btn-primary" @click="scrollToError">Enviar</button>
                 </div>
             </form>
         </div>
@@ -579,6 +573,29 @@
                 });
             });
 
+            Livewire.hook('message.processed', (message, component) => {
+                const firstError = document.querySelector('.text-red-600, .text-red-500, .error-message');
+                if (firstError) {
+                    firstError.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+            });
+
+            Alpine.data('scrollToError', () => ({
+                scrollToError() {
+                    const firstError = document.querySelector(
+                        '.text-red-600, .text-red-500, .error-message');
+                    if (firstError) {
+                        firstError.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                    }
+                }
+            }));
+
 
             Alpine.data('scrollHandler', () => ({
                 scrolledToBottom: false,
@@ -603,22 +620,20 @@
             }));
 
 
-            Alpine.data('formularioVisitante', () => ({
-
+            Alpine.data('firmaHandler', () => ({
                 signaturePad: null,
 
                 init() {
-                    this.signaturePad = new SignaturePad(this.$refs.canvas);
-                    this.setupCamera();
-
                     const canvas = this.$refs.canvas;
+                    if (!canvas) return; // Verificar que el elemento existe antes de continuar
 
-                    // Agregar eventos de mouse
+                    this.signaturePad = new SignaturePad(canvas);
+
+                    // Agregar eventos de puntero y táctiles si el canvas existe
                     canvas.addEventListener('mousedown', this.handlePointerStart.bind(this));
                     canvas.addEventListener('mousemove', this.handlePointerMove.bind(this));
                     canvas.addEventListener('mouseup', this.handlePointerEnd.bind(this));
 
-                    // Agregar eventos táctiles
                     canvas.addEventListener('touchstart', this.handlePointerStart.bind(this), {
                         passive: false
                     });
@@ -628,50 +643,47 @@
                     canvas.addEventListener('touchend', this.handlePointerEnd.bind(this), {
                         passive: false
                     });
-
-                    flatpickr("#fecha_inicio", {
-                        enableTime: true,
-                        dateFormat: "Y-m-d H:i",
-                        locale: "es",
-                    });
-
-                    flatpickr("#fecha_fin", {
-                        enableTime: true,
-                        dateFormat: "Y-m-d H:i",
-                        locale: "es",
-                    });
                 },
 
                 clear() {
-                    this.signaturePad.clear();
-                    @this.set('firma', '');
+                    if (this.signaturePad) {
+                        this.signaturePad.clear();
+                        @this.set('firma', '');
+                    }
+                    Livewire.dispatch('resetFirmaLivewire');
                 },
 
                 captureSignature() {
-                    const firmaBase64 = this.signature;
-                    @this.set('firma', firmaBase64);
+                    if (this.signaturePad) {
+                        const firmaBase64 = this.signature;
+                        @this.set('firma', firmaBase64);
+                    }
+                    Livewire.dispatch('updateFirma', firmaBase64);
                 },
 
                 get signature() {
-                    return this.signaturePad.isEmpty() ? '' : this.signaturePad.toDataURL();
+                    return this.signaturePad && !this.signaturePad.isEmpty() ? this.signaturePad
+                        .toDataURL() : '';
                 },
 
                 getCanvasCoords(event) {
                     const canvas = this.$refs.canvas;
+                    if (!canvas) return {
+                        x: 0,
+                        y: 0
+                    };
+
                     const rect = canvas.getBoundingClientRect();
                     const isTouchEvent = event.type.startsWith('touch');
                     let x, y;
 
                     if (isTouchEvent && event.touches.length > 0) {
-                        // Para eventos táctiles, usamos el primer toque
                         x = event.touches[0].clientX - rect.left;
                         y = event.touches[0].clientY - rect.top;
                     } else if (event.clientX && event.clientY) {
-                        // Para eventos de puntero o ratón
                         x = event.clientX - rect.left;
                         y = event.clientY - rect.top;
                     } else {
-                        // Si el evento no tiene las propiedades esperadas, retornar 0,0
                         x = 0;
                         y = 0;
                     }
@@ -683,6 +695,7 @@
                 },
 
                 handlePointerStart(event) {
+                    if (!this.signaturePad) return; // Verificar que la firma está inicializada
                     event.preventDefault();
                     const {
                         x,
@@ -695,23 +708,30 @@
                 },
 
                 handlePointerMove(event) {
+                    if (!this.signaturePad || !this.signaturePad._isDrawing) return;
                     event.preventDefault();
-                    if (this.signaturePad && this.signaturePad
-                        ._isDrawing) { // Verifica si está dibujando
-                        const {
-                            x,
-                            y
-                        } = this.getCanvasCoords(event);
-                        this.signaturePad._strokeUpdate({
-                            x,
-                            y
-                        });
-                    }
+                    const {
+                        x,
+                        y
+                    } = this.getCanvasCoords(event);
+                    this.signaturePad._strokeUpdate({
+                        x,
+                        y
+                    });
                 },
 
                 handlePointerEnd(event) {
+                    if (!this.signaturePad) return;
                     event.preventDefault();
                     this.signaturePad._strokeEnd();
+                }
+            }));
+
+
+            // Componente para manejar la cámara
+            Alpine.data('fotoHandler', () => ({
+                init() {
+                    this.setupCamera();
                 },
 
                 setupCamera() {
@@ -735,16 +755,15 @@
                     const photoPreview = document.getElementById('photoPreview');
                     const context = canvas.getContext('2d');
 
-                    // Dibuja la imagen del video en el canvas
                     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-                    // Muestra la imagen capturada en el img
                     const dataUrl = canvas.toDataURL('image/png');
                     photoPreview.src = dataUrl;
                     photoPreview.classList.remove('hidden');
 
-                    // Establece el valor de la foto en Livewire
                     @this.set('foto', dataUrl);
+
+                    Livewire.dispatch('updateFoto', dataUrl);
                 },
 
                 clearPhoto() {
@@ -757,32 +776,10 @@
                     const context = photoCanvas.getContext('2d');
                     context.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
                     photoCanvas.classList.add('hidden');
-                },
-
-                submitForm() {
-                    const firmaBase64 = this.signature;
-                    const fotoBase64 = this.foto;
-
-                    if (firmaBase64 === '') {
-                        console.error('La firma está vacía');
-                    }
-
-                    @this.set('firma', firmaBase64);
-                    @this.set('foto', fotoBase64);
-
-                    this.clear();
-                },
-                scrollToFirstError() {
-                    const firstError = document.querySelector('.text-red-600');
-                    if (firstError) {
-                        window.scrollTo({
-                            top: firstError.offsetTop -
-                                50, // Desplazamiento de 20px para margen
-                            behavior: 'smooth'
-                        });
-                    }
-                },
+                    Livewire.dispatch('resetFotoLivewire');
+                }
             }));
         });
     </script>
+</div>
 </div>
