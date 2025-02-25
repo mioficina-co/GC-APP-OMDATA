@@ -41,7 +41,7 @@ class RegistroVisitanteComponent extends Component
     public $numerocontactoemergencia;
     public $eps;
     public $arl;
-
+    public $rh;
     private $visitante;
     private $visitas;
 
@@ -71,6 +71,7 @@ class RegistroVisitanteComponent extends Component
         'apellido' => 'required|string|max:100',
         'tipodocumento' => 'required|exists:tipos_documento,id',
         'numerodocumento' => 'required|regex:/^\d{6,10}$/|unique:visitantes,numero_documento',
+        'rh' => 'required|string|max:3',
         'celular' => 'required|regex:/^\d{10}$/',
         'email' => 'required|email|max:255',
         'compania' => 'nullable|string|max:255',
@@ -103,6 +104,9 @@ class RegistroVisitanteComponent extends Component
         'numerodocumento.required' => 'El número de documento es requerido.',
         'numerodocumento.regex' => 'El número de documento debe tener entre 6 y 10 dígitos.',
         'numerodocumento.unique' => 'El número de documento ya está registrado.',
+        'rh.required' => 'El RH es requerido.',
+        'rh.string' => 'El RH debe ser una cadena de texto.',
+        'rh.max' => 'El RH no debe exceder los 3 caracteres.',
         'celular.required' => 'El número de celular es requerido.',
         'celular.regex' => 'El número de celular debe tener 10 dígitos.',
         'email.required' => 'El correo electrónico es requerido.',
@@ -143,6 +147,7 @@ class RegistroVisitanteComponent extends Component
                 'apellido' => $this->apellido,
                 'tipos_documento_id' => $this->tipodocumento,
                 'numero_documento' => $this->numerodocumento,
+                'rh' => $this->rh,
                 'genero' => $this->genero,
                 'telefono' => $this->celular,
                 'email' => $this->email,
@@ -232,4 +237,42 @@ class RegistroVisitanteComponent extends Component
         $this->dispatch('resetFoto');
     }
 
+    public function updatedNumerodocumento($numerodocumento) {
+        $visitante = visitantes::where('numero_documento', $this->numerodocumento)->first();
+
+        if ($visitante) {
+            $this->nombre = $visitante->nombre;
+            $this->apellido = $visitante->apellido;
+            $this->tipodocumento = $visitante->tipos_documento_id;
+            $this->rh = $visitante->rh;
+            $this->genero = $visitante->genero;
+            $this->celular = $visitante->telefono;
+            $this->email = $visitante->email;
+            $this->compania = $visitante->compania;
+            $this->placavehiculo = $visitante->placa_vehiculo;
+            $this->contactoemergencia = $visitante->nombre_contacto_emergencia;
+            $this->numerocontactoemergencia = $visitante->numero_contacto_emergencia;
+            $this->pais = $visitante->pais_id;
+            $this->eps_id = $visitante->eps_id;
+            $this->arl_id = $visitante->arl_id;
+        }else {
+            // Opcional: Si no se encuentra, se pueden reiniciar estos campos
+            $this->reset([
+                'nombre',
+                'apellido',
+                'tipodocumento',
+                'rh',
+                'genero',
+                'celular',
+                'email',
+                'compania',
+                'placavehiculo',
+                'contactoemergencia',
+                'numerocontactoemergencia',
+                'pais',
+                'eps_id',
+                'arl_id'
+            ]);
+        }
+    }
 }

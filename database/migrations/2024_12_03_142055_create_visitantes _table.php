@@ -14,7 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->string('nombre', 100);
             $table->string('apellido', 100);
-            $table->string('numero_documento', 50);
+            $table->enum('rh', ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']);
+            $table->string('direccion', 255)->nullable();
             $table->string('telefono', 20)->nullable();
             $table->string('email', 150)->nullable();
             $table->string('compania', 100)->nullable();
