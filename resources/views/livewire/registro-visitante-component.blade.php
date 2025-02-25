@@ -13,7 +13,7 @@
                     <div class="panel">
                         <div class="flex items-center justify-between mb-5">
                             <h5 class="font-semibold text-lg dark:text-white-light">Datos del visitante</h5>
-                            <button type="button" class="btn btn-primary">
+                            {{-- <button type="button" class="btn btn-primary">
                                 <a href="{{ route('login') }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="12" cy="6" r="4" stroke="currentColor"
@@ -23,7 +23,7 @@
                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
                                 Panel administración</a>
-                            </button>
+                            </button> --}}
                         </div>
                         <div class="mb-5 flex items-center justify-center">
                             <div

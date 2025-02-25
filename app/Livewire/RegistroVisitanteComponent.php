@@ -238,7 +238,8 @@ class RegistroVisitanteComponent extends Component
     }
 
     public function updatedNumerodocumento($numerodocumento) {
-        $visitante = visitantes::where('numero_documento', $this->numerodocumento)->first();
+
+        $visitante = visitantes::where('numero_documento', $numerodocumento)->first();
 
         if ($visitante) {
             $this->nombre = $visitante->nombre;
