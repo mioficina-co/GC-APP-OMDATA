@@ -289,6 +289,24 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                        @if ($razonvisita == 6)
+                                        <div>
+                                            <label for="otrorazonvisita">Otra Razon de la visita</label>
+                                            <input type="text" placeholder="Otra Razon de la visita" class="form-input w-full" wire:model="otrorazonvisita" /> <div class="text-sm text-red-600 mt-2">
+                                                @error('otrorazonvisita')
+                                                    <p class="flex items-center space-x-2">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            class="w-4 h-4 text-red-600" fill="none"
+                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M15 12h7M15 12l-3-3M15 12l-3 3" />
+                                                        </svg>
+                                                        <span>{{ $message }}</span>
+                                                    </p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        @endif
                                         <div class="col-span-1">
                                             <label for="compania">De donde nos visita</label>
                                             <input id="compania" type="text" placeholder="Compañía"
@@ -661,7 +679,6 @@
                                 </div>
                             </div>
 
-                            <!-- Sección de Firma (solo si se acepta la política) -->
                             <!-- Sección de Firma (solo si se acepta la política) - Opción 4 -->
                             <div class="mt-8" x-data="firmaHandler" x-show="aceptaPolitica" x-transition>
                                 <h6 class="text-2xl font-bold text-gray-800 dark:text-white mb-6 text-center">
@@ -703,6 +720,18 @@
                                             @click="clear()" x-bind:disabled="!aceptaPolitica">
                                             Limpiar Firma
                                         </button>
+                                    </div>
+                                    <div class="mt-2 text-center text-sm text-red-600">
+                                        @error('firma')
+                                            <span class="flex items-center justify-center space-x-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M15 12h7M15 12l-3-3M15 12l-3 3" />
+                                                </svg>
+                                                <span>{{ $message }}</span>
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
