@@ -228,6 +228,7 @@ class RegistroVisitanteComponent extends Component
             'celular',
             'email',
             'genero',
+            'rh',
             'compania',
             'placavehiculo',
             'totalpersonas',
