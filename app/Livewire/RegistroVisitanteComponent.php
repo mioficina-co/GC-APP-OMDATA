@@ -42,6 +42,9 @@ class RegistroVisitanteComponent extends Component
     public $eps;
     public $arl;
     public $rh;
+
+    public $esOtro = false;
+    public $otrorazonvisita;
     private $visitante;
     private $visitas;
 
@@ -66,6 +69,7 @@ class RegistroVisitanteComponent extends Component
         'firma' => 'required',
         'empleado' => 'required|exists:empleados,id',
         'razonvisita' => 'required|exists:razonvisitas,id',
+        'otrorazonvisita' => 'nullable|required_if:esOtro,true|string|max:255',
         'departamento' => 'required|exists:departamentos,id',
         'nombre' => 'required|string|max:100',
         'apellido' => 'required|string|max:100',
@@ -91,6 +95,7 @@ class RegistroVisitanteComponent extends Component
         'empleado.exists' => 'El empleado seleccionado no existe.',
         'razonvisita.required' => 'La razón de visita es requerida.',
         'razonvisita.exists' => 'La razón de visita seleccionada no existe.',
+        'otrorazonvisita.required_if' => 'La razon de visita es requerida.',
         'departamento.required' => 'El departamento es requerido.',
         'departamento.exists' => 'El departamento seleccionado no existe.',
         'nombre.required' => 'El nombre es requerido.',
@@ -160,13 +165,16 @@ class RegistroVisitanteComponent extends Component
                 'arl_id' => $this->arl_id,
             ]);
 
+
+
             visitas::create([
                 'visitante_id' => $visitante->id,
                 'empleado_id' => $this->empleado,
                 'departamento_id' => $this->departamento,
                 'razon_id' => $this->razonvisita,
+                'otra_razon_visita'=> $this->otrorazonvisita,
                 'fecha_inicio' => now(),
-                'fecha_fin' => $this->fecha_fin,
+                'fecha_fin' => null,
                 'total_visitantes' => $this->totalpersonas,
                 'pertenencias' => $this->pertenencias,
                 'foto' => $foto_visitante,
@@ -237,7 +245,8 @@ class RegistroVisitanteComponent extends Component
         $this->dispatch('resetFoto');
     }
 
-    public function updatedNumerodocumento($numerodocumento) {
+    public function updatedNumerodocumento($numerodocumento)
+    {
 
         $visitante = visitantes::where('numero_documento', $numerodocumento)->first();
 
@@ -256,7 +265,7 @@ class RegistroVisitanteComponent extends Component
             $this->pais = $visitante->pais_id;
             $this->eps_id = $visitante->eps_id;
             $this->arl_id = $visitante->arl_id;
-        }else {
+        } else {
             // Opcional: Si no se encuentra, se pueden reiniciar estos campos
             $this->reset([
                 'nombre',
@@ -274,6 +283,20 @@ class RegistroVisitanteComponent extends Component
                 'eps_id',
                 'arl_id'
             ]);
+        }
+    }
+
+
+    public function updatedRazonvisita($value)
+    {
+        $razon = razonvisita::find($value);
+
+        // Si el nombre de la razón es "Otro", habilita el campo adicional
+        $this->esOtro = $razon && strtolower($razon->nombre) === 'otro';
+
+        // Si cambia a otra opción diferente, limpia el campo adicional
+        if (!$this->esOtro) {
+            $this->otrorazonvisita = null;
         }
     }
 }

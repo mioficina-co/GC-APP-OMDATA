@@ -13,17 +13,21 @@
                     <div class="panel">
                         <div class="flex items-center justify-between mb-5">
                             <h5 class="font-semibold text-lg dark:text-white-light">Datos del visitante</h5>
-                            {{-- <button type="button" class="btn btn-primary">
-                                <a href="{{ route('login') }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="12" cy="6" r="4" stroke="currentColor"
-                                        stroke-width="1.5" />
-                                    <path
-                                        d="M15 20.6151C14.0907 20.8619 13.0736 21 12 21C8.13401 21 5 19.2091 5 17C5 14.7909 8.13401 13 12 13C15.866 13 19 14.7909 19 17C19 17.3453 18.9234 17.6804 18.7795 18"
-                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                </svg>
-                                Panel administración</a>
-                            </button> --}}
+                            @auth
+                                <a href="{{ route('dashboard') }}" class="btn btn-primary d-flex align-items-center">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg" class="me-2">
+                                        <circle cx="12" cy="6" r="4" stroke="currentColor"
+                                            stroke-width="1.5" />
+                                        <path
+                                            d="M15 20.6151C14.0907 20.8619 13.0736 21 12 21C8.13401 21 5 19.2091 5 17C5 14.7909 8.13401 13 12 13C15.866 13 19 14.7909 19 17C19 17.3453 18.9234 17.6804 18.7795 18"
+                                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    </svg>
+                                    Dashboard
+                                </a>
+                            @endauth
+
+
                         </div>
                         <div class="mb-5 flex items-center justify-center">
                             <div
@@ -265,7 +269,7 @@
                                         </div>
                                         <div>
                                             <label for="razonvisita">Razon de la visita</label>
-                                            <select id="razonvisita" wire:model="razonvisita"
+                                            <select id="razonvisita" wire:model.live="razonvisita"
                                                 class="form-select text-white-dark">
                                                 <option value="">Seleccione razón de la visita</option>
                                                 @foreach ($razones as $razonesItem)
@@ -289,23 +293,25 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        @if ($razonvisita == 6)
-                                        <div>
-                                            <label for="otrorazonvisita">Otra Razon de la visita</label>
-                                            <input type="text" placeholder="Otra Razon de la visita" class="form-input w-full" wire:model="otrorazonvisita" /> <div class="text-sm text-red-600 mt-2">
-                                                @error('otrorazonvisita')
-                                                    <p class="flex items-center space-x-2">
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="w-4 h-4 text-red-600" fill="none"
-                                                            viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2" d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                                        </svg>
-                                                        <span>{{ $message }}</span>
-                                                    </p>
-                                                @enderror
+                                        @if ($esOtro)
+                                            <div>
+                                                <label for="otrorazonvisita">Otra razón de la visita</label>
+                                                <input type="text" placeholder="Otra razón de la visita"
+                                                    class="form-input w-full" wire:model="otrorazonvisita" />
+                                                <div class="text-sm text-red-600 mt-2">
+                                                    @error('otrorazonvisita')
+                                                        <p class="flex items-center space-x-2">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                class="w-4 h-4 text-red-600" fill="none"
+                                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M15 12h7M15 12l-3-3M15 12l-3 3" />
+                                                            </svg>
+                                                            <span>{{ $message }}</span>
+                                                        </p>
+                                                    @enderror
+                                                </div>
                                             </div>
-                                        </div>
                                         @endif
                                         <div class="col-span-1">
                                             <label for="compania">De donde nos visita</label>

@@ -38,13 +38,15 @@
                         <th class="border-b px-4 py-3">EPS</th>
                         <th class="border-b px-4 py-3">ARL</th>
                         <th class="border-b px-4 py-3">Registrar salida</th>
+                        <th class="border-b px-4 py-3">Fecha y hora de Entrada</th>
+                        <th class="border-b px-4 py-3">Fecha y hora de Salida</th>
                         <th class="border-b px-4 py-3">Fecha de Creación</th>
-                        <th class="border-b px-4 py-3">Placa Vehículo</th>
                         <th class="border-b px-4 py-3 text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @foreach ($visitantes as $index => $visitante)
+
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 py-3 text-sm text-gray-600">{{ $index + 1 }}</td>
                             {{-- <td class="px-4 py-3 text-sm text-gray-600">
@@ -64,12 +66,25 @@
                             <td class="px-4 py-3 text-sm text-gray-600">
                                 <div class="mb-5">
                                     <div class="flex flex-wrap items-center justify-center gap-2">
-                                        <button type="button" class="btn btn-info btn-sm">Registro salida</button>
+                                        <button type="button" class="btn btn-info btn-sm" wire:click="registrarSalida({{ $visitante->id }})">
+                                            Registro salida
+                                        </button>
                                     </div>
                                 </div>
                             </td>
+
+                            <td class="px-4 py-3 text-sm text-gray-600">
+                                @foreach ($visitante->visitas as $visitaItem)
+                                {{ $visitaItem->fecha_inicio }}
+                                @endforeach
+
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">
+                                @foreach ($visitante->visitas as $visitaItem)
+                                {{ $visitaItem->fecha_fin }}
+                                @endforeach
+                            </td>
                             <td class="px-4 py-3 text-sm text-gray-600">{{ $visitante->created_at }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-600">{{ $visitante->placa_vehiculo }}</td>
                             <td class="text-center">
                                 <ul class="flex items-center justify-center gap-2">
                                     <li><a href="javascript:;" x-tooltip="Editar">
@@ -190,7 +205,7 @@
         </div>
         <div class="mt-4">
             {{-- Agregar la paginación aquí si es necesario --}}
-            {{-- {{ $visitantes->links() }} --}}
+            {{ $visitantes->links() }}
         </div>
     </div>
 </div>

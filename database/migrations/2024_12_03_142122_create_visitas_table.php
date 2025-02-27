@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('visitante_id')->constrained('visitantes')->onDelete('cascade');
             $table->foreignId('empleado_id')->constrained('empleados')->onDelete('cascade');
             $table->foreignId('razon_id')->constrained('razonvisitas')->onDelete('cascade');
+            $table->string('otra_razon_visita')->nullable();
             $table->foreignId('departamento_id')->constrained('departamentos')->onDelete('cascade');
             $table->dateTime('fecha_inicio');
             $table->dateTime('fecha_fin')->nullable();
