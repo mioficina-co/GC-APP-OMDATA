@@ -24,11 +24,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DepartamentosSeeder::class,
             EmpleadosSeeder::class,
-            PaísesSeeder::class,
-            RazonvisitaSeeder::class,
+            PaisesSeeder::class,
+            RazonVisitaSeeder::class,
             TiposDocumnetoSeeder::class,
-            epsSeeder::class,
-            arlSeeder::class,
+            EpsSeeder::class,
+            ArlSeeder::class,
             VisitantesSeeder::class,
             VisitasSeeder::class,
         ]);

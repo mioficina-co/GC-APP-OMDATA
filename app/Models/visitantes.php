@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class visitantes extends Model
+class Visitantes extends Model
 {
     //
 
@@ -28,18 +28,18 @@ class visitantes extends Model
     ];
 
     public function visitas(){
-        return $this->hasMany(visitas::class, "visitante_id","id") ;
+        return $this->hasMany(Visitas::class, "visitante_id","id") ;
     }
 
     public function tiposDocumento(){
-        return $this->belongsTo(tiposDocumento::class);
+        return $this->belongsTo(TiposDocumento::class);
     }
 
     public function eps(){
-        return $this->belongsTo(eps::class);
+        return $this->belongsTo(Eps::class);
     }
 
     public function arl(){
-        return $this->belongsTo(arl::class);
+        return $this->belongsTo(Arl::class);
     }
 }

@@ -1,13 +1,13 @@
 {{-- <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
                 <x-welcome />
             </div>
         </div>
@@ -15,6 +15,11 @@
 </x-app-layout> --}}
 
 <x-layouts.app>
+    <div> 
+        <div class="flex items-center p-3.5 rounded text-primary bg-primary-light dark:bg-primary-dark-light">
+    <span class="ltr:pr-2 rtl:pl-2"><strong class="ltr:mr-1 rtl:ml-1">Info!</strong>Lorem Ipsum is simply dummy text.</span>
+</div>
+    </div>
     <script defer src="/assets/js/apexcharts.js"></script>
     <div x-data="sales">
         <ul class="flex space-x-2 rtl:space-x-reverse">
@@ -26,13 +31,13 @@
             </li>
         </ul>
 
-        <div class="grid xl:grid-cols-2 grid-cols-1 gap-6">
+        <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
                 <!-- Simple Counter -->
 
                 <!-- With Icon -->
                 <div class="panel">
-                    <div class="flex items-center justify-between mb-5">
-                        <h5 class="font-semibold text-lg dark:text-white-light">Estadisticas generales</h5>
+                    <div class="flex justify-between items-center mb-5">
+                        <h5 class="text-lg font-semibold dark:text-white-light">Estadisticas generales</h5>
                         <a class="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
                             href="javascript:;" @click="toggleCode('code2')">
                             <span class="flex items-center">
@@ -56,14 +61,14 @@
                         <div>
                             <div
                                 class="w-[70px] h-[70px] sm:w-[100px] sm:h-[100px] shadow-[1px_2px_12px_0_rgba(31,45,61,0.10)] rounded-full border border-[#e0e6ed] dark:border-[#1b2e4b] flex justify-center flex-col">
-                                <h1 class="text-primary text-xl sm:text-3xl text-center" id="counter4"></h1>
+                                <h1 class="text-xl text-center text-primary sm:text-3xl" id="counter4"></h1>
                             </div>
                             <h4
                                 class="text-[#3b3f5c] text-xs sm:text-[15px] mt-4 text-center dark:text-white-dark font-semibold">
 
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
-                                    class="w-5 h-5 sm:w-6 sm:h-6 text-primary mx-auto mb-2">
+                                    class="mx-auto mb-2 w-5 h-5 sm:w-6 sm:h-6 text-primary">
                                     <circle cx="9" cy="6" r="4" stroke="currentColor"
                                         stroke-width="1.5" />
                                     <path opacity="0.5"
@@ -81,14 +86,14 @@
                         <div>
                             <div
                                 class="w-[70px] h-[70px] sm:w-[100px] sm:h-[100px] shadow-[1px_2px_12px_0_rgba(31,45,61,0.10)] rounded-full border border-[#e0e6ed] dark:border-[#1b2e4b] flex justify-center flex-col">
-                                <h1 class="text-primary text-xl sm:text-3xl text-center" id="counter5"></h1>
+                                <h1 class="text-xl text-center text-primary sm:text-3xl" id="counter5"></h1>
                             </div>
                             <h4
                                 class="text-[#3b3f5c] text-xs sm:text-[15px] mt-4 text-center dark:text-white-dark font-semibold">
 
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
-                                    class="w-5 h-5 sm:w-6 sm:h-6 text-primary mx-auto mb-2">
+                                    class="mx-auto mb-2 w-5 h-5 sm:w-6 sm:h-6 text-primary">
                                     <path opacity="0.5"
                                         d="M6.28571 19C3.91878 19 2 17.1038 2 14.7647C2 12.4256 3.91878 10.5294 6.28571 10.5294C6.56983 10.5294 6.8475 10.5567 7.11616 10.6089M14.381 8.02721C14.9767 7.81911 15.6178 7.70588 16.2857 7.70588C16.9404 7.70588 17.5693 7.81468 18.1551 8.01498M7.11616 10.6089C6.88706 9.9978 6.7619 9.33687 6.7619 8.64706C6.7619 5.52827 9.32028 3 12.4762 3C15.4159 3 17.8371 5.19371 18.1551 8.01498M7.11616 10.6089C7.68059 10.7184 8.20528 10.9374 8.66667 11.2426M18.1551 8.01498C20.393 8.78024 22 10.8811 22 13.3529C22 16.0599 20.0726 18.3221 17.5 18.8722"
                                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
@@ -101,14 +106,14 @@
                         <div>
                             <div
                                 class="w-[70px] h-[70px] sm:w-[100px] sm:h-[100px] shadow-[1px_2px_12px_0_rgba(31,45,61,0.10)] rounded-full border border-[#e0e6ed] dark:border-[#1b2e4b] flex justify-center flex-col">
-                                <h1 class="text-primary text-xl sm:text-3xl text-center" id="counter6"></h1>
+                                <h1 class="text-xl text-center text-primary sm:text-3xl" id="counter6"></h1>
                             </div>
                             <h4
                                 class="text-[#3b3f5c] text-xs sm:text-[15px] mt-4 text-center dark:text-white-dark font-semibold">
 
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
-                                    class="w-5 h-5 sm:w-6 sm:h-6 text-primary mx-auto mb-2">
+                                    class="mx-auto mb-2 w-5 h-5 sm:w-6 sm:h-6 text-primary">
                                     <path opacity="0.5"
                                         d="M11.1459 7.02251C11.5259 6.34084 11.7159 6 12 6C12.2841 6 12.4741 6.34084 12.8541 7.02251L12.9524 7.19887C13.0603 7.39258 13.1143 7.48944 13.1985 7.55334C13.2827 7.61725 13.3875 7.64097 13.5972 7.68841L13.7881 7.73161C14.526 7.89857 14.895 7.98205 14.9828 8.26432C15.0706 8.54659 14.819 8.84072 14.316 9.42898L14.1858 9.58117C14.0429 9.74833 13.9714 9.83191 13.9392 9.93531C13.9071 10.0387 13.9179 10.1502 13.9395 10.3733L13.9592 10.5763C14.0352 11.3612 14.0733 11.7536 13.8435 11.9281C13.6136 12.1025 13.2682 11.9435 12.5773 11.6254L12.3986 11.5431C12.2022 11.4527 12.1041 11.4075 12 11.4075C11.8959 11.4075 11.7978 11.4527 11.6014 11.5431L11.4227 11.6254C10.7318 11.9435 10.3864 12.1025 10.1565 11.9281C9.92674 11.7536 9.96476 11.3612 10.0408 10.5763L10.0605 10.3733C10.0821 10.1502 10.0929 10.0387 10.0608 9.93531C10.0286 9.83191 9.95713 9.74833 9.81418 9.58117L9.68403 9.42898C9.18097 8.84072 8.92945 8.54659 9.01723 8.26432C9.10501 7.98205 9.47396 7.89857 10.2119 7.73161L10.4028 7.68841C10.6125 7.64097 10.7173 7.61725 10.8015 7.55334C10.8857 7.48944 10.9397 7.39258 11.0476 7.19887L11.1459 7.02251Z"
                                         stroke="currentColor" stroke-width="1.5" />
@@ -128,8 +133,8 @@
             </div>
 
         {{-- <div class="panel">
-            <div class="flex items-center justify-between mb-5">
-                <h5 class="font-semibold text-lg dark:text-white-light">Input Text</h5>
+            <div class="flex justify-between items-center mb-5">
+                <h5 class="text-lg font-semibold dark:text-white-light">Input Text</h5>
                 <a class="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600" href="javascript:;"
                     @click="toggleCode('code1')">
                     <span class="flex items-center">
@@ -152,16 +157,16 @@
             <div class="mb-5">
                 <form>
                     <input type="text" placeholder="Some Text..." class="form-input" required />
-                    <button type="submit" class="btn btn-primary mt-6">Submit</button>
+                    <button type="submit" class="mt-6 btn btn-primary">Submit</button>
                 </form>
             </div>
         </div> --}}
 
         {{-- <div class="pt-5">
-            <div class="grid xl:grid-cols-3 gap-6 mb-6">
-                <div class="panel h-full xl:col-span-2">
-                    <div class="flex items-center dark:text-white-light mb-5">
-                        <h5 class="font-semibold text-lg">Revenue</h5>
+            <div class="grid gap-6 mb-6 xl:grid-cols-3">
+                <div class="h-full panel xl:col-span-2">
+                    <div class="flex items-center mb-5 dark:text-white-light">
+                        <h5 class="text-lg font-semibold">Revenue</h5>
                         <div x-data="dropdown" @click.outside="open = false"
                             class="dropdown ltr:ml-auto rtl:mr-auto">
                             <a href="javascript:;" @click="toggle">
@@ -184,9 +189,9 @@
                         </div>
                     </div>
                     <p class="text-lg dark:text-white-light/90">Total Profit <span
-                            class="text-primary ml-2">$10,840</span></p>
-                    <div class="relative overflow-hidden">
-                        <div x-ref="revenueChart" class="bg-white dark:bg-black rounded-lg">
+                            class="ml-2 text-primary">$10,840</span></p>
+                    <div class="overflow-hidden relative">
+                        <div x-ref="revenueChart" class="bg-white rounded-lg dark:bg-black">
                             <!-- loader -->
                             <div
                                 class="min-h-[325px] grid place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
@@ -197,12 +202,12 @@
                     </div>
                 </div>
 
-                <div class="panel h-full">
+                <div class="h-full panel">
                     <div class="flex items-center mb-5">
-                        <h5 class="font-semibold text-lg dark:text-white-light">Sales By Category</h5>
+                        <h5 class="text-lg font-semibold dark:text-white-light">Sales By Category</h5>
                     </div>
                     <div class="overflow-hidden">
-                        <div x-ref="salesByCategory" class="bg-white dark:bg-black rounded-lg">
+                        <div x-ref="salesByCategory" class="bg-white rounded-lg dark:bg-black">
                             <!-- loader -->
                             <div
                                 class="min-h-[353px] grid place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
@@ -214,12 +219,12 @@
                 </div>
             </div>
 
-            <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-6">
-                <div class="panel h-full sm:col-span-2 xl:col-span-1">
+            <div class="grid gap-6 mb-6 sm:grid-cols-2 xl:grid-cols-3">
+                <div class="h-full panel sm:col-span-2 xl:col-span-1">
                     <div class="flex items-center mb-5">
-                        <h5 class="font-semibold text-lg dark:text-white-light">Daily Sales <span
-                                class="block text-white-dark text-sm font-normal">Go to columns for details.</span></h5>
-                        <div class="ltr:ml-auto rtl:mr-auto relative">
+                        <h5 class="text-lg font-semibold dark:text-white-light">Daily Sales <span
+                                class="block text-sm font-normal text-white-dark">Go to columns for details.</span></h5>
+                        <div class="relative ltr:ml-auto rtl:mr-auto">
                             <div
                                 class="w-11 h-11 text-warning bg-[#ffeccb] dark:bg-warning dark:text-[#ffeccb] grid place-content-center rounded-full">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
@@ -234,7 +239,7 @@
                         </div>
                     </div>
                     <div class="overflow-hidden">
-                        <div x-ref="dailySales" class="bg-white dark:bg-black rounded-lg">
+                        <div x-ref="dailySales" class="bg-white rounded-lg dark:bg-black">
                             <!-- loader -->
                             <div
                                 class="min-h-[175px] grid place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
@@ -245,9 +250,9 @@
                     </div>
                 </div>
 
-                <div class="panel h-full">
-                    <div class="flex items-center dark:text-white-light mb-5">
-                        <h5 class="font-semibold text-lg">Summary</h5>
+                <div class="h-full panel">
+                    <div class="flex items-center mb-5 dark:text-white-light">
+                        <h5 class="text-lg font-semibold">Summary</h5>
                         <div x-data="dropdown" @click.outside="open = false"
                             class="dropdown ltr:ml-auto rtl:mr-auto">
                             <a href="javascript:;" @click="toggle">
@@ -273,7 +278,7 @@
                         <div class="flex items-center">
                             <div class="w-9 h-9 ltr:mr-3 rtl:ml-3">
                                 <div
-                                    class="bg-secondary-light dark:bg-secondary text-secondary dark:text-secondary-light  rounded-full w-9 h-9 grid place-content-center">
+                                    class="grid place-content-center w-9 h-9 rounded-full bg-secondary-light dark:bg-secondary text-secondary dark:text-secondary-light">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -286,7 +291,7 @@
                                 </div>
                             </div>
                             <div class="flex-1">
-                                <div class="flex font-semibold text-white-dark mb-2">
+                                <div class="flex mb-2 font-semibold text-white-dark">
                                     <h6>Income</h6>
                                     <p class="ltr:ml-auto rtl:mr-auto">$92,600</p>
                                 </div>
@@ -300,7 +305,7 @@
                         <div class="flex items-center">
                             <div class="w-9 h-9 ltr:mr-3 rtl:ml-3">
                                 <div
-                                    class="bg-success-light dark:bg-success text-success dark:text-success-light rounded-full w-9 h-9 grid place-content-center">
+                                    class="grid place-content-center w-9 h-9 rounded-full bg-success-light dark:bg-success text-success dark:text-success-light">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -315,7 +320,7 @@
                                 </div>
                             </div>
                             <div class="flex-1">
-                                <div class="flex font-semibold text-white-dark mb-2">
+                                <div class="flex mb-2 font-semibold text-white-dark">
                                     <h6>Profit</h6>
                                     <p class="ltr:ml-auto rtl:mr-auto">$37,515</p>
                                 </div>
@@ -328,7 +333,7 @@
                         <div class="flex items-center">
                             <div class="w-9 h-9 ltr:mr-3 rtl:ml-3">
                                 <div
-                                    class="bg-warning-light dark:bg-warning text-warning dark:text-warning-light rounded-full w-9 h-9 grid place-content-center">
+                                    class="grid place-content-center w-9 h-9 rounded-full bg-warning-light dark:bg-warning text-warning dark:text-warning-light">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -344,7 +349,7 @@
                                 </div>
                             </div>
                             <div class="flex-1">
-                                <div class="flex font-semibold text-white-dark mb-2">
+                                <div class="flex mb-2 font-semibold text-white-dark">
                                     <h6>Expenses</h6>
                                     <p class="ltr:ml-auto rtl:mr-auto">$55,085</p>
                                 </div>
@@ -357,11 +362,11 @@
                     </div>
                 </div>
 
-                <div class="panel h-full p-0">
-                    <div class="flex items-center justify-between w-full p-5 absolute">
+                <div class="p-0 h-full panel">
+                    <div class="flex absolute justify-between items-center p-5 w-full">
                         <div class="relative">
                             <div
-                                class="text-success dark:text-success-light bg-success-light dark:bg-success w-11 h-11 rounded-lg flex items-center justify-center">
+                                class="flex justify-center items-center w-11 h-11 rounded-lg text-success dark:text-success-light bg-success-light dark:bg-success">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -381,12 +386,12 @@
                                 </svg>
                             </div>
                         </div>
-                        <h5 class="font-semibold text-2xl ltr:text-right rtl:text-left dark:text-white-light">
+                        <h5 class="text-2xl font-semibold ltr:text-right rtl:text-left dark:text-white-light">
                             3,192
                             <span class="block text-sm font-normal">Total Orders</span>
                         </h5>
                     </div>
-                    <div x-ref="totalOrders" class="bg-transparent rounded-lg overflow-hidden">
+                    <div x-ref="totalOrders" class="overflow-hidden bg-transparent rounded-lg">
                         <!-- loader -->
                         <div
                             class="min-h-[290px] grid place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
@@ -397,135 +402,135 @@
                 </div>
             </div>
 
-            <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-6">
-                <div class="panel h-full sm:col-span-2 xl:col-span-1 pb-0">
-                    <h5 class="font-semibold text-lg dark:text-white-light mb-5">Recent Activities</h5>
+            <div class="grid gap-6 mb-6 sm:grid-cols-2 xl:grid-cols-3">
+                <div class="pb-0 h-full panel sm:col-span-2 xl:col-span-1">
+                    <h5 class="mb-5 text-lg font-semibold dark:text-white-light">Recent Activities</h5>
 
                     <div class="perfect-scrollbar relative mb-4 h-[290px] pr-3 -mr-3">
                         <div class="text-sm cursor-pointer">
-                            <div class="flex items-center py-1.5 relative group">
-                                <div class="bg-primary w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
+                            <div class="flex relative items-center py-1.5 group">
+                                <div class="w-1.5 h-1.5 rounded-full bg-primary ltr:mr-1 rtl:ml-1.5"></div>
                                 <div class="flex-1">Updated Server Logs</div>
-                                <div class="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">Just
+                                <div class="text-xs ltr:ml-auto rtl:mr-auto text-white-dark dark:text-gray-500">Just
                                     Now</div>
 
                                 <span
                                     class="badge badge-outline-primary absolute ltr:right-0 rtl:left-0 text-xs bg-primary-light dark:bg-[#0e1726] opacity-0 group-hover:opacity-100">Pending</span>
                             </div>
-                            <div class="flex items-center py-1.5 relative group">
-                                <div class="bg-success w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
+                            <div class="flex relative items-center py-1.5 group">
+                                <div class="w-1.5 h-1.5 rounded-full bg-success ltr:mr-1 rtl:ml-1.5"></div>
                                 <div class="flex-1">Send Mail to HR and Admin</div>
-                                <div class="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">2 min
+                                <div class="text-xs ltr:ml-auto rtl:mr-auto text-white-dark dark:text-gray-500">2 min
                                     ago</div>
 
                                 <span
                                     class="badge badge-outline-success absolute ltr:right-0 rtl:left-0 text-xs bg-success-light dark:bg-[#0e1726] opacity-0 group-hover:opacity-100">Completed</span>
                             </div>
-                            <div class="flex items-center py-1.5 relative group">
-                                <div class="bg-danger w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
+                            <div class="flex relative items-center py-1.5 group">
+                                <div class="w-1.5 h-1.5 rounded-full bg-danger ltr:mr-1 rtl:ml-1.5"></div>
                                 <div class="flex-1">Backup Files EOD</div>
-                                <div class="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">14:00
+                                <div class="text-xs ltr:ml-auto rtl:mr-auto text-white-dark dark:text-gray-500">14:00
                                 </div>
 
                                 <span
                                     class="badge badge-outline-danger absolute ltr:right-0 rtl:left-0 text-xs bg-danger-light dark:bg-[#0e1726] opacity-0 group-hover:opacity-100">Pending</span>
                             </div>
-                            <div class="flex items-center py-1.5 relative group">
-                                <div class="bg-black w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
+                            <div class="flex relative items-center py-1.5 group">
+                                <div class="w-1.5 h-1.5 bg-black rounded-full ltr:mr-1 rtl:ml-1.5"></div>
                                 <div class="flex-1">Collect documents from Sara</div>
-                                <div class="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">16:00
+                                <div class="text-xs ltr:ml-auto rtl:mr-auto text-white-dark dark:text-gray-500">16:00
                                 </div>
 
                                 <span
                                     class="badge badge-outline-dark absolute ltr:right-0 rtl:left-0 text-xs bg-dark-light dark:bg-[#0e1726] opacity-0 group-hover:opacity-100">Completed</span>
                             </div>
-                            <div class="flex items-center py-1.5 relative group">
-                                <div class="bg-warning w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
+                            <div class="flex relative items-center py-1.5 group">
+                                <div class="w-1.5 h-1.5 rounded-full bg-warning ltr:mr-1 rtl:ml-1.5"></div>
                                 <div class="flex-1">Conference call with Marketing Manager.</div>
-                                <div class="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">17:00
+                                <div class="text-xs ltr:ml-auto rtl:mr-auto text-white-dark dark:text-gray-500">17:00
                                 </div>
 
                                 <span
                                     class="badge badge-outline-warning absolute ltr:right-0 rtl:left-0 text-xs bg-warning-light dark:bg-[#0e1726] opacity-0 group-hover:opacity-100">In
                                     progress</span>
                             </div>
-                            <div class="flex items-center py-1.5 relative group">
-                                <div class="bg-info w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
+                            <div class="flex relative items-center py-1.5 group">
+                                <div class="w-1.5 h-1.5 rounded-full bg-info ltr:mr-1 rtl:ml-1.5"></div>
                                 <div class="flex-1">Rebooted Server</div>
-                                <div class="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">17:00
+                                <div class="text-xs ltr:ml-auto rtl:mr-auto text-white-dark dark:text-gray-500">17:00
                                 </div>
 
                                 <span
                                     class="badge badge-outline-info absolute ltr:right-0 rtl:left-0 text-xs bg-info-light dark:bg-[#0e1726] opacity-0 group-hover:opacity-100">Completed</span>
                             </div>
-                            <div class="flex items-center py-1.5 relative group">
-                                <div class="bg-secondary w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
+                            <div class="flex relative items-center py-1.5 group">
+                                <div class="w-1.5 h-1.5 rounded-full bg-secondary ltr:mr-1 rtl:ml-1.5"></div>
                                 <div class="flex-1">Send contract details to Freelancer</div>
-                                <div class="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">18:00
+                                <div class="text-xs ltr:ml-auto rtl:mr-auto text-white-dark dark:text-gray-500">18:00
                                 </div>
 
                                 <span
                                     class="badge badge-outline-secondary absolute ltr:right-0 rtl:left-0 text-xs bg-secondary-light dark:bg-[#0e1726] opacity-0 group-hover:opacity-100">Pending</span>
                             </div>
-                            <div class="flex items-center py-1.5 relative group">
-                                <div class="bg-primary w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
+                            <div class="flex relative items-center py-1.5 group">
+                                <div class="w-1.5 h-1.5 rounded-full bg-primary ltr:mr-1 rtl:ml-1.5"></div>
                                 <div class="flex-1">Updated Server Logs</div>
-                                <div class="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">Just
+                                <div class="text-xs ltr:ml-auto rtl:mr-auto text-white-dark dark:text-gray-500">Just
                                     Now</div>
 
                                 <span
                                     class="badge badge-outline-primary absolute ltr:right-0 rtl:left-0 text-xs bg-primary-light dark:bg-[#0e1726] opacity-0 group-hover:opacity-100">Pending</span>
                             </div>
-                            <div class="flex items-center py-1.5 relative group">
-                                <div class="bg-success w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
+                            <div class="flex relative items-center py-1.5 group">
+                                <div class="w-1.5 h-1.5 rounded-full bg-success ltr:mr-1 rtl:ml-1.5"></div>
                                 <div class="flex-1">Send Mail to HR and Admin</div>
-                                <div class="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">2 min
+                                <div class="text-xs ltr:ml-auto rtl:mr-auto text-white-dark dark:text-gray-500">2 min
                                     ago</div>
 
                                 <span
                                     class="badge badge-outline-success absolute ltr:right-0 rtl:left-0 text-xs bg-success-light dark:bg-[#0e1726] opacity-0 group-hover:opacity-100">Completed</span>
                             </div>
-                            <div class="flex items-center py-1.5 relative group">
-                                <div class="bg-danger w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
+                            <div class="flex relative items-center py-1.5 group">
+                                <div class="w-1.5 h-1.5 rounded-full bg-danger ltr:mr-1 rtl:ml-1.5"></div>
                                 <div class="flex-1">Backup Files EOD</div>
-                                <div class="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">14:00
+                                <div class="text-xs ltr:ml-auto rtl:mr-auto text-white-dark dark:text-gray-500">14:00
                                 </div>
 
                                 <span
                                     class="badge badge-outline-danger absolute ltr:right-0 rtl:left-0 text-xs bg-danger-light dark:bg-[#0e1726] opacity-0 group-hover:opacity-100">Pending</span>
                             </div>
-                            <div class="flex items-center py-1.5 relative group">
-                                <div class="bg-black w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
+                            <div class="flex relative items-center py-1.5 group">
+                                <div class="w-1.5 h-1.5 bg-black rounded-full ltr:mr-1 rtl:ml-1.5"></div>
                                 <div class="flex-1">Collect documents from Sara</div>
-                                <div class="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">16:00
+                                <div class="text-xs ltr:ml-auto rtl:mr-auto text-white-dark dark:text-gray-500">16:00
                                 </div>
 
                                 <span
                                     class="badge badge-outline-dark absolute ltr:right-0 rtl:left-0 text-xs bg-dark-light dark:bg-[#0e1726] opacity-0 group-hover:opacity-100">Completed</span>
                             </div>
-                            <div class="flex items-center py-1.5 relative group">
-                                <div class="bg-warning w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
+                            <div class="flex relative items-center py-1.5 group">
+                                <div class="w-1.5 h-1.5 rounded-full bg-warning ltr:mr-1 rtl:ml-1.5"></div>
                                 <div class="flex-1">Conference call with Marketing Manager.</div>
-                                <div class="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">17:00
+                                <div class="text-xs ltr:ml-auto rtl:mr-auto text-white-dark dark:text-gray-500">17:00
                                 </div>
 
                                 <span
                                     class="badge badge-outline-warning absolute ltr:right-0 rtl:left-0 text-xs bg-warning-light dark:bg-[#0e1726] opacity-0 group-hover:opacity-100">In
                                     progress</span>
                             </div>
-                            <div class="flex items-center py-1.5 relative group">
-                                <div class="bg-info w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
+                            <div class="flex relative items-center py-1.5 group">
+                                <div class="w-1.5 h-1.5 rounded-full bg-info ltr:mr-1 rtl:ml-1.5"></div>
                                 <div class="flex-1">Rebooted Server</div>
-                                <div class="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">17:00
+                                <div class="text-xs ltr:ml-auto rtl:mr-auto text-white-dark dark:text-gray-500">17:00
                                 </div>
 
                                 <span
                                     class="badge badge-outline-info absolute ltr:right-0 rtl:left-0 text-xs bg-info-light dark:bg-[#0e1726] opacity-0 group-hover:opacity-100">Completed</span>
                             </div>
-                            <div class="flex items-center py-1.5 relative group">
-                                <div class="bg-secondary w-1.5 h-1.5 rounded-full ltr:mr-1 rtl:ml-1.5"></div>
+                            <div class="flex relative items-center py-1.5 group">
+                                <div class="w-1.5 h-1.5 rounded-full bg-secondary ltr:mr-1 rtl:ml-1.5"></div>
                                 <div class="flex-1">Send contract details to Freelancer</div>
-                                <div class="ltr:ml-auto rtl:mr-auto text-xs text-white-dark dark:text-gray-500">18:00
+                                <div class="text-xs ltr:ml-auto rtl:mr-auto text-white-dark dark:text-gray-500">18:00
                                 </div>
 
                                 <span
@@ -535,9 +540,9 @@
                     </div>
                     <div class="border-t border-white-light dark:border-white/10">
                         <a href="javascript:;"
-                            class=" font-semibold group hover:text-primary p-4 flex items-center justify-center group">
+                            class="flex justify-center items-center p-4 font-semibold  group hover:text-primary">
                             View All
-                            <svg class="w-4 h-4 rtl:rotate-180 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition duration-300 ltr:ml-1 rtl:mr-1"
+                            <svg class="w-4 h-4 transition duration-300 rtl:rotate-180 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 ltr:ml-1 rtl:mr-1"
                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4 12H20M20 12L14 6M20 12L14 18" stroke="currentColor" stroke-width="1.5"
                                     stroke-linecap="round" stroke-linejoin="round" />
@@ -546,9 +551,9 @@
                     </div>
                 </div>
 
-                <div class="panel h-full">
-                    <div class="flex items-center justify-between dark:text-white-light mb-5">
-                        <h5 class="font-semibold text-lg">Transactions</h5>
+                <div class="h-full panel">
+                    <div class="flex justify-between items-center mb-5 dark:text-white-light">
+                        <h5 class="text-lg font-semibold">Transactions</h5>
                         <div x-data="dropdown" @click.outside="open = false" class="dropdown">
                             <a href="javascript:;" @click="toggle">
                                 <svg class="w-5 h-5 text-black/70 dark:text-white/70 hover:!text-primary"
@@ -573,19 +578,19 @@
                         <div class="space-y-6">
                             <div class="flex">
                                 <span
-                                    class="shrink-0 grid place-content-center text-base w-9 h-9 rounded-md bg-success-light dark:bg-success text-success dark:text-success-light">SP</span>
-                                <div class="px-3 flex-1">
+                                    class="grid place-content-center w-9 h-9 text-base rounded-md shrink-0 bg-success-light dark:bg-success text-success dark:text-success-light">SP</span>
+                                <div class="flex-1 px-3">
                                     <div>Shaun Park</div>
                                     <div class="text-xs text-white-dark dark:text-gray-500">10 Jan 1:00PM</div>
                                 </div>
                                 <span
-                                    class="text-success text-base px-1 ltr:ml-auto rtl:mr-auto whitespace-pre">+$36.11</span>
+                                    class="px-1 text-base whitespace-pre text-success ltr:ml-auto rtl:mr-auto">+$36.11</span>
                             </div>
                             <div class="flex">
                                 <span
-                                    class="shrink-0 grid place-content-center w-9 h-9 rounded-md bg-warning-light dark:bg-warning text-warning dark:text-warning-light">
+                                    class="grid place-content-center w-9 h-9 rounded-md shrink-0 bg-warning-light dark:bg-warning text-warning dark:text-warning-light">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg" class="h-6 w-6">
+                                        xmlns="http://www.w3.org/2000/svg" class="w-6 h-6">
                                         <path
                                             d="M2 10C2 7.17157 2 5.75736 2.87868 4.87868C3.75736 4 5.17157 4 8 4H13C15.8284 4 17.2426 4 18.1213 4.87868C19 5.75736 19 7.17157 19 10C19 12.8284 19 14.2426 18.1213 15.1213C17.2426 16 15.8284 16 13 16H8C5.17157 16 3.75736 16 2.87868 15.1213C2 14.2426 2 12.8284 2 10Z"
                                             stroke="currentColor" stroke-width="1.5" />
@@ -601,16 +606,16 @@
                                             stroke-linecap="round" />
                                     </svg>
                                 </span>
-                                <div class="px-3 flex-1">
+                                <div class="flex-1 px-3">
                                     <div>Cash withdrawal</div>
                                     <div class="text-xs text-white-dark dark:text-gray-500">04 Jan 1:00PM</div>
                                 </div>
                                 <span
-                                    class="text-danger text-base px-1 ltr:ml-auto rtl:mr-auto whitespace-pre">-$16.44</span>
+                                    class="px-1 text-base whitespace-pre text-danger ltr:ml-auto rtl:mr-auto">-$16.44</span>
                             </div>
                             <div class="flex">
                                 <span
-                                    class="shrink-0 grid place-content-center w-9 h-9 rounded-md bg-danger-light dark:bg-danger text-danger dark:text-danger-light">
+                                    class="grid place-content-center w-9 h-9 rounded-md shrink-0 bg-danger-light dark:bg-danger text-danger dark:text-danger-light">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <circle cx="12" cy="6" r="4" stroke="currentColor"
@@ -620,42 +625,42 @@
                                             stroke="currentColor" stroke-width="1.5" />
                                     </svg>
                                 </span>
-                                <div class="px-3 flex-1">
+                                <div class="flex-1 px-3">
                                     <div>Amy Diaz</div>
                                     <div class="text-xs text-white-dark dark:text-gray-500">10 Jan 1:00PM</div>
                                 </div>
                                 <span
-                                    class="text-success text-base px-1 ltr:ml-auto rtl:mr-auto whitespace-pre">+$66.44</span>
+                                    class="px-1 text-base whitespace-pre text-success ltr:ml-auto rtl:mr-auto">+$66.44</span>
                             </div>
                             <div class="flex">
                                 <span
-                                    class="shrink-0 grid place-content-center w-9 h-9 rounded-md bg-secondary-light dark:bg-secondary text-secondary dark:text-secondary-light">
+                                    class="grid place-content-center w-9 h-9 rounded-md shrink-0 bg-secondary-light dark:bg-secondary text-secondary dark:text-secondary-light">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
                                         preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
                                         <path fill="currentColor"
                                             d="M5.398 0v.006c3.028 8.556 5.37 15.175 8.348 23.596c2.344.058 4.85.398 4.854.398c-2.8-7.924-5.923-16.747-8.487-24zm8.489 0v9.63L18.6 22.951c-.043-7.86-.004-15.913.002-22.95zM5.398 1.05V24c1.873-.225 2.81-.312 4.715-.398v-9.22z" />
                                     </svg>
                                 </span>
-                                <div class="px-3 flex-1">
+                                <div class="flex-1 px-3">
                                     <div>Netflix</div>
                                     <div class="text-xs text-white-dark dark:text-gray-500">04 Jan 1:00PM</div>
                                 </div>
                                 <span
-                                    class="text-danger text-base px-1 ltr:ml-auto rtl:mr-auto whitespace-pre">-$32.00</span>
+                                    class="px-1 text-base whitespace-pre text-danger ltr:ml-auto rtl:mr-auto">-$32.00</span>
                             </div>
                             <div class="flex">
                                 <span
-                                    class="shrink-0 grid place-content-center text-base w-9 h-9 rounded-md bg-info-light dark:bg-info text-info dark:text-info-light">DA</span>
-                                <div class="px-3 flex-1">
+                                    class="grid place-content-center w-9 h-9 text-base rounded-md shrink-0 bg-info-light dark:bg-info text-info dark:text-info-light">DA</span>
+                                <div class="flex-1 px-3">
                                     <div>Daisy Anderson</div>
                                     <div class="text-xs text-white-dark dark:text-gray-500">10 Jan 1:00PM</div>
                                 </div>
                                 <span
-                                    class="text-success text-base px-1 ltr:ml-auto rtl:mr-auto whitespace-pre">+$10.08</span>
+                                    class="px-1 text-base whitespace-pre text-success ltr:ml-auto rtl:mr-auto">+$10.08</span>
                             </div>
                             <div class="flex">
                                 <span
-                                    class="shrink-0 grid place-content-center w-9 h-9 rounded-md bg-primary-light dark:bg-primary text-primary dark:text-primary-light">
+                                    class="grid place-content-center w-9 h-9 rounded-md shrink-0 bg-primary-light dark:bg-primary text-primary dark:text-primary-light">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -666,29 +671,29 @@
                                             stroke="currentColor" stroke-width="1.5" />
                                     </svg>
                                 </span>
-                                <div class="px-3 flex-1">
+                                <div class="flex-1 px-3">
                                     <div>Electricity Bill</div>
                                     <div class="text-xs text-white-dark dark:text-gray-500">04 Jan 1:00PM</div>
                                 </div>
                                 <span
-                                    class="text-danger text-base px-1 ltr:ml-auto rtl:mr-auto whitespace-pre">-$22.00</span>
+                                    class="px-1 text-base whitespace-pre text-danger ltr:ml-auto rtl:mr-auto">-$22.00</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="panel h-full p-0 border-0 overflow-hidden">
+                <div class="overflow-hidden p-0 h-full border-0 panel">
                     <div class="p-6 bg-gradient-to-r from-[#4361ee] to-[#160f6b] min-h-[190px]">
                         <div class="flex justify-between items-center mb-6">
                             <div
-                                class="bg-black/50 rounded-full p-1 ltr:pr-3 rtl:pl-3 flex items-center text-white font-semibold">
-                                <img class="w-8 h-8 rounded-full border-2 border-white/50 block object-cover ltr:mr-1 rtl:ml-1"
+                                class="flex items-center p-1 font-semibold text-white rounded-full bg-black/50 ltr:pr-3 rtl:pl-3">
+                                <img class="block object-cover w-8 h-8 rounded-full border-2 border-white/50 ltr:mr-1 rtl:ml-1"
                                     src="/assets/images/profile-34.jpeg" alt="image" />
                                 Alan Green
                             </div>
                             <button type="button"
-                                class="ltr:ml-auto rtl:mr-auto flex items-center justify-between w-9 h-9 bg-black text-white rounded-md hover:opacity-80">
-                                <svg class="w-6 h-6 m-auto" viewBox="0 0 24 24" stroke="currentColor"
+                                class="flex justify-between items-center w-9 h-9 text-white bg-black rounded-md ltr:ml-auto rtl:mr-auto hover:opacity-80">
+                                <svg class="m-auto w-6 h-6" viewBox="0 0 24 24" stroke="currentColor"
                                     stroke-width="1.5" fill="none" stroke-linecap="round"
                                     stroke-linejoin="round">
                                     <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -696,14 +701,14 @@
                                 </svg>
                             </button>
                         </div>
-                        <div class="text-white flex justify-between items-center">
+                        <div class="flex justify-between items-center text-white">
                             <p class="text-xl">Wallet Balance</p>
-                            <h5 class="ltr:ml-auto rtl:mr-auto text-2xl">
+                            <h5 class="text-2xl ltr:ml-auto rtl:mr-auto">
                                 <span class="text-white-light">$</span>2953
                             </h5>
                         </div>
                     </div>
-                    <div class="-mt-12 px-8 grid grid-cols-2 gap-2">
+                    <div class="grid grid-cols-2 gap-2 px-8 -mt-12">
                         <div class="bg-white rounded-md shadow px-4 py-2.5 dark:bg-[#060818]">
                             <span class="flex justify-between items-center mb-4 dark:text-white">Received
                                 <svg class="w-4 h-4 text-success" viewBox="0 0 24 24" fill="none"
@@ -735,16 +740,16 @@
                                 class="bg-[#1b2e4b] text-white text-xs rounded-full px-4 py-1.5 before:bg-white before:w-1.5 before:h-1.5 before:rounded-full ltr:before:mr-2 rtl:before:ml-2 before:inline-block">Pending</span>
                         </div>
                         <div class="mb-5 space-y-1">
-                            <div class="flex items-center justify-between">
+                            <div class="flex justify-between items-center">
                                 <p class="text-[#515365] font-semibold">Netflix</p>
                                 <p class="text-base"><span>$</span> <span class="font-semibold">13.85</span></p>
                             </div>
-                            <div class="flex items-center justify-between">
+                            <div class="flex justify-between items-center">
                                 <p class="text-[#515365] font-semibold">BlueHost VPN</p>
-                                <p class="text-base"><span>$</span> <span class="font-semibold ">15.66</span></p>
+                                <p class="text-base"><span>$</span> <span class="font-semibold">15.66</span></p>
                             </div>
                         </div>
-                        <div class="text-center px-2 flex justify-around">
+                        <div class="flex justify-around px-2 text-center">
                             <button type="button" class="btn btn-secondary ltr:mr-2 rtl:ml-2">View Details</button>
                             <button type="button" class="btn btn-success">Pay Now $29.51</button>
                         </div>
@@ -752,10 +757,10 @@
                 </div>
             </div>
 
-            <div class="grid lg:grid-cols-2 grid-cols-1 gap-6">
-                <div class="panel h-full w-full">
-                    <div class="flex items-center justify-between mb-5">
-                        <h5 class="font-semibold text-lg dark:text-white-light">Recent Orders</h5>
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <div class="w-full h-full panel">
+                    <div class="flex justify-between items-center mb-5">
+                        <h5 class="text-lg font-semibold dark:text-white-light">Recent Orders</h5>
                     </div>
                     <div class="table-responsive">
                         <table>
@@ -772,7 +777,7 @@
                                 <tr class="text-white-dark hover:text-black dark:hover:text-white-light/90 group">
                                     <td class="min-w-[150px] text-black dark:text-white">
                                         <div class="flex items-center">
-                                            <img class="w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3 object-cover"
+                                            <img class="object-cover w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3"
                                                 src="/assets/images/profile-6.jpeg" alt="avatar" />
                                             <span class="whitespace-nowrap">Luke Ivory</span>
                                         </div>
@@ -781,13 +786,13 @@
                                     <td><a href="/apps/invoice/preview">#46894</a></td>
                                     <td>$56.07</td>
                                     <td><span
-                                            class="badge bg-success shadow-md dark:group-hover:bg-transparent">Paid</span>
+                                            class="shadow-md badge bg-success dark:group-hover:bg-transparent">Paid</span>
                                     </td>
                                 </tr>
                                 <tr class="text-white-dark hover:text-black dark:hover:text-white-light/90 group">
                                     <td class="text-black dark:text-white">
                                         <div class="flex items-center">
-                                            <img class="w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3 object-cover"
+                                            <img class="object-cover w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3"
                                                 src="/assets/images/profile-7.jpeg" alt="avatar" />
                                             <span class="whitespace-nowrap">Andy King</span>
                                         </div>
@@ -796,13 +801,13 @@
                                     <td><a href="/apps/invoice/preview">#76894</a></td>
                                     <td>$126.04</td>
                                     <td><span
-                                            class="badge bg-secondary shadow-md dark:group-hover:bg-transparent">Shipped</span>
+                                            class="shadow-md badge bg-secondary dark:group-hover:bg-transparent">Shipped</span>
                                     </td>
                                 </tr>
                                 <tr class="text-white-dark hover:text-black dark:hover:text-white-light/90 group">
                                     <td class="text-black dark:text-white">
                                         <div class="flex items-center">
-                                            <img class="w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3 object-cover"
+                                            <img class="object-cover w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3"
                                                 src="/assets/images/profile-8.jpeg" alt="avatar" />
                                             <span class="whitespace-nowrap">Laurie Fox</span>
                                         </div>
@@ -811,13 +816,13 @@
                                     <td><a href="/apps/invoice/preview">#66894</a></td>
                                     <td>$56.07</td>
                                     <td><span
-                                            class="badge bg-success shadow-md dark:group-hover:bg-transparent">Paid</span>
+                                            class="shadow-md badge bg-success dark:group-hover:bg-transparent">Paid</span>
                                     </td>
                                 </tr>
                                 <tr class="text-white-dark hover:text-black dark:hover:text-white-light/90 group">
                                     <td class="text-black dark:text-white">
                                         <div class="flex items-center">
-                                            <img class="w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3 object-cover"
+                                            <img class="object-cover w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3"
                                                 src="/assets/images/profile-9.jpeg" alt="avatar" />
                                             <span class="whitespace-nowrap">Ryan Collins</span>
                                         </div>
@@ -826,13 +831,13 @@
                                     <td><a href="/apps/invoice/preview">#75844</a></td>
                                     <td>$110.00</td>
                                     <td><span
-                                            class="badge bg-secondary shadow-md dark:group-hover:bg-transparent">Shipped</span>
+                                            class="shadow-md badge bg-secondary dark:group-hover:bg-transparent">Shipped</span>
                                     </td>
                                 </tr>
                                 <tr class="text-white-dark hover:text-black dark:hover:text-white-light/90 group">
                                     <td class="text-black dark:text-white">
                                         <div class="flex items-center">
-                                            <img class="w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3 object-cover"
+                                            <img class="object-cover w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3"
                                                 src="/assets/images/profile-10.jpeg" alt="avatar" />
                                             <span class="whitespace-nowrap">Irene Collins</span>
                                         </div>
@@ -841,7 +846,7 @@
                                     <td><a href="/apps/invoice/preview">#46894</a></td>
                                     <td>$56.07</td>
                                     <td><span
-                                            class="badge bg-success shadow-md dark:group-hover:bg-transparent">Paid</span>
+                                            class="shadow-md badge bg-success dark:group-hover:bg-transparent">Paid</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -849,9 +854,9 @@
                     </div>
                 </div>
 
-                <div class="panel h-full w-full">
-                    <div class="flex items-center justify-between mb-5">
-                        <h5 class="font-semibold text-lg dark:text-white-light">Top Selling Product</h5>
+                <div class="w-full h-full panel">
+                    <div class="flex justify-between items-center mb-5">
+                        <h5 class="text-lg font-semibold dark:text-white-light">Top Selling Product</h5>
                     </div>
                     <div class="table-responsive">
                         <table>
@@ -868,17 +873,17 @@
                                 <tr class="text-white-dark hover:text-black dark:hover:text-white-light/90 group">
                                     <td class="min-w-[150px] text-black dark:text-white">
                                         <div class="flex"><img
-                                                class="w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3 object-cover"
+                                                class="object-cover w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3"
                                                 src="/assets/images/product-headphones.jpg" alt="avatar" />
                                             <p class="whitespace-nowrap">Headphone <span
-                                                    class="text-primary block text-xs">Digital</span></p>
+                                                    class="block text-xs text-primary">Digital</span></p>
                                         </div>
                                     </td>
                                     <td>$168.09</td>
                                     <td>$60.09</td>
                                     <td>170</td>
                                     <td>
-                                        <a class="text-danger flex items-center" href="javascript:;">
+                                        <a class="flex items-center text-danger" href="javascript:;">
                                             <svg class="w-3.5 h-3.5 rtl:rotate-180 ltr:mr-1 rtl:ml-1"
                                                 viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -899,17 +904,17 @@
                                 <tr class="text-white-dark hover:text-black dark:hover:text-white-light/90 group">
                                     <td class="text-black dark:text-white">
                                         <div class="flex"><img
-                                                class="w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3 object-cover"
+                                                class="object-cover w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3"
                                                 src="/assets/images/product-shoes.jpg" alt="avatar" />
                                             <p class="whitespace-nowrap">Shoes <span
-                                                    class="text-warning block text-xs">Faishon</span></p>
+                                                    class="block text-xs text-warning">Faishon</span></p>
                                         </div>
                                     </td>
                                     <td>$126.04</td>
                                     <td>$47.09</td>
                                     <td>130</td>
                                     <td>
-                                        <a class="text-success flex items-center" href="javascript:;">
+                                        <a class="flex items-center text-success" href="javascript:;">
                                             <svg class="w-3.5 h-3.5 rtl:rotate-180 ltr:mr-1 rtl:ml-1"
                                                 viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -929,17 +934,17 @@
                                 <tr class="text-white-dark hover:text-black dark:hover:text-white-light/90 group">
                                     <td class="text-black dark:text-white">
                                         <div class="flex"><img
-                                                class="w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3 object-cover"
+                                                class="object-cover w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3"
                                                 src="/assets/images/product-watch.jpg" alt="avatar" />
                                             <p class="whitespace-nowrap">Watch <span
-                                                    class="text-danger block text-xs">Accessories</span></p>
+                                                    class="block text-xs text-danger">Accessories</span></p>
                                         </div>
                                     </td>
                                     <td>$56.07</td>
                                     <td>$20.00</td>
                                     <td>66</td>
                                     <td>
-                                        <a class="text-warning flex items-center" href="javascript:;">
+                                        <a class="flex items-center text-warning" href="javascript:;">
                                             <svg class="w-3.5 h-3.5 rtl:rotate-180 ltr:mr-1 rtl:ml-1"
                                                 viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -959,17 +964,17 @@
                                 <tr class="text-white-dark hover:text-black dark:hover:text-white-light/90 group">
                                     <td class="text-black dark:text-white">
                                         <div class="flex"><img
-                                                class="w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3 object-cover"
+                                                class="object-cover w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3"
                                                 src="/assets/images/product-laptop.jpg" alt="avatar" />
                                             <p class="whitespace-nowrap">Laptop <span
-                                                    class="text-primary block text-xs">Digital</span></p>
+                                                    class="block text-xs text-primary">Digital</span></p>
                                         </div>
                                     </td>
                                     <td>$110.00</td>
                                     <td>$33.00</td>
                                     <td>35</td>
                                     <td>
-                                        <a class="text-secondary flex items-center" href="javascript:;">
+                                        <a class="flex items-center text-secondary" href="javascript:;">
                                             <svg class="w-3.5 h-3.5 rtl:rotate-180 ltr:mr-1 rtl:ml-1"
                                                 viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -989,17 +994,17 @@
                                 <tr class="text-white-dark hover:text-black dark:hover:text-white-light/90 group">
                                     <td class="text-black dark:text-white">
                                         <div class="flex"><img
-                                                class="w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3 object-cover"
+                                                class="object-cover w-8 h-8 rounded-md ltr:mr-3 rtl:ml-3"
                                                 src="/assets/images/product-camera.jpg" alt="avatar" />
                                             <p class="whitespace-nowrap">Camera <span
-                                                    class="text-primary block text-xs">Digital</span></p>
+                                                    class="block text-xs text-primary">Digital</span></p>
                                         </div>
                                     </td>
                                     <td>$56.07</td>
                                     <td>$26.04</td>
                                     <td>30</td>
                                     <td>
-                                        <a class="text-primary flex items-center" href="javascript:;">
+                                        <a class="flex items-center text-primary" href="javascript:;">
                                             <svg class="w-3.5 h-3.5 rtl:rotate-180 ltr:mr-1 rtl:ml-1"
                                                 viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">

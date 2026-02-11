@@ -2,9 +2,9 @@
 
 namespace App\Livewire;
 
-use App\Models\visitas;
+use App\Models\Visitas;
 use Livewire\Component;
-use App\Models\visitantes;
+use App\Models\Visitantes;
 use Livewire\WithPagination;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
@@ -15,14 +15,14 @@ class ListarVisitantesComponent extends Component
 
     public function render()
     {
-        $visitantes = visitantes::with('visitas', 'tiposDocumento', 'eps', 'arl')->orderBy('id', 'desc')->paginate(5);
+        $visitantes = Visitantes::with('visitas', 'tiposDocumento', 'eps', 'arl')->orderBy('id', 'desc')->paginate(5);
         return view('livewire.listar-visitantes-component', compact('visitantes'));
     }
 
 
     public function eliminar($id)
     {
-        $visitante = visitantes::find($id);
+        $visitante = Visitantes::find($id);
 
         if ($visitante) {
             $nombre = $visitante->nombre;
@@ -61,7 +61,7 @@ class ListarVisitantesComponent extends Component
     public function cambiarEstadoVisitante($id)
     {
         try {
-            $visitante = visitantes::findOrFail($id);
+            $visitante = Visitantes::findOrFail($id);
             $visitante->update(['activo' => !$visitante->activo]);
             session()->flash('success', 'El estado del visitante ha sido actualizado.');
         } catch (\Exception $e) {
@@ -73,7 +73,7 @@ class ListarVisitantesComponent extends Component
     public function registrarSalida($id)
     {
         try {
-            $visitas = visitas::findOrFail($id);
+            $visitas = Visitas::findOrFail($id);
 
             $visitas->update([
                 'fecha_fin' => now()

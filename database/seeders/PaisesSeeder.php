@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-class PaísesSeeder extends Seeder
+class PaisesSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-class RazonvisitaSeeder extends Seeder
+class RazonVisitaSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -32,7 +32,7 @@ class RazonvisitaSeeder extends Seeder
                 "nombre"=> $razonesItems,
                 "created_at"=> now(),
                 "updated_at"=> now(),
-            ]);            
+            ]);
         }
 
     }

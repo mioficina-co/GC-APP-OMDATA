@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Support\Facades\Storage;
 
-class visitasRepository
+class VisitasRepository
 {
     public function tratamientoImagen($base64, $numerodocumento, $tipo)
     {

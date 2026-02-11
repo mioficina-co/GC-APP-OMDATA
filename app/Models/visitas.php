@@ -22,22 +22,22 @@ class visitas extends Model
     ];
     //
     public function visitante(){
-        return $this->belongsTo(visitantes::class, "visitante_id","id");
+        return $this->belongsTo(Visitantes::class, "visitante_id","id");
     }
 
     public function empleados(){
-        return $this->belongsTo(empleados::class,"empleado_id","id");
+        return $this->belongsTo(Empleados::class,"empleado_id","id");
     }
 
     public function departamentos(){
-        return $this->belongsTo(departamentos::class ,"departamento_id","id");
+        return $this->belongsTo(Departamentos::class ,"departamento_id","id");
     }
 
     public function razonvisita(){
-        return $this->belongsTo(razonvisita::class);
+        return $this->belongsTo(RazonVisita::class);
     }
 
     public function paises(){
-        return $this->belongsTo(paises::class);
+        return $this->belongsTo(Paises::class);
     }
 }

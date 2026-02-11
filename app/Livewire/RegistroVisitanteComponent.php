@@ -2,17 +2,17 @@
 
 namespace App\Livewire;
 
-use App\Models\departamentos;
-use App\Models\empleados;
-use App\Models\eps;
-use App\Models\arl;
-use App\Models\paises;
-use App\Models\razonvisita;
-use App\Models\tiposDocumento;
-use App\Models\visitantes;
-use App\Models\visitas;
+use App\Models\Eps;
+use App\Models\Arl;
+use App\Models\Departamentos;
+use App\Models\Empleados;
+use App\Models\Paises;
+use App\Models\RazonVisita;
+use App\Models\TiposDocumento;
+use App\Models\Visitantes;
+use App\Models\Visitas;
 use Livewire\Component;
-use App\Repositories\visitasRepository;
+use App\Repositories\VisitasRepository;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 
@@ -50,7 +50,7 @@ class RegistroVisitanteComponent extends Component
 
     public $tipoDocumento, $departamentos, $razones, $paises, $empleados, $eps_id, $arl_id, $aceptaPolitica;
 
-    public function mount(visitantes $visitante, visitas $visitas)
+    public function mount(Visitantes $visitante, Visitas $visitas)
     {
         $this->eps = eps::all();
         $this->arl = arl::all();
@@ -58,10 +58,10 @@ class RegistroVisitanteComponent extends Component
         $this->visitas = $visitas;
 
         $this->tipoDocumento = tiposDocumento::all();
-        $this->departamentos = departamentos::all();
+        $this->departamentos = Departamentos::all();
         $this->razones = razonvisita::all();
         $this->paises = paises::all();
-        $this->empleados = empleados::where('activo', true)->get();
+        $this->empleados = Empleados::where('activo', true)->get();
     }
 
     protected $rules = [
@@ -139,7 +139,7 @@ class RegistroVisitanteComponent extends Component
     ];
 
 
-    public function submitSignature(visitasRepository $visitasRepository)
+    public function submitSignature(VisitasRepository $visitasRepository)
     {
         $this->validate();
 
@@ -147,7 +147,7 @@ class RegistroVisitanteComponent extends Component
             $foto_visitante = $visitasRepository->tratamientoImagen($this->foto, $this->numerodocumento, 'foto');
             $firma_visitante = $visitasRepository->tratamientoImagen($this->firma, $this->numerodocumento, 'firma');
 
-            $visitante = visitantes::create([
+            $visitante = Visitantes::create([
                 'nombre' => $this->nombre,
                 'apellido' => $this->apellido,
                 'tipos_documento_id' => $this->tipodocumento,
@@ -167,7 +167,7 @@ class RegistroVisitanteComponent extends Component
 
 
 
-            visitas::create([
+            Visitas::create([
                 'visitante_id' => $visitante->id,
                 'empleado_id' => $this->empleado,
                 'departamento_id' => $this->departamento,
@@ -249,7 +249,7 @@ class RegistroVisitanteComponent extends Component
     public function updatedNumerodocumento($numerodocumento)
     {
 
-        $visitante = visitantes::where('numero_documento', $numerodocumento)->first();
+        $visitante = Visitantes::where('numero_documento', $numerodocumento)->first();
 
         if ($visitante) {
             $this->nombre = $visitante->nombre;
@@ -290,7 +290,7 @@ class RegistroVisitanteComponent extends Component
 
     public function updatedRazonvisita($value)
     {
-        $razon = razonvisita::find($value);
+        $razon = RazonVisita::find($value);
 
         // Si el nombre de la razón es "Otro", habilita el campo adicional
         $this->esOtro = $razon && strtolower($razon->nombre) === 'otro';

@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class departamentos extends Model
+class Departamentos extends Model
 {
     //
     public function visitas(){
-        return $this->hasMany(visitas::class);
+        return $this->hasMany(Visitas::class);
     }
 
     public function empleados(){
-        return $this->hasMany(empleados::class, "departamento_id" ,"id");
+        return $this->hasMany(Empleados::class, "departamento_id" ,"id");
     }
 }

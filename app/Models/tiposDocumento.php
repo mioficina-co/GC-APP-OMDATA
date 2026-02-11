@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class tiposDocumento extends Model
+class TiposDocumento extends Model
 {
     //
     protected $table = "tipos_documento";
@@ -12,6 +12,6 @@ class tiposDocumento extends Model
         "nombre",
     ] ;
     public function visitante(){
-        return $this->belongsTo(visitantes::class);
+        return $this->belongsTo(Visitantes::class);
     }
 }

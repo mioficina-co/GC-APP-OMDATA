@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class razonvisita extends Model
+class Razonvisita extends Model
 {
     //
     public function visitas(){
-        return $this->hasMany(visitas::class);
+        return $this->hasMany(Visitas::class);
     }
 }

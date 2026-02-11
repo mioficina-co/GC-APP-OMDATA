@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class empleados extends Model
+class Empleados extends Model
 {
     //
 
@@ -21,6 +21,6 @@ class empleados extends Model
     }
 
     public function departamentos(){
-        return $this->belongsTo(departamentos::class, 'departamento_id', 'id');
+        return $this->belongsTo(Departamentos::class, 'departamento_id', 'id');
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class epsSeeder extends Seeder
+class EpsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
