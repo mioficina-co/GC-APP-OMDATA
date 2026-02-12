@@ -4,12 +4,26 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Empleados;
+use Livewire\Attributes\On;
+use Livewire\WithPagination;
 
 class ListarEmpleadosComponent extends Component
 {
+
+    use WithPagination;
+
+    public $showModal = false;
+
+    public function openModal($id)
+    {
+        // Emitimos un evento llamado 'cargarEmpleado' al componente hijo
+        $this->dispatch('cargarEmpleado', id: $id)->to(EditEmpleadoComponent::class);
+        $this->showModal = true;
+    }
+    #[On('empleadoActualizado')]
     public function render()
     {
-        $empleados = Empleados::all();
+        $empleados = Empleados::paginate(10);
         return view('livewire.listar-empleados-component', compact('empleados'));
     }
 
