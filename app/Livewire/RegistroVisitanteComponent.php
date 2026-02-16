@@ -2,17 +2,21 @@
 
 namespace App\Livewire;
 
+use App\Models\Archivos;
 use App\Models\Eps;
 use App\Models\Arl;
+use App\Models\Consentimiento;
 use App\Models\Departamentos;
 use App\Models\Empleados;
 use App\Models\Paises;
+use App\Models\PoliticaPrivacidad;
 use App\Models\RazonVisita;
 use App\Models\TiposDocumento;
 use App\Models\Visitantes;
 use App\Models\Visitas;
 use Livewire\Component;
 use App\Repositories\VisitasRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 
@@ -43,6 +47,12 @@ class RegistroVisitanteComponent extends Component
     public $arl;
     public $rh;
 
+    public $busquedaRealizada = false;
+    public $visitanteEncontrado = false;
+
+    //politica vigente
+    public $politicaVigente;
+
     public $esOtro = false;
     public $otrorazonvisita;
     private $visitante;
@@ -56,12 +66,22 @@ class RegistroVisitanteComponent extends Component
         $this->arl = arl::all();
         $this->visitante = $visitante;
         $this->visitas = $visitas;
-
         $this->tipoDocumento = tiposDocumento::all();
         $this->departamentos = Departamentos::all();
         $this->razones = razonvisita::all();
         $this->paises = paises::all();
         $this->empleados = Empleados::where('activo', true)->get();
+
+        // Recuperamos la política activa para mostrarla en el formulario
+        $this->politicaVigente = PoliticaPrivacidad::where('activa', true)->first();
+
+        // Opcional: Si no hay política, podrías lanzar un error o cargar un texto por defecto
+        if (!$this->politicaVigente) {
+            $this->politicaVigente = (object)[
+                'contenido' => 'No se ha configurado una política de privacidad activa. Por favor, contacte al administrador.',
+                'version' => 'S/N'
+            ];
+        }
     }
 
     protected $rules = [
@@ -74,7 +94,7 @@ class RegistroVisitanteComponent extends Component
         'nombre' => 'required|string|max:100',
         'apellido' => 'required|string|max:100',
         'tipodocumento' => 'required|exists:tipos_documento,id',
-        'numerodocumento' => 'required|regex:/^\d{6,10}$/|unique:visitantes,numero_documento',
+        'numerodocumento' => 'required|regex:/^\d{6,10}$/',
         'rh' => 'required|string|max:3',
         'celular' => 'required|regex:/^\d{10}$/',
         'email' => 'required|email|max:255',
@@ -144,42 +164,78 @@ class RegistroVisitanteComponent extends Component
         $this->validate();
 
         DB::transaction(function () use ($visitasRepository) {
-            $foto_visitante = $visitasRepository->tratamientoImagen($this->foto, $this->numerodocumento, 'foto');
-            $firma_visitante = $visitasRepository->tratamientoImagen($this->firma, $this->numerodocumento, 'firma');
 
-            $visitante = Visitantes::create([
-                'nombre' => $this->nombre,
-                'apellido' => $this->apellido,
-                'tipos_documento_id' => $this->tipodocumento,
-                'numero_documento' => $this->numerodocumento,
-                'rh' => $this->rh,
-                'genero' => $this->genero,
-                'telefono' => $this->celular,
-                'email' => $this->email,
-                'compania' => $this->compania,
-                'placa_vehiculo' => $this->placavehiculo,
-                'nombre_contacto_emergencia' => $this->contactoemergencia,
-                'numero_contacto_emergencia' => $this->numerocontactoemergencia,
-                'pais_id' => $this->pais,
-                'eps_id' => $this->eps_id,
-                'arl_id' => $this->arl_id,
+            // 1. Obtener la política activa
+            $politicaActiva = PoliticaPrivacidad::where('activa', true)->first();
+            if (!$politicaActiva) throw new \Exception("No hay una política de privacidad activa.");
+
+
+
+            $visitante = Visitantes::updateOrCreate(
+                ['numero_documento' => $this->numerodocumento, 'tipos_documento_id' => $this->tipodocumento],
+                [
+                    'nombre' => $this->nombre,
+                    'apellido' => $this->apellido,
+                    'rh' => $this->rh,
+                    'telefono' => $this->celular,
+                    'email' => $this->email,
+                    'compania' => $this->compania,
+                    'placa_vehiculo' => $this->placavehiculo,
+                    'nombre_contacto_emergencia' => $this->contactoemergencia,
+                    'numero_contacto_emergencia' => $this->numerocontactoemergencia,
+                    'pais_id' => $this->pais,
+                    'eps_id' => $this->eps_id,
+                    'arl_id' => $this->arl_id,
+                    'politica_aceptada_id' => $politicaActiva->id,
+                    'fecha_aceptacion_politica' => now(),
+                    'ip_aceptacion' => request()->ip(),
+                    'user_agent_aceptacion' => request()->userAgent(),
+                    'created_by' => Auth::user()->id, // Si hay un usuario logueado (ej. Recepcionista)
+                ]
+            );
+
+            // 3. Registrar el Consentimiento (Evidencia legal robusta)
+            Consentimiento::create([
+                'visitante_id' => $visitante->id,
+                'politica_id' => $politicaActiva->id,
+                'acepta' => true,
+                'ip' => request()->ip(),
+                'user_agent' => request()->userAgent(),
             ]);
 
-
-
-            Visitas::create([
+            // 4. Crear la Visita
+            $visita = Visitas::create([
                 'visitante_id' => $visitante->id,
                 'empleado_id' => $this->empleado,
                 'departamento_id' => $this->departamento,
                 'razon_id' => $this->razonvisita,
-                'otra_razon_visita'=> $this->otrorazonvisita,
+                'otra_razon_visita' => $this->otrorazonvisita,
                 'fecha_inicio' => now(),
-                'fecha_fin' => null,
-                'total_visitantes' => $this->totalpersonas,
+                'total_visitantes' => $this->totalpersonas ?? 1,
                 'pertenencias' => $this->pertenencias,
-                'foto' => $foto_visitante,
-                'firma_base64' => $firma_visitante,
-                'acepta_politica' => true,
+                'created_by' => Auth::user()->id,
+            ]);
+
+            // 5. Tratamiento de Archivos (Foto y Firma)
+            $foto_ruta = $visitasRepository->tratamientoImagen($this->foto, $this->numerodocumento, 'foto');
+            $firma_ruta = $visitasRepository->tratamientoImagen($this->firma, $this->numerodocumento, 'firma');
+
+            Archivos::create([
+                'visitante_id' => $visitante->id,
+                'visita_id' => $visita->id,
+                'tipo' => 'foto',
+                'ruta' => $foto_ruta,
+                'nombre_original' => "foto_{$this->numerodocumento}.png",
+                'mime_type' => 'image/png'
+            ]);
+
+            Archivos::create([
+                'visitante_id' => $visitante->id,
+                'visita_id' => $visita->id,
+                'tipo' => 'firma',
+                'ruta' => $firma_ruta,
+                'nombre_original' => "firma_{$this->numerodocumento}.png",
+                'mime_type' => 'image/png'
             ]);
         });
 
@@ -199,6 +255,19 @@ class RegistroVisitanteComponent extends Component
             'eps' => $this->eps,
             'arl' => $this->arl,
         ]);
+    }
+
+    /**
+     * HOOKS: Se disparan cuando cambian los campos clave
+     */
+    public function updatedTipodocumento()
+    {
+        $this->buscarOResetearVisitante();
+    }
+
+    public function updatedNumerodocumento()
+    {
+        $this->buscarOResetearVisitante();
     }
 
 
@@ -240,50 +309,64 @@ class RegistroVisitanteComponent extends Component
             'eps_id',
             'arl_id',
             'aceptaPolitica',
+            'busquedaRealizada',
         ]);
 
         $this->dispatch('resetFirma');
         $this->dispatch('resetFoto');
     }
 
-    public function updatedNumerodocumento($numerodocumento)
+
+    /**
+     * Lógica central de búsqueda y limpieza
+     */
+    private function buscarOResetearVisitante()
     {
+        // Resetear estados y campos cada vez que cambie algo
+        $this->busquedaRealizada = false;
+        $this->visitanteEncontrado = false;
+        // 1. Resetear todos los campos del perfil (menos los de búsqueda)
+        $this->reset([
+            'nombre',
+            'apellido',
+            'rh',
+            'celular',
+            'email',
+            'compania',
+            'placavehiculo',
+            'contactoemergencia',
+            'numerocontactoemergencia',
+            'pais',
+            'eps_id',
+            'arl_id'
+        ]);
 
-        $visitante = Visitantes::where('numero_documento', $numerodocumento)->first();
+        // 2. Solo buscar si AMBOS campos tienen valor
+        if ($this->numerodocumento && $this->tipodocumento) {
 
-        if ($visitante) {
-            $this->nombre = $visitante->nombre;
-            $this->apellido = $visitante->apellido;
-            $this->tipodocumento = $visitante->tipos_documento_id;
-            $this->rh = $visitante->rh;
-            $this->genero = $visitante->genero;
-            $this->celular = $visitante->telefono;
-            $this->email = $visitante->email;
-            $this->compania = $visitante->compania;
-            $this->placavehiculo = $visitante->placa_vehiculo;
-            $this->contactoemergencia = $visitante->nombre_contacto_emergencia;
-            $this->numerocontactoemergencia = $visitante->numero_contacto_emergencia;
-            $this->pais = $visitante->pais_id;
-            $this->eps_id = $visitante->eps_id;
-            $this->arl_id = $visitante->arl_id;
-        } else {
-            // Opcional: Si no se encuentra, se pueden reiniciar estos campos
-            $this->reset([
-                'nombre',
-                'apellido',
-                'tipodocumento',
-                'rh',
-                'genero',
-                'celular',
-                'email',
-                'compania',
-                'placavehiculo',
-                'contactoemergencia',
-                'numerocontactoemergencia',
-                'pais',
-                'eps_id',
-                'arl_id'
-            ]);
+            $visitante = Visitantes::where('numero_documento', $this->numerodocumento)
+                ->where('tipos_documento_id', $this->tipodocumento)
+                ->first();
+
+            $this->busquedaRealizada = true; // Marcamos que se hizo el intento
+
+            if ($visitante) {
+
+                $this->visitanteEncontrado = true;
+                // Rellenar campos si el visitante existe
+                $this->nombre = $visitante->nombre;
+                $this->apellido = $visitante->apellido;
+                $this->rh = $visitante->rh;
+                $this->celular = $visitante->telefono;
+                $this->email = $visitante->email;
+                $this->compania = $visitante->compania;
+                $this->placavehiculo = $visitante->placa_vehiculo;
+                $this->contactoemergencia = $visitante->nombre_contacto_emergencia;
+                $this->numerocontactoemergencia = $visitante->numero_contacto_emergencia;
+                $this->pais = $visitante->pais_id;
+                $this->eps_id = $visitante->eps_id;
+                $this->arl_id = $visitante->arl_id;
+            }
         }
     }
 

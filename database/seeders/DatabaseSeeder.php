@@ -16,9 +16,9 @@ class DatabaseSeeder extends Seeder
     {
 
         User::factory()->create([
-            'name' => 'Andres Gaitan',
-            'email' => 'andres.gaitan@omdata.cloud',
-            'password' => Hash::make('2025adminA'),
+            'name' => 'Administrador',
+            'email' => 'admingcapp@gcapp.com',
+            'password' => Hash::make('GCAdmin'),
         ]);
 
         $this->call([

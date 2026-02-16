@@ -34,12 +34,53 @@
                                 class="max-w-[auto] w-full bg-white shadow-[4px_6px_10px_-3px_#bfc9d4] rounded border border-[#e0e6ed] dark:border-[#1b2e4b] dark:bg-[#191e3a] dark:shadow-none">
                                 <div class="py-7 px-6">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+
                                         <div class="col-span-1">
                                             <label for="numerodocumento">Numero de documento</label>
                                             <input id="numerodocumento" type="text"
                                                 placeholder="Numero de documento de identidad" class="form-input w-full"
-                                                wire:model.live="numerodocumento" pattern="^\d{6,10}$"
+                                                wire:model.live.debounce.500ms="numerodocumento" pattern="^\d{6,10}$"
                                                 title="El número de documento debe ser un número de entre 6 y 10 dígitos" />
+                                            <!-- Spinner de búsqueda -->
+                                            <div wire:loading wire:target="numerodocumento, tipodocumento"
+                                                class="absolute right-3 top-10">
+                                                <span
+                                                    class="animate-spin border-2 border-primary border-l-transparent rounded-full w-4 h-4 block"></span>
+                                            </div>
+
+                                            <!-- INDICADORES DE TEXTO (Badges) -->
+                                            <div class="mt-2 h-5"> {{-- Contenedor con altura fija para evitar saltos de UI --}}
+                                                @if ($busquedaRealizada)
+                                                    <div x-show="true" x-transition.opacity>
+                                                        @if ($visitanteEncontrado)
+                                                            <span
+                                                                class="badge badge-outline-success text-[10px] py-0.5 px-2 flex items-center gap-1 w-fit">
+                                                                <svg width="12" height="12" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor"
+                                                                    stroke-width="3">
+                                                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                                                </svg>
+                                                                Visitante recurrente (Datos cargados)
+                                                            </span>
+                                                        @else
+                                                            <span
+                                                                class="badge badge-outline-info text-[10px] py-0.5 px-2 flex items-center gap-1 w-fit">
+                                                                <svg width="12" height="12" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor"
+                                                                    stroke-width="3">
+                                                                    <circle cx="12" cy="12" r="10">
+                                                                    </circle>
+                                                                    <line x1="12" y1="8" x2="12"
+                                                                        y2="12"></line>
+                                                                    <line x1="12" y1="16" x2="12.01"
+                                                                        y2="16"></line>
+                                                                </svg>
+                                                                Nuevo visitante (Complete los datos)
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                @endif
+                                            </div>
                                             <div class="text-sm text-red-600 mt-2">
                                                 @error('numerodocumento')
                                                     <p class="flex items-center space-x-2">
@@ -55,8 +96,8 @@
                                         </div>
                                         <div>
                                             <label for="tipodocumento">Tipo de documento</label>
-                                            <select id="tipodocumento" wire:model="tipodocumento" name="tipodocumento"
-                                                class="form-select text-white-dark">
+                                            <select id="tipodocumento" wire:model.live="tipodocumento"
+                                                name="tipodocumento" class="form-select text-white-dark">
                                                 <option value="">Seleccione un tipo de documento</option>
                                                 @foreach ($tipoDocumento as $tipoDocumentoItem)
                                                     <option wire:key="$tipoDocumentoItem->id"
@@ -86,8 +127,9 @@
                                             <div class="text-sm text-red-600 mt-2">
                                                 @error('nombre')
                                                     <p class="flex items-center space-x-2">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            class="w-4 h-4 text-red-600" fill="none"
+                                                            viewBox="0 0 24 24" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                                 stroke-width="2" d="M15 12h7M15 12l-3-3M15 12l-3 3" />
                                                         </svg>
@@ -103,8 +145,9 @@
                                             <div class="text-sm text-red-600 mt-2">
                                                 @error('apellido')
                                                     <p class="flex items-center space-x-2">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            class="w-4 h-4 text-red-600" fill="none"
+                                                            viewBox="0 0 24 24" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                                 stroke-width="2" d="M15 12h7M15 12l-3-3M15 12l-3 3" />
                                                         </svg>
@@ -578,86 +621,10 @@
                                                 alt="Imagen ilustrativa de términos y condiciones"
                                                 class="w-32 h-32 md:w-40 md:h-40 rounded-full shadow-md">
                                         </div>
-                                        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
-                                            Bienvenido:</h3>
-                                        <p class="mb-6">
-                                            Antes de continuar, por favor lea detenidamente los siguientes Términos y
-                                            Condiciones que rigen el uso de nuestros servicios. Si no está de acuerdo,
-                                            no podrá acceder.
-                                        </p>
-                                        <!-- Lista de términos -->
-                                        <div class="space-y-4">
-                                            <div class="flex items-start space-x-3">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="w-6 h-6 text-blue-500 flex-shrink-0" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
-                                                </svg>
-                                                <p>1. Al acceder a nuestros servicios, usted acepta cumplir con todas
-                                                    nuestras políticas y procedimientos.</p>
-                                            </div>
-                                            <div class="flex items-start space-x-3">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="w-6 h-6 text-blue-500 flex-shrink-0" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
-                                                </svg>
-                                                <p>2. Nuestros servicios están sujetos a cambios periódicos. Le
-                                                    recomendamos revisar esta página regularmente.</p>
-                                            </div>
-                                            <div class="flex items-start space-x-3">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="w-6 h-6 text-blue-500 flex-shrink-0" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
-                                                </svg>
-                                                <p>3. Nos comprometemos a proteger su privacidad y datos personales.
-                                                    Consulte nuestra Política de Privacidad.</p>
-                                            </div>
-                                            <div class="flex items-start space-x-3">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="w-6 h-6 text-blue-500 flex-shrink-0" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
-                                                </svg>
-                                                <p>4. El uso de nuestros servicios está prohibido para menores sin la
-                                                    debida autorización.</p>
-                                            </div>
-                                            <div class="flex items-start space-x-3">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="w-6 h-6 text-blue-500 flex-shrink-0" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
-                                                </svg>
-                                                <p>5. El incumplimiento de estos términos puede resultar en la
-                                                    suspensión o cancelación de su acceso.</p>
-                                            </div>
-                                            <div class="flex items-start space-x-3">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="w-6 h-6 text-blue-500 flex-shrink-0" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M12 8c2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4 1.79-4 4-4zM12 6V4m0 12v2" />
-                                                </svg>
-                                                <p>6. Nos reservamos el derecho de modificar, suspender o descontinuar
-                                                    cualquier parte del servicio.</p>
-                                            </div>
+                                        <!-- CONTENIDO DINÁMICO DESDE LA BASE DE DATOS -->
+                                        <div class="prose dark:prose-invert max-w-full">
+                                            {!! nl2br(e($politicaVigente->contenido)) !!}
                                         </div>
-                                        <p class="mt-6 text-gray-600 dark:text-gray-400">
-                                            Recuerde que el acceso y uso de nuestros servicios implica la aceptación de
-                                            estos términos. Si tiene alguna duda, contáctenos.
-                                        </p>
                                     </div>
                                 </div>
                                 <!-- Checkbox de aceptación -->

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Departamentos;
 use App\Models\Empleados;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -66,6 +67,7 @@ class EditEmpleadoComponent extends Component
                 'apellido' => $this->apellido,
                 'documento' => $this->documento,
                 'departamento_id' => $this->departamento_id,
+                'updated_by' => Auth::user()->id, // Auditoría
             ]);
 
             $this->showModal = false;

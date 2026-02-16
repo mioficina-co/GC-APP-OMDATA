@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Empleados;
 use App\Models\Departamentos;
+use Illuminate\Support\Facades\Auth;
 use League\Csv\Reader;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
@@ -52,6 +53,7 @@ class RegistroEmpleadoComponent extends Component
             'apellido' => $this->apellido,
             'documento' => $this->documento,
             'departamento_id' => $this->departamento_id,
+            'created_by' => Auth::user()->id, // Auditoría
         ]);
         session()->flash('success', 'Empleado registrado exitosamente.');
         redirect()->route('empleados.listar');
@@ -152,6 +154,7 @@ class RegistroEmpleadoComponent extends Component
                     'apellido' => $record['apellidos'],
                     'documento' => $record['documento'],
                     'departamento_id' => $record['departamento_id'],
+                    'created_by' => Auth::user()->id, // Importante: Auditoría
                 ]);
 
                 $procesados++;

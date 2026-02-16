@@ -16,9 +16,16 @@ return new class extends Migration
             $table->string('nombre', 100);
             $table->string('apellido', 100);
             $table->string('documento', 20)->unique();
-            $table->foreignId('departamento_id')->constrained('departamentos')->onDelete('cascade');
+            $table->foreignId('departamento_id')->constrained('departamentos')->onDelete('restrict');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->boolean('activo')->default(true);
+
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('deleted_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
+
+            $table->softDeletes();
         });
     }
 

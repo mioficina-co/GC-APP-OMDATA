@@ -9,10 +9,9 @@
     <link rel="icon" type="image/x-icon" href="/assets/images/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap"
-            rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-        @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css'])
 
     <script src="/assets/js/perfect-scrollbar.min.js"></script>
     <script defer src="/assets/js/popper.min.js"></script>
@@ -21,8 +20,9 @@
 </head>
 
 
-<body x-data="main" class="antialiased relative font-nunito text-sm font-normal overflow-x-hidden"
-    :class="[$store.app.sidebar ? 'toggle-sidebar' : '', $store.app.theme === 'dark' || $store.app.isDarkMode ?  'dark' : '', $store.app.menu, $store.app.layout, $store.app
+<body x-data="main" class="overflow-x-hidden relative text-sm antialiased font-normal font-nunito"
+    :class="[$store.app.sidebar ? 'toggle-sidebar' : '', $store.app.theme === 'dark' || $store.app.isDarkMode ? 'dark' : '',
+        $store.app.menu, $store.app.layout, $store.app
         .rtlClass
     ]">
 
@@ -43,10 +43,10 @@
         </svg>
     </div>
 
-    <div class="fixed bottom-6 right-6 z-50" x-data="scrollToTop">
+    <div class="fixed right-6 bottom-6 z-50" x-data="scrollToTop">
         <template x-if="showTopButton">
-            <button type="button" class="btn btn-outline-primary rounded-full p-2 animate-pulse" @click="goToTop">
-                <svg width="24" height="24" class="h-4 w-4" viewBox="0 0 24 24" fill="none"
+            <button type="button" class="p-2 rounded-full animate-pulse btn btn-outline-primary" @click="goToTop">
+                <svg width="24" height="24" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd"
                         d="M12 20.75C12.4142 20.75 12.75 20.4142 12.75 20L12.75 10.75L11.25 10.75L11.25 20C11.25 20.4142 11.5858 20.75 12 20.75Z"
@@ -85,15 +85,11 @@
         });
     </script>
 
-    <div class="main-container text-black dark:text-white-dark min-h-screen">
+    <div class="min-h-screen text-black main-container dark:text-white-dark">
         {{ $slot }}
     </div>
-    <script src="/assets/js/alpine-collaspe.min.js"></script>
-    <script src="/assets/js/alpine-persist.min.js"></script>
-    <script defer src="/assets/js/alpine-ui.min.js"></script>
-    <script defer src="/assets/js/alpine-focus.min.js"></script>
-    <script defer src="/assets/js/alpine.min.js"></script>
-    <script src="/assets/js/custom.js"></script>
-    </body>
 
-    </html>
+    <script src="/assets/js/custom.js"></script>
+</body>
+
+</html>
