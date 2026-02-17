@@ -1,4 +1,5 @@
 import './bootstrap';
+import './js/gestion-loader-livewire'
 import SignaturePad from 'signature_pad';
 window.SignaturePad = SignaturePad; // Exponer SignaturePad globalmente
 
