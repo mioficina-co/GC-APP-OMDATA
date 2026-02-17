@@ -29,9 +29,8 @@ class ListarPoliticasComponent extends Component
     }
 
 
-    public function mount()
+    public function politicaVigente()
     {
-        // Al cargar, identificamos cuál es la política vigente en la DB
         $this->politicaActivaId = PoliticaPrivacidad::where('activa', true)->value('id');
     }
 
@@ -44,6 +43,7 @@ class ListarPoliticasComponent extends Component
     #[On('politicaActualizada')]
     public function render()
     {
+        $this->politicaVigente();
         $politicas = PoliticaPrivacidad::query()
             ->where(function ($query) {
                 $query->where('version', 'like', '%' . $this->search . '%')

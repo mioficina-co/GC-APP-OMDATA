@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\DashboardPrincipalComponent;
 use App\Livewire\GestionPoliticasComponent;
 use App\Livewire\ListarVisitantesComponent;
 use App\Livewire\RegistroVisitanteComponent;
@@ -30,9 +31,8 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+
+    Route::get('/dashboard', DashboardPrincipalComponent::class)->name('dashboard');
     //mi perfil 
     Route::get('/configuracion/perfil', [UserProfileController::class, 'show'])->name('perfil.ver');
     //visitantes
