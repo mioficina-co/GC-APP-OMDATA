@@ -2,17 +2,17 @@
     {{-- The best athlete wants his opponent at his best. --}}
     <div class="panel lg:col-span-2">
         @if (!$empleados->count())
-            <div class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg shadow" role="status">
+            <div class="p-4 mt-4 text-red-700 bg-red-100 rounded-lg border border-red-400 shadow" role="status">
                 No hay empleados registrados, en el sistema
             </div>
         @endif
         <div class="mb-5">
             <form wire:submit.prevent="submitSignature">
-                <div class="pt-5 grid grid-cols-1 lg:grid-cols-1 gap-6">
+                <div class="grid grid-cols-1 gap-6 pt-5 lg:grid-cols-1">
                     <!-- Card 1 -->
                     <div class="panel">
-                        <div class="flex items-center justify-between mb-5">
-                            <h5 class="font-semibold text-lg dark:text-white-light">Datos del visitante</h5>
+                        <div class="flex justify-between items-center mb-5">
+                            <h5 class="text-lg font-semibold dark:text-white-light">Datos del visitante</h5>
                             @auth
                                 <a href="{{ route('dashboard') }}" class="btn btn-primary d-flex align-items-center">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -29,23 +29,23 @@
 
 
                         </div>
-                        <div class="mb-5 flex items-center justify-center">
+                        <div class="flex justify-center items-center mb-5">
                             <div
                                 class="max-w-[auto] w-full bg-white shadow-[4px_6px_10px_-3px_#bfc9d4] rounded border border-[#e0e6ed] dark:border-[#1b2e4b] dark:bg-[#191e3a] dark:shadow-none">
-                                <div class="py-7 px-6">
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                <div class="px-6 py-7">
+                                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
 
                                         <div class="col-span-1">
                                             <label for="numerodocumento">Numero de documento</label>
                                             <input id="numerodocumento" type="text"
-                                                placeholder="Numero de documento de identidad" class="form-input w-full"
+                                                placeholder="Numero de documento de identidad" class="w-full form-input"
                                                 wire:model.live.debounce.500ms="numerodocumento" pattern="^\d{6,10}$"
                                                 title="El número de documento debe ser un número de entre 6 y 10 dígitos" />
                                             <!-- Spinner de búsqueda -->
                                             <div wire:loading wire:target="numerodocumento, tipodocumento"
                                                 class="absolute right-3 top-10">
                                                 <span
-                                                    class="animate-spin border-2 border-primary border-l-transparent rounded-full w-4 h-4 block"></span>
+                                                    class="block w-4 h-4 rounded-full border-2 animate-spin border-primary border-l-transparent"></span>
                                             </div>
 
                                             <!-- INDICADORES DE TEXTO (Badges) -->
@@ -81,7 +81,7 @@
                                                     </div>
                                                 @endif
                                             </div>
-                                            <div class="text-sm text-red-600 mt-2">
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('numerodocumento')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
@@ -107,7 +107,7 @@
                                                     <!-- Usando el ID como valor -->
                                                 @endforeach
                                             </select>
-                                            <div class="text-sm text-red-600 mt-2">
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('tipodocumento')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
@@ -123,8 +123,8 @@
                                         <div class="col-span-1">
                                             <label for="nombre">Nombres</label>
                                             <input id="nombre" type="text" placeholder="Nombres"
-                                                class="form-input w-full" wire:model="nombre" />
-                                            <div class="text-sm text-red-600 mt-2">
+                                                class="w-full form-input" wire:model="nombre" />
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('nombre')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -141,8 +141,8 @@
                                         <div class="col-span-1">
                                             <label for="numerodocumento">Apellidos</label>
                                             <input id="apellido" type="text" placeholder="Apellidos"
-                                                class="form-input w-full" wire:model="apellido" />
-                                            <div class="text-sm text-red-600 mt-2">
+                                                class="w-full form-input" wire:model="apellido" />
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('apellido')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -160,7 +160,7 @@
                                             <label for="rh"
                                                 class="block text-sm font-medium text-gray-700">RH</label>
                                             <select wire:model="rh" id="rh"
-                                                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                                class="block py-2 pr-10 pl-3 mt-1 w-full text-base rounded-md border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                                 <option value="">Seleccione RH</option>
                                                 <option value="A+">A+</option>
                                                 <option value="A-">A-</option>
@@ -173,7 +173,7 @@
                                             </select>
 
                                             <!-- Mensaje de error en caso de no seleccionar un RH válido -->
-                                            <div class="text-sm text-red-600 mt-2">
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('rh')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -190,8 +190,8 @@
                                         <div class="col-span-1">
                                             <label for="celular">Celular</label>
                                             <input id="celular" type="text" placeholder="Celular"
-                                                class="form-input w-full" wire:model="celular" />
-                                            <div class="text-sm text-red-600 mt-2">
+                                                class="w-full form-input" wire:model="celular" />
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('celular')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -209,8 +209,8 @@
                                         <div class="col-span-1">
                                             <label for="email">Email</label>
                                             <input id="email" type="text" placeholder="Email"
-                                                class="form-input w-full" wire:model="email" />
-                                            <div class="text-sm text-red-600 mt-2">
+                                                class="w-full form-input" wire:model="email" />
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('email')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -239,7 +239,7 @@
                                             </select>
 
                                             <!-- Mensaje de error si no se selecciona un país válido -->
-                                            <div class="text-sm text-red-600 mt-2">
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('pais')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -260,15 +260,15 @@
                     </div>
 
                     <div class="panel">
-                        <div class="flex items-center justify-between mb-5">
-                            <h5 class="font-semibold text-lg dark:text-white-light">Datos de la visita</h5>
+                        <div class="flex justify-between items-center mb-5">
+                            <h5 class="text-lg font-semibold dark:text-white-light">Datos de la visita</h5>
 
                         </div>
-                        <div class="mb-5 flex items-center justify-center">
+                        <div class="flex justify-center items-center mb-5">
                             <div
                                 class="max-w-[auto] w-full bg-white shadow-[4px_6px_10px_-3px_#bfc9d4] rounded border border-[#e0e6ed] dark:border-[#1b2e4b] dark:bg-[#191e3a] dark:shadow-none">
-                                <div class="py-7 px-6">
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                <div class="px-6 py-7">
+                                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
                                         <div class="col-span-1">
                                             <label for="empleado">Empleado</label>
                                             <select id="empleado" wire:model.change="empleado"
@@ -284,7 +284,7 @@
                                                 @endforeach
                                             </select>
                                             <!-- Mensaje de error si no se selecciona ningun empleado -->
-                                            <div class="text-sm text-red-600 mt-2">
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('empleado')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -301,7 +301,7 @@
                                         <div>
                                             <label for="departamento">Departamento</label>
                                             <select id="departamento" wire:model="departamento"
-                                                class="form-select text-white-dark bg-none" disabled>
+                                                class="bg-none form-select text-white-dark" disabled>
                                                 <option value="">Seleccione un departamento</option>
                                                 @foreach ($departamentos as $departamentoItem)
                                                     <option value="{{ $departamentoItem->id }}">
@@ -322,7 +322,7 @@
                                                     <!-- Usando el ID como valor -->
                                                 @endforeach
                                             </select>
-                                            <div class="text-sm text-red-600 mt-2">
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('razonvisita')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -340,8 +340,8 @@
                                             <div>
                                                 <label for="otrorazonvisita">Otra razón de la visita</label>
                                                 <input type="text" placeholder="Otra razón de la visita"
-                                                    class="form-input w-full" wire:model="otrorazonvisita" />
-                                                <div class="text-sm text-red-600 mt-2">
+                                                    class="w-full form-input" wire:model="otrorazonvisita" />
+                                                <div class="mt-2 text-sm text-red-600">
                                                     @error('otrorazonvisita')
                                                         <p class="flex items-center space-x-2">
                                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -359,8 +359,8 @@
                                         <div class="col-span-1">
                                             <label for="compania">De donde nos visita</label>
                                             <input id="compania" type="text" placeholder="Compañía"
-                                                class="form-input w-full" wire:model="compania" />
-                                            <div class="text-sm text-red-600 mt-2">
+                                                class="w-full form-input" wire:model="compania" />
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('compania')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -377,8 +377,8 @@
                                         <div class="col-span-1">
                                             <label for="placavehiculo">Placa vehículo</label>
                                             <input type="text" placeholder="Placa vehículo"
-                                                class="form-input w-full" wire:model="placavehiculo" />
-                                            <div class="text-sm text-red-600 mt-2">
+                                                class="w-full form-input" wire:model="placavehiculo" />
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('placavehiculo')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -394,9 +394,9 @@
                                         </div>
                                         <div class="col-span-1">
                                             <label for="pertenencias">Pertenencias del visitante</label>
-                                            <textarea name="pertenencias" wire:model="pertenencias" id="pertenencias" class="form-input w-full"
+                                            <textarea name="pertenencias" wire:model="pertenencias" id="pertenencias" class="w-full form-input"
                                                 placeholder="Ingrese el detalle de los elementos con los que ingresa"></textarea>
-                                            <div class="text-sm text-red-600 mt-2">
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('pertenencias')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -417,17 +417,17 @@
                     </div>
 
                     <div class="panel">
-                        <div class="flex items-center justify-between mb-5">
-                            <h5 class="font-semibold text-lg dark:text-white-light">Información de emergencia y
+                        <div class="flex justify-between items-center mb-5">
+                            <h5 class="text-lg font-semibold dark:text-white-light">Información de emergencia y
                                 Cobertura
                                 Médica</h5>
 
                         </div>
-                        <div class="mb-5 flex items-center justify-center">
+                        <div class="flex justify-center items-center mb-5">
                             <div
                                 class="max-w-[auto] w-full bg-white shadow-[4px_6px_10px_-3px_#bfc9d4] rounded border border-[#e0e6ed] dark:border-[#1b2e4b] dark:bg-[#191e3a] dark:shadow-none">
-                                <div class="py-7 px-6">
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                <div class="px-6 py-7">
+                                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
                                         <div>
                                             <label for="eps">EPS</label>
                                             <select wire:model="eps_id" name="eps"
@@ -440,7 +440,7 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            <div class="text-sm text-red-600 mt-2">
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('eps_id')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -466,7 +466,7 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            <div class="text-sm text-red-600 mt-2">
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('arl_id')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -483,9 +483,9 @@
                                         <div class="col-span-1">
                                             <label for="contactoemergencia">Contacto de emergencia</label>
                                             <input id="contactoemergencia" type="text"
-                                                placeholder="Nombre contacto emergencia" class="form-input w-full"
+                                                placeholder="Nombre contacto emergencia" class="w-full form-input"
                                                 wire:model="contactoemergencia" />
-                                            <div class="text-sm text-red-600 mt-2">
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('contactoemergencia')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -503,9 +503,9 @@
                                             <label for="numerocontactoemergencia">Numero de contacto de
                                                 emergencia</label>
                                             <input id="numerocontactoemergencia" type="text"
-                                                placeholder="Numero contacto emergencia" class="form-input w-full"
+                                                placeholder="Numero contacto emergencia" class="w-full form-input"
                                                 wire:model="numerocontactoemergencia" />
-                                            <div class="text-sm text-red-600 mt-2">
+                                            <div class="mt-2 text-sm text-red-600">
                                                 @error('numerocontactoemergencia')
                                                     <p class="flex items-center space-x-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -526,23 +526,23 @@
 
                         <div class="panel" x-data="fotoHandler">
                             <div class="flex flex-col items-center">
-                                <h5 class="text-2xl font-extrabold text-gray-900 dark:text-white mb-6">
+                                <h5 class="mb-6 text-2xl font-extrabold text-gray-900 dark:text-white">
                                     Captura de Imagen
                                 </h5>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
                                     <!-- Tarjeta para Video en Vivo -->
                                     <div
-                                        class="relative bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 flex flex-col items-center">
-                                        <h6 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-3">Video
+                                        class="flex relative flex-col items-center p-4 bg-white rounded-xl shadow-lg dark:bg-gray-800">
+                                        <h6 class="mb-3 text-lg font-semibold text-gray-700 dark:text-gray-300">Video
                                             en
                                             Vivo</h6>
                                         <div
-                                            class="relative w-64 h-64 rounded-full overflow-hidden border-4 border-blue-400">
+                                            class="overflow-hidden relative w-64 h-64 rounded-full border-4 border-blue-400">
                                             <video id="video" class="object-cover w-full h-full" autoplay
                                                 playsinline></video>
                                             <!-- Overlay con guía: círculo para el rostro y curva para hombros -->
                                             <div
-                                                class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                                class="flex absolute inset-0 justify-center items-center pointer-events-none">
                                                 <svg viewBox="0 0 300 300" class="w-full h-full">
                                                     <circle cx="150" cy="100" r="50" stroke="white"
                                                         stroke-dasharray="8 4" fill="none" stroke-width="3" />
@@ -554,18 +554,18 @@
                                     </div>
                                     <!-- Tarjeta para Vista Previa Capturada -->
                                     <div
-                                        class="relative bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 flex flex-col items-center">
-                                        <h6 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-3">Vista
+                                        class="flex relative flex-col items-center p-4 bg-white rounded-xl shadow-lg dark:bg-gray-800">
+                                        <h6 class="mb-3 text-lg font-semibold text-gray-700 dark:text-gray-300">Vista
                                             Previa</h6>
                                         <div
-                                            class="relative w-64 h-64 rounded-full overflow-hidden border-4 border-green-400 flex items-center justify-center">
+                                            class="flex overflow-hidden relative justify-center items-center w-64 h-64 rounded-full border-4 border-green-400">
                                             <!-- Si existe una foto, se muestra la imagen -->
                                             <img wire:ignore id="photoPreview"
                                                 class="object-cover object-center w-full h-full" alt="Vista previa"
                                                 x-show="$wire.foto">
                                             <!-- Fallback: ícono de usuario cuando no se haya capturado una imagen -->
                                             <div x-show="!$wire.foto"
-                                                class="flex items-center justify-center w-full h-full">
+                                                class="flex justify-center items-center w-full h-full">
                                                 <svg class="w-24 h-24 text-gray-400" fill="none"
                                                     stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -578,21 +578,21 @@
                                     </div>
                                 </div>
                                 <div
-                                    class="mt-8 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                                    class="flex flex-col justify-center items-center mt-8 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6">
                                     <button type="button"
-                                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                                        class="px-8 py-3 font-semibold text-white bg-blue-600 rounded-full transition duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         @click="capturePhoto()">
                                         Capturar Foto
                                     </button>
                                     <button type="button"
-                                        class="border border-red-500 text-red-500 hover:bg-red-50 font-semibold py-3 px-8 rounded-full focus:outline-none focus:ring-2 focus:ring-red-400 transition duration-300"
+                                        class="px-8 py-3 font-semibold text-red-500 rounded-full border border-red-500 transition duration-300 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-400"
                                         @click="clearPhoto()" x-show="$wire.foto">
                                         Limpiar Foto
                                     </button>
                                 </div>
-                                <div class="mt-4 text-center text-sm text-red-600">
+                                <div class="mt-4 text-sm text-center text-red-600">
                                     @error('foto')
-                                        <span class="flex items-center justify-center space-x-2">
+                                        <span class="flex justify-center items-center space-x-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -609,38 +609,38 @@
                             <!-- Sección de Términos y Condiciones -->
                             <div x-data="scrollHandler()" class="mb-8">
                                 <div
-                                    class="relative bg-white dark:bg-gray-900 shadow-2xl rounded-xl p-8 border border-gray-200 dark:border-gray-700">
-                                    <label class="block text-2xl font-bold text-gray-800 dark:text-white mb-6">
+                                    class="relative p-8 bg-white rounded-xl border border-gray-200 shadow-2xl dark:bg-gray-900 dark:border-gray-700">
+                                    <label class="block mb-6 text-2xl font-bold text-gray-800 dark:text-white">
                                         Términos y Condiciones
                                     </label>
                                     <div id="terms" @scroll="checkScroll($event)"
-                                        class="relative mt-4 h-80 overflow-y-auto border border-gray-100 dark:border-gray-600 p-6 rounded-xl bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 custom-scrollbar">
+                                        class="overflow-y-auto relative p-6 mt-4 h-80 text-sm text-gray-700 bg-gray-50 rounded-xl border border-gray-100 dark:border-gray-600 dark:bg-gray-800 custom-scrollbar">
                                         <!-- Imagen ilustrativa -->
-                                        <div class="mb-6 flex justify-center items-center">
+                                        <div class="flex justify-center items-center mb-6">
                                             <img src="{{ asset('assets/images/bg/politicas-2.png') }}"
                                                 alt="Imagen ilustrativa de términos y condiciones"
-                                                class="w-32 h-32 md:w-40 md:h-40 rounded-full shadow-md">
+                                                class="w-32 h-32 rounded-full shadow-md md:w-40 md:h-40">
                                         </div>
                                         <!-- CONTENIDO DINÁMICO DESDE LA BASE DE DATOS -->
-                                        <div class="prose dark:prose-invert max-w-full">
+                                        <div class="max-w-full prose dark:prose-invert">
                                             {!! nl2br(e($politicaVigente->contenido)) !!}
                                         </div>
                                     </div>
                                 </div>
                                 <!-- Checkbox de aceptación -->
-                                <div class="flex items-center justify-center mt-6">
+                                <div class="flex justify-center items-center mt-6">
                                     <label class="inline-flex items-center">
                                         <input wire:model="aceptaPolitica" x-bind:disabled="!scrolledToBottom"
                                             type="checkbox"
-                                            class="form-checkbox h-6 w-6 text-blue-600 transition duration-150 ease-in-out">
+                                            class="w-6 h-6 text-blue-600 transition duration-150 ease-in-out form-checkbox">
                                         <span class="ml-3 text-lg text-gray-800 dark:text-gray-200">
                                             Acepto los Términos y Condiciones
                                         </span>
                                     </label>
                                 </div>
-                                <div class="mt-2 text-center text-sm text-red-600">
+                                <div class="mt-2 text-sm text-center text-red-600">
                                     @error('aceptaPolitica')
-                                        <span class="flex items-center justify-center space-x-2">
+                                        <span class="flex justify-center items-center space-x-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -654,11 +654,11 @@
 
                             <!-- Sección de Firma (solo si se acepta la política) - Opción 4 -->
                             <div class="mt-8" x-data="firmaHandler" x-show="aceptaPolitica" x-transition>
-                                <h6 class="text-2xl font-bold text-gray-800 dark:text-white mb-6 text-center">
+                                <h6 class="mb-6 text-2xl font-bold text-center text-gray-800 dark:text-white">
                                     Firma
                                 </h6>
                                 <div
-                                    class="relative bg-gradient-to-br from-white to-gray-100 dark:from-gray-800 dark:to-gray-700 shadow-2xl rounded-2xl p-10 border border-gray-200 dark:border-gray-700">
+                                    class="relative p-10 bg-gradient-to-br from-white to-gray-100 rounded-2xl border border-gray-200 shadow-2xl dark:from-gray-800 dark:to-gray-700 dark:border-gray-700">
                                     <!-- Acento icónico en la esquina -->
                                     <div class="absolute top-4 right-4">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-blue-400"
@@ -667,36 +667,36 @@
                                                 d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4L16.5 3.5z" />
                                         </svg>
                                     </div>
-                                    <p class="mb-6 text-lg text-gray-700 dark:text-gray-300 text-center">
+                                    <p class="mb-6 text-lg text-center text-gray-700 dark:text-gray-300">
                                         Dibuja tu firma con el mouse o el lápiz táctil.
                                     </p>
                                     <div class="flex justify-center">
                                         <div class="relative">
                                             <canvas x-ref="canvas"
-                                                class="border-4 border-dotted border-gray-400 rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl"
+                                                class="rounded-lg border-4 border-gray-400 border-dotted shadow-lg transition-all duration-300 hover:shadow-2xl"
                                                 width="300" height="200"
                                                 x-bind:class="{ 'opacity-50': !aceptaPolitica }"
                                                 x-bind:disabled="!aceptaPolitica"></canvas>
                                         </div>
                                     </div>
                                     <div class="mt-4 text-center" x-show="$wire.firma">
-                                        <span class="text-green-500 text-xl font-semibold">Firma capturada</span>
+                                        <span class="text-xl font-semibold text-green-500">Firma capturada</span>
                                     </div>
-                                    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6">
+                                    <div class="flex flex-col gap-6 justify-center items-center mt-8 sm:flex-row">
                                         <button type="button"
-                                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-10 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transform transition duration-300 hover:scale-105"
+                                            class="px-10 py-3 font-semibold text-white bg-blue-600 rounded-full transition duration-300 transform hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:scale-105"
                                             @click="captureSignature" x-bind:disabled="!aceptaPolitica">
                                             Capturar Firma
                                         </button>
                                         <button type="button"
-                                            class="border border-red-500 text-red-500 hover:bg-red-50 font-semibold py-3 px-10 rounded-full focus:outline-none focus:ring-2 focus:ring-red-400 transform transition duration-300 hover:scale-105"
+                                            class="px-10 py-3 font-semibold text-red-500 rounded-full border border-red-500 transition duration-300 transform hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-400 hover:scale-105"
                                             @click="clear()" x-bind:disabled="!aceptaPolitica">
                                             Limpiar Firma
                                         </button>
                                     </div>
-                                    <div class="mt-2 text-center text-sm text-red-600">
+                                    <div class="mt-2 text-sm text-center text-red-600">
                                         @error('firma')
-                                            <span class="flex items-center justify-center space-x-2">
+                                            <span class="flex justify-center items-center space-x-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -713,7 +713,7 @@
                     </div>
 
                     <!-- Botón de envío -->
-                    <div x-data="scrollToError" class="mt-6 grid sm:grid-cols-1">
+                    <div x-data="scrollToError" class="grid mt-6 sm:grid-cols-1">
                         <button type="submit" class="btn btn-primary" @click="scrollToError">Enviar</button>
                     </div>
                 </div>

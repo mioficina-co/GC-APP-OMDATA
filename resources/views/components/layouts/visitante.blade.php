@@ -6,7 +6,7 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge' />
     <title>{{ $title ?? 'GC-APP-OMDATA - Aplicación Acceso' }}</title>
     <meta name='viewport' content='width=device-width, initial-scale=1' />
-    <link rel="icon" type="image/png" href="{{asset('assets/images/logo_sm_omdata-alt.png')}}" />
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/logo_sm_omdata-alt.png') }}" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,15 +21,7 @@
     @livewireStyles
 </head>
 
-<body x-data="main" class="antialiased relative font-nunito text-sm font-normal overflow-x-hidden"
-    :class="[$store.app.sidebar ? 'toggle-sidebar' : '', $store.app.theme === 'dark' || $store.app.isDarkMode ? 'dark' : '',
-        $store.app.menu, $store.app.layout, $store.app
-        .rtlClass
-    ]">
-
-    <!-- sidebar menu overlay -->
-    <div x-cloak class="fixed inset-0 bg-[black]/60 z-50 lg:hidden" :class="{ 'hidden': !$store.app.sidebar }"
-        @click="$store.app.toggleSidebar()"></div>
+<body class="overflow-x-hidden relative text-sm antialiased font-normal font-nunito">
 
     <!-- screen loader -->
     <div
@@ -48,12 +40,12 @@
         </svg>
     </div>
 
-    <div class="fixed bottom-6 ltr:right-6 rtl:left-6 z-50" x-data="scrollToTop">
+    <div class="fixed bottom-6 z-50 ltr:right-6 rtl:left-6" x-data="scrollToTop">
         <template x-if="showTopButton">
             <button type="button"
                 class="btn btn-outline-primary rounded-full p-2 animate-pulse bg-[#fafafa] dark:bg-[#060818] dark:hover:bg-primary"
                 @click="goToTop">
-                <svg width="24" height="24" class="h-4 w-4" viewBox="0 0 24 24" fill="none"
+                <svg width="24" height="24" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd"
                         d="M12 20.75C12.4142 20.75 12.75 20.4142 12.75 20L12.75 10.75L11.25 10.75L11.25 20C11.25 20.4142 11.5858 20.75 12 20.75Z"
@@ -92,13 +84,9 @@
         });
     </script>
 
-    {{-- <x-common.theme-customiser /> --}}
-
-    <div class="dvanimation p-6 animate__animated" :class="[$store.app.animation]">
+    <div class="p-6 dvanimation animate__animated" :class="[$store.app.animation]">
         {{ $slot }}
     </div>
-
-    <script src="/assets/js/alpine-collaspe.min.js"></script>
     <script src="/assets/js/custom.js"></script>
     @livewireScripts
 </body>
