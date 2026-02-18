@@ -16,19 +16,19 @@ class DatabaseSeeder extends Seeder
     {
 
         User::factory()->create([
-            'name' => 'Andres Gaitan',
-            'email' => 'andres.gaitan@omdata.cloud',
-            'password' => Hash::make('2025adminA'),
+            'name' => 'Administrador',
+            'email' => 'admingcapp@gcapp.com',
+            'password' => Hash::make('GCAdmin'),
         ]);
 
         $this->call([
             DepartamentosSeeder::class,
             EmpleadosSeeder::class,
-            PaísesSeeder::class,
-            RazonvisitaSeeder::class,
+            PaisesSeeder::class,
+            RazonVisitaSeeder::class,
             TiposDocumnetoSeeder::class,
-            epsSeeder::class,
-            arlSeeder::class,
+            EpsSeeder::class,
+            ArlSeeder::class,
             VisitantesSeeder::class,
             VisitasSeeder::class,
         ]);

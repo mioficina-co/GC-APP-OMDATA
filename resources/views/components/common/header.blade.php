@@ -1,12 +1,12 @@
 <header class="z-40" :class="{ 'dark': $store.app.semidark && $store.app.menu === 'horizontal' }">
     <div class="shadow-sm">
         <div class="relative bg-white flex w-full items-center px-5 py-2.5 dark:bg-[#0e1726]">
-            <div class="horizontal-logo flex lg:hidden justify-between items-center ltr:mr-2 rtl:ml-2">
-                <a href="/" class="main-logo flex items-center shrink-0">
-                    <img class="w-8 ltr:-ml-1 rtl:-mr-1 inline" src="/assets/images/logo_sm_omdata-alt.png"
+            <div class="flex justify-between items-center horizontal-logo lg:hidden ltr:mr-2 rtl:ml-2">
+                <a href="/" class="flex items-center main-logo shrink-0">
+                    <img class="inline w-8 ltr:-ml-1 rtl:-mr-1" src="/assets/images/logo_sm_omdata-alt.png"
                         alt="image" />
                     <span
-                        class="text-2xl ltr:ml-1.5 rtl:mr-1.5  font-semibold  align-middle hidden md:inline dark:text-white-light transition-all duration-300">GC-APP</span>
+                        class="hidden text-2xl font-semibold align-middle transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 md:inline dark:text-white-light">GC-APP</span>
                 </a>
 
                 <a href="javascript:;"
@@ -21,7 +21,7 @@
                     </svg>
                 </a>
             </div>
-            <div class="ltr:mr-2 rtl:ml-2 hidden sm:block">
+            <div class="hidden ltr:mr-2 rtl:ml-2 sm:block">
                 <ul class="flex items-center space-x-2 rtl:space-x-reverse dark:text-[#d0d2d6]">
                     {{-- <li>
                         <a href="/apps/calendar"
@@ -75,14 +75,14 @@
                 class="sm:flex-1 ltr:sm:ml-0 ltr:ml-auto sm:rtl:mr-0 rtl:mr-auto flex items-center space-x-1.5 lg:space-x-2 rtl:space-x-reverse dark:text-[#d0d2d6]">
                 <div class="sm:ltr:mr-auto sm:rtl:ml-auto" x-data="{ search: false }" @click.outside="search = false">
                     <form
-                        class="sm:relative absolute inset-x-0 sm:top-0 top-1/2 sm:translate-y-0 -translate-y-1/2 sm:mx-0 mx-4 z-10 sm:block hidden"
+                        class="hidden absolute inset-x-0 top-1/2 z-10 mx-4 -translate-y-1/2 sm:relative sm:top-0 sm:translate-y-0 sm:mx-0 sm:block"
                         :class="{ '!block': search }" @submit.prevent="search = false">
                         <div class="relative">
                             <input type="text"
-                                class="form-input ltr:pl-9 rtl:pr-9 ltr:sm:pr-4 rtl:sm:pl-4 ltr:pr-9 rtl:pl-9 peer sm:bg-transparent bg-gray-100 placeholder:tracking-widest"
+                                class="bg-gray-100 form-input ltr:pl-9 rtl:pr-9 ltr:sm:pr-4 rtl:sm:pl-4 ltr:pr-9 rtl:pl-9 peer sm:bg-transparent placeholder:tracking-widest"
                                 placeholder="Busqueda..." />
                             <button type="button"
-                                class="absolute w-9 h-9 inset-0 ltr:right-auto rtl:left-auto appearance-none peer-focus:text-primary">
+                                class="absolute inset-0 w-9 h-9 appearance-none ltr:right-auto rtl:left-auto peer-focus:text-primary">
                                 <svg class="mx-auto" width="16" height="16" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="11.5" cy="11.5" r="9.5" stroke="currentColor"
@@ -92,13 +92,13 @@
                                 </svg>
                             </button>
                             <button type="button"
-                                class="hover:opacity-80 sm:hidden block absolute top-1/2 -translate-y-1/2 ltr:right-2 rtl:left-2"
+                                class="block absolute top-1/2 -translate-y-1/2 hover:opacity-80 sm:hidden ltr:right-2 rtl:left-2"
                                 @click="search = false">
                                 </svg>
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <circle opacity="0.5" cx="12" cy="12" r="10"
-                                        stroke="currentColor" stroke-width="1.5" />
+                                    <circle opacity="0.5" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="1.5" />
                                     <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="currentColor"
                                         stroke-width="1.5" stroke-linecap="round" />
                                 </svg>
@@ -106,7 +106,7 @@
                         </div>
                     </form>
                     <button type="button"
-                        class="search_btn sm:hidden p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:bg-white-light/90 dark:hover:bg-dark/60"
+                        class="p-2 rounded-full search_btn sm:hidden bg-white-light/40 dark:bg-dark/40 hover:bg-white-light/90 dark:hover:bg-dark/60"
                         @click="search = ! search">
                         <svg class="w-4.5 h-4.5 mx-auto dark:text-[#d0d2d6]" width="20" height="20"
                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -169,7 +169,7 @@
                         class="block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
                         @click="toggle">
                         <img :src="`/assets/images/flags/${$store.app.locale.toUpperCase()}.svg`" alt="image"
-                            class="w-5 h-5 object-cover rounded-full" />
+                            class="object-cover w-5 h-5 rounded-full" />
                     </a>
                     <ul x-cloak x-show="open" x-transition x-transition.duration.300ms
                         class="ltr:-right-14 sm:ltr:-right-2 rtl:-left-14 sm:rtl:-left-2 top-11 !px-2 text-dark dark:text-white-dark grid grid-cols-2 gap-y-2 font-semibold dark:text-white-light/90 w-[280px]">
@@ -178,7 +178,7 @@
                                 <a href="javascript:;" class="hover:text-primary"
                                     @click="$store.app.toggleLocale(item.value),toggle()"
                                     :class="{ 'bg-primary/10 text-primary': $store.app.locale == item.value }">
-                                    <img class="w-5 h-5 object-cover rounded-full"
+                                    <img class="object-cover w-5 h-5 rounded-full"
                                         :src="`/assets/images/flags/${item.value.toUpperCase()}.svg`" alt="image" />
                                     <span class="ltr:ml-3 rtl:mr-3" x-text="item.key"></span>
                                 </a>
@@ -209,7 +209,7 @@
                                 <div
                                     class="absolute h-full w-full bg-[url('/assets/images/menu-heade.jpg')] bg-no-repeat bg-center bg-cover inset-0">
                                 </div>
-                                <h4 class="font-semibold relative z-10 text-lg">Messages</h4>
+                                <h4 class="relative z-10 text-lg font-semibold">Messages</h4>
                             </div>
                         </li>
                         <template x-for="msg in messages">
@@ -217,12 +217,12 @@
                                 <div class="flex items-center px-5 py-3" @click.self="toggle">
                                     <div x-html="msg.image"></div>
                                     <span class="px-3 dark:text-gray-500">
-                                        <div class="font-semibold text-sm dark:text-white-light/90"
+                                        <div class="text-sm font-semibold dark:text-white-light/90"
                                             x-text="msg.title"></div>
                                         <div x-text="msg.message"></div>
                                     </span>
                                     <span
-                                        class="font-semibold bg-white-dark/20 rounded text-dark/60 px-1 ltr:ml-auto rtl:mr-auto whitespace-pre dark:text-white-dark ltr:mr-2 rtl:ml-2"
+                                        class="px-1 font-semibold whitespace-pre rounded bg-white-dark/20 text-dark/60 ltr:ml-auto rtl:mr-auto dark:text-white-dark ltr:mr-2 rtl:ml-2"
                                         x-text="msg.time"></span>
                                     <span class="text-neutral-300 hover:text-danger" @click="removeMessage(msg.id)">
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -237,11 +237,11 @@
                             </li>
                         </template>
                         <template x-if="messages.length">
-                            <li class="border-t border-white-light text-center dark:border-white/10 mt-5 ">
-                                <div class="flex items-center px-4 py-4 text-primary font-semibold group dark:text-gray-400  justify-center cursor-pointer"
+                            <li class="mt-5 text-center border-t border-white-light dark:border-white/10">
+                                <div class="flex justify-center items-center px-4 py-4 font-semibold cursor-pointer text-primary group dark:text-gray-400"
                                     @click="toggle">
                                     <span class="group-hover:underline ltr:mr-1 rtl:ml-1">VIEW ALL ACTIVITIES</span>
-                                    <svg class="w-4 h-4 group-hover:translate-x-1 transition duration-300 ltr:ml-1 rtl:mr-1"
+                                    <svg class="w-4 h-4 transition duration-300 group-hover:translate-x-1 ltr:ml-1 rtl:mr-1"
                                         viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M4 12H20M20 12L14 6M20 12L14 18" stroke="currentColor"
                                             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -252,7 +252,7 @@
                         <template x-if="!messages.length">
                             <li class="mb-5">
                                 <div class="!grid place-content-center hover:!bg-transparent text-lg min-h-[200px]">
-                                    <div class="mx-auto ring-4 ring-primary/30 rounded-full mb-4 text-primary">
+                                    <div class="mx-auto mb-4 rounded-full ring-4 ring-primary/30 text-primary">
                                         <svg width="40" height="40" viewBox="0 0 20 20" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.5"
@@ -274,8 +274,8 @@
                 </div> --}}
                 <div class="dropdown" x-data="dropdown" @click.outside="open = false">
 
-                    <a href="javascript:;"
-                        class="relative block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
+                    {{-- <a href="javascript:;"
+                        class="block relative p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
                         @click="toggle">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -287,13 +287,13 @@
                             <path d="M12 6V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                         </svg>
 
-                        <span class="flex absolute w-3 h-3 ltr:right-0 rtl:left-0 top-0">
+                        <span class="flex absolute top-0 w-3 h-3 ltr:right-0 rtl:left-0">
                             <span
                                 class="animate-ping absolute ltr:-left-[3px] rtl:-right-[3px] -top-[3px] inline-flex h-full w-full rounded-full bg-success/50 opacity-75"></span>
                             <span class="relative inline-flex rounded-full w-[6px] h-[6px] bg-success"></span>
                         </span>
-                    </a>
-                    <ul x-cloak x-show="open" x-transition x-transition.duration.300ms
+                    </a> --}}
+                    {{-- <ul x-cloak x-show="open" x-transition x-transition.duration.300ms
                         class="ltr:-right-2 rtl:-left-2 top-11 !py-0 text-dark dark:text-white-dark w-[300px] sm:w-[350px] divide-y dark:divide-white/10">
                         <li>
                             <div
@@ -306,24 +306,24 @@
                             </div>
                         </li>
                         <template x-for="notification in notifications">
-                            <li class=" dark:text-white-light/90 ">
+                            <li class="dark:text-white-light/90">
                                 <div class="flex items-center px-4 py-2 group" @click.self="toggle">
                                     <div class="grid place-content-center rounded">
-                                        <div class="w-12 h-12 relative">
-                                            <img class="w-12 h-12 rounded-full object-cover"
+                                        <div class="relative w-12 h-12">
+                                            <img class="object-cover w-12 h-12 rounded-full"
                                                 :src="`/assets/images/${notification.profile}`" alt="imagen" />
                                             <span
                                                 class="bg-success w-2 h-2 rounded-full block absolute right-[6px] bottom-0"></span>
                                         </div>
                                     </div>
-                                    <div class="ltr:pl-3 rtl:pr-3 flex flex-auto">
+                                    <div class="flex flex-auto ltr:pl-3 rtl:pr-3">
                                         <div class="ltr:pr-3 rtl:pl-3">
                                             <h6 x-html="notification.message"></h6>
-                                            <span class="text-xs block font-normal dark:text-gray-500"
+                                            <span class="block text-xs font-normal dark:text-gray-500"
                                                 x-text="notification.time"></span>
                                         </div>
                                         <button type="button"
-                                            class="ltr:ml-auto rtl:mr-auto text-neutral-300 hover:text-danger opacity-0 group-hover:opacity-100"
+                                            class="opacity-0 ltr:ml-auto rtl:mr-auto text-neutral-300 hover:text-danger group-hover:opacity-100"
                                             @click="removeNotification(notification.id)">
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -341,7 +341,7 @@
                         <template x-if="notifications.length">
                             <li>
                                 <div class="p-4">
-                                    <button class="btn btn-primary block w-full btn-small" @click="toggle">Leer todas
+                                    <button class="block w-full btn btn-primary btn-small" @click="toggle">Leer todas
                                         las
                                         notificaciones</button>
                                 </div>
@@ -350,7 +350,7 @@
                         <template x-if="!notifications.length">
                             <li>
                                 <div class="!grid place-content-center hover:!bg-transparent text-lg min-h-[200px]">
-                                    <div class="mx-auto ring-4 ring-primary/30 rounded-full mb-4 text-primary">
+                                    <div class="mx-auto mb-4 rounded-full ring-4 ring-primary/30 text-primary">
                                         <svg width="40" height="40" viewBox="0 0 20 20" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path opacity="0.5"
@@ -368,28 +368,50 @@
                                 </div>
                             </li>
                         </template>
-                    </ul>
+                    </ul> --}}
 
                 </div>
-                <div class="dropdown flex-shrink-0" x-data="dropdown" @click.outside="open = false">
+                <div class="flex-shrink-0 dropdown" x-data="dropdown" @click.outside="open = false">
                     <a href="javascript:;" class="relative group" @click="toggle()">
-                        <span><img class="w-9 h-9 rounded-full object-cover saturate-50 group-hover:saturate-100"
-                                src="/assets/images/user-profile.jpeg" alt="image" /></span>
+                        <span>
+                            @if (auth()->user()->profile_photo_path)
+                                {{-- Si tiene foto, mostramos la imagen --}}
+                                <img class="object-cover w-9 h-9 rounded-full border-2 saturate-50 group-hover:saturate-100 border-primary/20"
+                                    src="{{ auth()->user()->profile_photo_url }}" alt="{{ auth()->user()->name }}" />
+                            @else
+                                {{-- Si NO tiene foto, mostramos el círculo con iniciales --}}
+                                <div
+                                    class="flex justify-center items-center w-9 h-9 text-xs font-bold text-white uppercase rounded-full border-2 saturate-50 bg-primary group-hover:saturate-100 border-primary/20">
+                                    {{ collect(explode(' ', auth()->user()->name))->map(fn($n) => mb_substr($n, 0, 1))->take(2)->join('') }}
+                                </div>
+                            @endif
+                        </span>
                     </a>
+
                     <ul x-cloak x-show="open" x-transition x-transition.duration.300ms
-                        class="ltr:right-0 rtl:left-0 text-dark dark:text-white-dark top-11 !py-0 w-[230px] font-semibold dark:text-white-light/90">
+                        class="ltr:right-0 rtl:left-0 text-dark dark:text-white-dark top-11 !py-0 w-[230px] font-semibold dark:text-white-light/90 shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]">
                         <li>
                             <div class="flex items-center px-4 py-4">
                                 <div class="flex-none">
-                                    <img class="rounded-md w-10 h-10 object-cover"
-                                        src="/assets/images/user-profile.jpeg" alt="image" />
+                                    @if (auth()->user()->profile_photo_path)
+                                        <img class="object-cover w-10 h-10 rounded-md"
+                                            src="{{ auth()->user()->profile_photo_url }}" alt="image" />
+                                    @else
+                                        <div
+                                            class="flex justify-center items-center w-10 h-10 text-sm font-bold uppercase rounded-md bg-primary/10 text-primary">
+                                            {{ collect(explode(' ', auth()->user()->name))->map(fn($n) => mb_substr($n, 0, 1))->take(2)->join('') }}
+                                        </div>
+                                    @endif
                                 </div>
-                                <div class="ltr:pl-4 rtl:pr-4 truncate">
-                                    <h4 class="text-base">{{ auth()->user()->name }}<span
-                                            class="text-xs bg-success-light rounded text-success px-1 ltr:ml-2 rtl:ml-2">Pro</span>
+                                <div class="truncate ltr:pl-4 rtl:pr-4">
+                                    <h4 class="text-base truncate">{{ auth()->user()->name }}
+                                        <span
+                                            class="text-[10px] bg-success-light rounded text-success px-1 ltr:ml-2 rtl:ml-2 uppercase">Pro</span>
                                     </h4>
-                                    <a class="text-black/60  hover:text-primary dark:text-dark-light/60 dark:hover:text-white"
-                                        href="javascript:;">{{ auth()->user()->email }}</a>
+                                    <p
+                                        class="text-black/60 text-[11px] hover:text-primary dark:text-dark-light/60 dark:hover:text-white truncate">
+                                        {{ auth()->user()->email }}
+                                    </p>
                                 </div>
                             </div>
                         </li>
@@ -403,52 +425,16 @@
                                         d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z"
                                         stroke="currentColor" stroke-width="1.5" />
                                 </svg>
-                                Perfil</a>
+                                Mi Perfil
+                            </a>
                         </li>
-                        {{-- <li>
-                            <a href="/apps/mailbox" class="dark:hover:text-white" @click="toggle">
-                                <svg class="w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 shrink-0" width="18" height="18"
-                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path opacity="0.5"
-                                        d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12C22 15.7712 22 17.6569 20.8284 18.8284C19.6569 20 17.7712 20 14 20H10C6.22876 20 4.34315 20 3.17157 18.8284C2 17.6569 2 15.7712 2 12Z"
-                                        stroke="currentColor" stroke-width="1.5" />
-                                    <path
-                                        d="M6 8L8.1589 9.79908C9.99553 11.3296 10.9139 12.0949 12 12.0949C13.0861 12.0949 14.0045 11.3296 15.8411 9.79908L18 8"
-                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                </svg>
-                                Bandeja entrada</a>
-                        </li> --}}
-                        <li>
-                            <a href="{{ route('logout') }}" @click.prevent="$root.submit(); toglgle"
-                                class="dark:hover:text-white" @click="toggle">
-                                <svg class="w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 shrink-0" width="18" height="18"
-                                    viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M2 16C2 13.1716 2 11.7574 2.87868 10.8787C3.75736 10 5.17157 10 8 10H16C18.8284 10 20.2426 10 21.1213 10.8787C22 11.7574 22 13.1716 22 16C22 18.8284 22 20.2426 21.1213 21.1213C20.2426 22 18.8284 22 16 22H8C5.17157 22 3.75736 22 2.87868 21.1213C2 20.2426 2 18.8284 2 16Z"
-                                        stroke="currentColor" stroke-width="1.5" />
-                                    <path opacity="0.5"
-                                        d="M6 10V8C6 4.68629 8.68629 2 12 2C15.3137 2 18 4.68629 18 8V10"
-                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                    <g opacity="0.5">
-                                        <path
-                                            d="M9 16C9 16.5523 8.55228 17 8 17C7.44772 17 7 16.5523 7 16C7 15.4477 7.44772 15 8 15C8.55228 15 9 15.4477 9 16Z"
-                                            fill="currentColor" />
-                                        <path
-                                            d="M13 16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16C11 15.4477 11.4477 15 12 15C12.5523 15 13 15.4477 13 16Z"
-                                            fill="currentColor" />
-                                        <path
-                                            d="M17 16C17 16.5523 16.5523 17 16 17C15.4477 17 15 16.5523 15 16C15 15.4477 15.4477 15 16 15C16.5523 15 17 15.4477 17 16Z"
-                                            fill="currentColor" />
-                                    </g>
-                                </svg>
-                                Pantalla de bloqueo</a>
-                        </li>
+
                         <form action="{{ route('logout') }}" method="POST" x-data>
                             @csrf
                             <li class="border-t border-white-light dark:border-white-light/10">
                                 <a href="{{ route('logout') }}" @click.prevent="$root.submit();"
                                     class="text-danger !py-3 flex items-center">
-                                    <svg class="w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 shrink-0 rotate-90" width="18"
+                                    <svg class="rotate-90 w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 shrink-0" width="18"
                                         height="18" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path opacity="0.5"
@@ -457,7 +443,7 @@
                                         <path d="M12 15L12 2M12 2L15 5.5M12 2L9 5.5" stroke="currentColor"
                                             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
-                                    <span>Salir del sistema</span>
+                                    <span>Cerrar Sesión</span>
                                 </a>
                             </li>
                         </form>
@@ -469,7 +455,7 @@
         <!-- horizontal menu -->
         <ul
             class="horizontal-menu hidden py-1.5 font-semibold px-6 lg:space-x-1.5 xl:space-x-8 rtl:space-x-reverse bg-white border-t border-[#ebedf2] dark:border-[#191e3a] dark:bg-[#0e1726] text-black dark:text-white-dark">
-            <li class="menu nav-item relative">
+            <li class="relative menu nav-item">
                 <a href="javascript:;" class="nav-link">
                     <div class="flex items-center">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -506,7 +492,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="menu nav-item relative">
+            <li class="relative menu nav-item">
                 <a href="javascript:;" class="nav-link">
                     <div class="flex items-center">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -598,7 +584,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="menu nav-item relative">
+            <li class="relative menu nav-item">
                 <a href="javascript:;" class="nav-link">
                     <div class="flex items-center">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -668,7 +654,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="menu nav-item relative">
+            <li class="relative menu nav-item">
                 <a href="javascript:;" class="nav-link">
                     <div class="flex items-center">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -747,7 +733,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="menu nav-item relative">
+            <li class="relative menu nav-item">
                 <a href="javascript:;" class="nav-link">
                     <div class="flex items-center">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -781,7 +767,7 @@
                     </li>
                     <li class="relative">
                         <a href="javascript:;">Data Tables
-                            <div class="ltr:ml-auto rtl:mr-auto  rtl:rotate-180">
+                            <div class="ltr:ml-auto rtl:mr-auto rtl:rotate-180">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path d="M9 5L15 12L9 19" stroke="currentColor" stroke-width="1.5"
@@ -834,7 +820,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="menu nav-item relative">
+            <li class="relative menu nav-item">
                 <a href="javascript:;" class="nav-link">
                     <div class="flex items-center">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -910,7 +896,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="menu nav-item relative">
+            <li class="relative menu nav-item">
                 <a href="javascript:;" class="nav-link">
                     <div class="flex items-center">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -1085,7 +1071,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="menu nav-item relative">
+            <li class="relative menu nav-item">
                 <a href="javascript:;" class="nav-link">
                     <div class="flex items-center">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -1152,19 +1138,19 @@
             notifications: [{
                     id: 1,
                     profile: 'user-profile.jpeg',
-                    message: '<strong class="text-sm mr-1">John Doe</strong>invite you to <strong>Prototyping</strong>',
+                    message: '<strong class="mr-1 text-sm">John Doe</strong>invite you to <strong>Prototyping</strong>',
                     time: '45 min ago',
                 },
                 {
                     id: 2,
                     profile: 'profile-34.jpeg',
-                    message: '<strong class="text-sm mr-1">Adam Nolan</strong>mentioned you to <strong>UX Basics</strong>',
+                    message: '<strong class="mr-1 text-sm">Adam Nolan</strong>mentioned you to <strong>UX Basics</strong>',
                     time: '9h Ago',
                 },
                 {
                     id: 3,
                     profile: 'profile-16.jpeg',
-                    message: '<strong class="text-sm mr-1">Anna Morgan</strong>Upload a file',
+                    message: '<strong class="mr-1 text-sm">Anna Morgan</strong>Upload a file',
                     time: '9h Ago',
                 }
             ],

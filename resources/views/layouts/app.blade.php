@@ -1,45 +1,150 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="ltr">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+<head>
+    <meta charset='utf-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    {{-- Jetstream necesita el token CSRF para acciones de perfil y seguridad --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <title>{{ $title ?? config('app.name', 'GC-APP-OMDATA') }}</title>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/logo_sm_omdata-alt.png') }}" />
 
-        <!-- Styles -->
-        @livewireStyles
-    </head>
-    <body class="font-sans antialiased">
-        <x-banner />
+    {{-- Fonts: Usamos Nunito (Vristo) pero podrías añadir Figtree si Jetstream lo requiere específicamente --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
 
-        <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-menu')
+    {{-- Scripts de la plantilla Vristo --}}
+    <script src="{{ asset('assets/js/perfect-scrollbar.min.js') }}"></script>
+    <script defer src="{{ asset('assets/js/popper.min.js') }}"></script>
+    <script defer src="{{ asset('assets/js/tippy-bundle.umd.min.js') }}"></script>
+    <script defer src="{{ asset('assets/js/sweetalert.min.js') }}"></script>
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
+    {{-- Vite: Carga CSS y JS principal (donde debe estar Alpine y los estilos de Tailwind) --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+    @livewireStyles
+</head>
+
+<body x-data="main" class="overflow-x-hidden relative text-sm antialiased font-normal font-nunito"
+    :class="[$store.app.sidebar ? 'toggle-sidebar' : '', $store.app.theme === 'dark' || $store.app.isDarkMode ? 'dark' : '',
+        $store.app.menu, $store.app.layout, $store.app.rtlClass
+    ]">
+
+    {{-- Jetstream: Banner de notificaciones --}}
+    <x-banner />
+
+    <!-- sidebar menu overlay -->
+    <div x-cloak class="fixed inset-0 bg-[black]/60 z-50 lg:hidden" :class="{ 'hidden': !$store.app.sidebar }"
+        @click="$store.app.toggleSidebar()"></div>
+
+    <!-- screen loader -->
+    <div
+        class="screen_loader fixed inset-0 bg-[#fafafa] dark:bg-[#060818] z-[60] grid place-content-center animate__animated">
+        <svg width="64" height="64" viewBox="0 0 135 135" xmlns="http://www.w3.org/2000/svg" fill="#4361ee">
+            <path
+                d="M67.447 58c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm9.448 9.447c0 5.523 4.477 10 10 10 5.522 0 10-4.477 10-10s-4.478-10-10-10c-5.523 0-10 4.477-10 10zm-9.448 9.448c-5.523 0-10 4.477-10 10 0 5.522 4.477 10 10 10s10-4.478 10-10c0-5.523-4.477-10-10-10zM58 67.447c0-5.523-4.477-10-10-10s-10 4.477-10 10 4.477 10 10 10 10-4.477 10-10z">
+                <animateTransform attributeName="transform" type="rotate" from="0 67 67" to="-360 67 67" dur="2.5s"
+                    repeatCount="indefinite" />
+            </path>
+            <path
+                d="M28.19 40.31c6.627 0 12-5.374 12-12 0-6.628-5.373-12-12-12-6.628 0-12 5.372-12 12 0 6.626 5.372 12 12 12zm30.72-19.825c4.686 4.687 12.284 4.687 16.97 0 4.686-4.686 4.686-12.284 0-16.97-4.686-4.687-12.284-4.687-16.97 0-4.687 4.686-4.686 12.284 0 16.97zm35.74 7.705c0 6.627 5.37 12 12 12 6.626 0 12-5.373 12-12 0-6.628-5.374-12-12-12-6.63 0-12 5.372-12 12zm19.822 30.72c-4.686 4.686-4.686 12.284 0 16.97 4.687 4.686 12.285 4.686 16.97 0 4.687-4.686-4.687-12.284 0-16.97-4.685-4.687-12.283-4.687-16.97 0zm-7.704 35.74c-6.627 0-12 5.37-12 12 0 6.626 5.373 12 12 12s12-5.374 12-12c0-6.63-5.373-12-12-12zm-30.72 19.822c-4.686-4.686-12.284-4.686-16.97 0-4.686 4.687-4.686 12.285 0 16.97 4.686 4.687 12.284 4.687 16.97 0 4.687-4.685 4.687-12.283 0-16.97zm-35.74-7.704c0-6.627-5.372-12-12-12-6.626 0-12 5.373-12 12s5.374 12 12 12c6.628 0 12-5.373 12-12zm-19.823-30.72c4.687-4.686 4.687-12.284 0-16.97-4.686-4.686-12.284-4.686-16.97 0-4.687 4.686-4.687 12.284 0 16.97 4.686 4.687 12.284 4.687 16.97 0z">
+                <animateTransform attributeName="transform" type="rotate" from="0 67 67" to="360 67 67" dur="8s"
+                    repeatCount="indefinite" />
+            </path>
+        </svg>
+    </div>
+
+    {{-- Botón Scroll to Top --}}
+    <div class="fixed bottom-6 z-50 ltr:right-6 rtl:left-6" x-data="scrollToTop">
+        <template x-if="showTopButton">
+            <button type="button"
+                class="btn btn-outline-primary rounded-full p-2 animate-pulse bg-[#fafafa] dark:bg-[#060818]"
+                @click="goToTop">
+                <svg width="24" height="24" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.5"
+                        d="M12 20.75C12.4142 20.75 12.75 20.4142 12.75 20L12.75 10.75L11.25 10.75L11.25 20C11.25 20.4142 11.5858 20.75 12 20.75Z"
+                        fill="currentColor" />
+                    <path
+                        d="M6.00002 10.75C5.69667 10.75 5.4232 10.5673 5.30711 10.287C5.19103 10.0068 5.25519 9.68417 5.46969 9.46967L11.4697 3.46967C11.6103 3.32902 11.8011 3.25 12 3.25C12.1989 3.25 12.3897 3.32902 12.5304 3.46967L18.5304 9.46967C18.7449 9.68417 18.809 10.0068 18.6929 10.287C18.5768 10.5673 18.3034 10.75 18 10.75L6.00002 10.75Z"
+                        fill="currentColor" />
+                </svg>
+            </button>
+        </template>
+    </div>
+
+    <script>
+        document.addEventListener("alpine:init", () => {
+            Alpine.data("scrollToTop", () => ({
+                showTopButton: false,
+                init() {
+                    window.onscroll = () => {
+                        this.scrollFunction();
+                    };
+                },
+
+                scrollFunction() {
+                    if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+                        this.showTopButton = true;
+                    } else {
+                        this.showTopButton = false;
+                    }
+                },
+
+                goToTop() {
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+                },
+            }));
+        });
+    </script>
+
+    <div class="min-h-screen text-black main-container dark:text-white-dark" :class="[$store.app.navbar]">
+
+        {{-- Sidebar de Vristo --}}
+        <x-common.sidebar />
+
+        <div class="flex flex-col min-h-screen main-content">
+
+            {{-- Header de Vristo (Reemplaza al navigation-menu de Jetstream) --}}
+            <x-common.header />
+
+            <div class="p-6 dvanimation animate__animated" :class="[$store.app.animation]">
+
+                {{-- Jetstream Page Heading --}}
+                @if (isset($header))
+                    <header class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-xl font-bold dark:text-white-light">
+                                {{ $header }}
+                            </h2>
+                        </div>
+                    </header>
+                @endif
+
+                {{-- Contenido de la Página --}}
+                <main>
+                    {{ $slot }}
+                </main>
+            </div>
+
+            {{-- Footer de Vristo --}}
+            <x-common.footer />
         </div>
+    </div>
 
-        @stack('modals')
+    {{-- Scripts Finales --}}
+    <script src="{{ asset('assets/js/custom.js') }}"></script>
 
-        @livewireScripts
-    </body>
+    {{-- Jetstream: Stack para los modales de borrado, logout, etc. --}}
+    @stack('modals')
+
+    @livewireScripts
+</body>
+
 </html>

@@ -1,56 +1,84 @@
 (function () {
     const $themeConfig = {
-        locale: 'en', // en, da, de, el, es, fr, hu, it, ja, pl, pt, ru, sv, tr, zh
-        theme: 'light', // light, dark, system
-        menu: 'vertical', // vertical, collapsible-vertical, horizontal
-        layout: 'full', // full, boxed-layout
-        rtlClass: 'ltr', // rtl, ltr
-        animation: '', // animate__fadeIn, animate__fadeInDown, animate__fadeInUp, animate__fadeInLeft, animate__fadeInRight, animate__slideInDown, animate__slideInLeft, animate__slideInRight, animate__zoomIn
-        navbar: 'navbar-sticky', // navbar-sticky, navbar-floating, navbar-static
+        locale: 'es', // Ajustado a español por defecto
+        theme: 'light',
+        menu: 'vertical',
+        layout: 'full',
+        rtlClass: 'ltr',
+        animation: 'animate__fadeIn', // Añadida animación por defecto
+        navbar: 'navbar-sticky',
         semidark: false,
     };
-    window.addEventListener('load', function () {
-        // screen loader
-        const screen_loader = document.getElementsByClassName('screen_loader');
-        if (screen_loader?.length) {
-            screen_loader[0].classList.add('animate__fadeOut');
+
+    // --- FUNCIONES DE APOYO SEGURAS ---
+
+    // Ocultar el loader de forma segura (Compatible con Carga Inicial y wire:navigate)
+    const hideLoader = () => {
+        const loader = document.querySelector('.screen_loader');
+        if (loader) {
+            loader.classList.add('animate__fadeOut');
             setTimeout(() => {
-                document.body.removeChild(screen_loader[0]);
+                // .remove() es más seguro y moderno que removeChild
+                if (loader.parentNode) {
+                    loader.remove();
+                }
             }, 200);
         }
+    };
 
-        // set rtl layout
-        Alpine.store('app').setRTLLayout();
-    });
+    // Configurar listener de animaciones (Solo si el elemento existe en el layout actual)
+    const setupAnimationListener = () => {
+        const element = document.querySelector('.dvanimation');
+        if (element) {
+            element.addEventListener('animationend', () => {
+                if (Alpine.store('app')) {
+                    element.classList.remove(Alpine.store('app').animation);
+                }
+            }, { once: true });
+        }
+    };
 
-    // remove animation after complete
-    const element = document.querySelector('.dvanimation');
-    element.addEventListener('animationend', () => {
-        element.classList.remove(Alpine.store('app').animation);
-    });
-
-    // set current year in footer
-    const yearEle = document.querySelector('#footer-year');
-    if (yearEle) {
-        yearEle.innerHTML = new Date().getFullYear();
-    }
-
-    // perfect scrollbar
+    // Inicializar Perfect Scrollbar de forma segura
     const initPerfectScrollbar = () => {
         const container = document.querySelectorAll('.perfect-scrollbar');
         for (let i = 0; i < container.length; i++) {
             new PerfectScrollbar(container[i], {
                 wheelPropagation: true,
-                // suppressScrollX: true,
             });
         }
     };
-    initPerfectScrollbar();
+
+    // --- EVENTOS GLOBALES ---
+
+    // Ejecución al cargar la página por primera vez (F5)
+    window.addEventListener('load', function () {
+        hideLoader();
+        setupAnimationListener();
+        if (Alpine.store('app')) {
+            Alpine.store('app').setRTLLayout();
+        }
+
+        // Año del footer
+        const yearEle = document.querySelector('#footer-year');
+        if (yearEle) {
+            yearEle.innerHTML = new Date().getFullYear();
+        }
+    });
+
+    // Ejecución cada vez que Livewire navega (Navegación SPA)
+    document.addEventListener('livewire:navigated', () => {
+        hideLoader();
+        setupAnimationListener();
+        initPerfectScrollbar(); // Re-inicializar scrollbar en el nuevo contenido
+    });
+
+    // --- INICIALIZACIÓN DE ALPINE ---
 
     document.addEventListener('alpine:init', () => {
+        initPerfectScrollbar();
+
         Alpine.data('collapse', () => ({
             collapse: false,
-
             collapseSidebar() {
                 this.collapse = !this.collapse;
             },
@@ -58,20 +86,19 @@
 
         Alpine.data('dropdown', (initialOpenState = false) => ({
             open: initialOpenState,
-
             toggle() {
                 this.open = !this.open;
             },
         }));
+
         Alpine.data('modal', (initialOpenState = false) => ({
             open: initialOpenState,
-
             toggle() {
                 this.open = !this.open;
             },
         }));
 
-        // Magic: $tooltip
+        // Magic: $tooltip y Directivas
         Alpine.magic('tooltip', (el) => (message, placement) => {
             let instance = tippy(el, {
                 content: message,
@@ -79,18 +106,9 @@
                 placement: placement || undefined,
                 allowHTML: true,
             });
-
             instance.show();
         });
 
-        Alpine.directive('dynamictooltip', (el, { expression }, { evaluate }) => {
-            let string = evaluate(expression);
-            tippy(el, {
-                content: string.charAt(0).toUpperCase() + string.slice(1),
-            });
-        });
-
-        // Directive: x-tooltip
         Alpine.directive('tooltip', (el, { expression }) => {
             tippy(el, {
                 content: expression,
@@ -102,133 +120,62 @@
             });
         });
 
-        // Magic: $popovers
-        Alpine.magic('popovers', (el) => (message, placement) => {
-            let instance = tippy(el, {
-                content: message,
-                placement: placement || undefined,
-                interactive: true,
-                allowHTML: true,
-                // hideOnClick: el.getAttribute("data-dismissable") ? true : "toggle",
-                delay: el.getAttribute('data-delay') || 0,
-                animation: el.getAttribute('data-animation') || 'fade',
-                theme: el.getAttribute('data-theme') || '',
-                trigger: el.getAttribute('data-trigger') || 'click',
-            });
-
-            instance.show();
-        });
-
-        // main - custom functions
         Alpine.data('main', (value) => ({}));
 
         Alpine.store('app', {
-            // theme
             theme: Alpine.$persist($themeConfig.theme),
             isDarkMode: Alpine.$persist(false),
             toggleTheme(val) {
-                if (!val) {
-                    val = this.theme || $themeConfig.theme; // light|dark|system
-                }
-
+                if (!val) val = this.theme || $themeConfig.theme;
                 this.theme = val;
-
-                if (this.theme == 'light') {
-                    this.isDarkMode = false;
-                } else if (this.theme == 'dark') {
-                    this.isDarkMode = true;
-                } else if (this.theme == 'system') {
-                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                        this.isDarkMode = true;
-                    } else {
-                        this.isDarkMode = false;
-                    }
+                if (this.theme == 'light') this.isDarkMode = false;
+                else if (this.theme == 'dark') this.isDarkMode = true;
+                else if (this.theme == 'system') {
+                    this.isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 }
             },
-
-            // navigation menu
             menu: Alpine.$persist($themeConfig.menu),
             toggleMenu(val) {
-                if (!val) {
-                    val = this.menu || $themeConfig.menu; // vertical, collapsible-vertical, horizontal
-                }
-                this.sidebar = false; // reset sidebar state
+                if (!val) val = this.menu || $themeConfig.menu;
+                this.sidebar = false;
                 this.menu = val;
             },
-
-            // layout
             layout: Alpine.$persist($themeConfig.layout),
             toggleLayout(val) {
-                if (!val) {
-                    val = this.layout || $themeConfig.layout; // full, boxed-layout
-                }
-
+                if (!val) val = this.layout || $themeConfig.layout;
                 this.layout = val;
             },
-
-            // rtl support
             rtlClass: Alpine.$persist($themeConfig.rtlClass),
             toggleRTL(val) {
-                if (!val) {
-                    val = this.rtlClass || $themeConfig.rtlClass; // rtl, ltr
-                }
-
+                if (!val) val = this.rtlClass || $themeConfig.rtlClass;
                 this.rtlClass = val;
                 this.setRTLLayout();
             },
-
             setRTLLayout() {
-                document.querySelector('html').setAttribute('dir', this.rtlClass || $themeConfig.rtlClass);
+                const html = document.querySelector('html');
+                if (html) html.setAttribute('dir', this.rtlClass || $themeConfig.rtlClass);
             },
-
-            // animation
             animation: Alpine.$persist($themeConfig.animation),
             toggleAnimation(val) {
-                if (!val) {
-                    val = this.animation || $themeConfig.animation; // animate__fadeIn, animate__fadeInDown, animate__fadeInLeft, animate__fadeInRight
-                }
-
-                val = val?.trim();
-
-                this.animation = val;
+                if (!val) val = this.animation || $themeConfig.animation;
+                this.animation = val?.trim();
             },
-
-            // navbar type
             navbar: Alpine.$persist($themeConfig.navbar),
             toggleNavbar(val) {
-                if (!val) {
-                    val = this.navbar || $themeConfig.navbar; // navbar-sticky, navbar-floating, navbar-static
-                }
-
+                if (!val) val = this.navbar || $themeConfig.navbar;
                 this.navbar = val;
             },
-
-            // semidark
             semidark: Alpine.$persist($themeConfig.semidark),
             toggleSemidark(val) {
-                if (!val) {
-                    val = this.semidark || $themeConfig.semidark;
-                }
-
+                if (!val) val = this.semidark || $themeConfig.semidark;
                 this.semidark = val;
             },
-
-            // multi language
             locale: Alpine.$persist($themeConfig.locale),
             toggleLocale(val) {
-                if (!val) {
-                    val = this.locale || $themeConfig.locale;
-                }
-
+                if (!val) val = this.locale || $themeConfig.locale;
                 this.locale = val;
-                if (this.locale?.toLowerCase() === 'ae') {
-                    this.toggleRTL('rtl');
-                } else {
-                    this.toggleRTL('ltr');
-                }
+                this.toggleRTL(this.locale?.toLowerCase() === 'ae' ? 'rtl' : 'ltr');
             },
-
-            // sidebar
             sidebar: false,
             toggleSidebar() {
                 this.sidebar = !this.sidebar;
