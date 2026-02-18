@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class eps extends Model
+class Eps extends Model
 {
     protected $table = 'eps';
     protected $fillable = ['nombre', 'descripcion'];

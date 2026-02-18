@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\visitas;
+use App\Models\Visitas;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -33,7 +33,7 @@ class RegistroSalidaComponent extends Component
     {
 
         try {
-            $visita = visitas::findOrFail($this->visitaId);
+            $visita = Visitas::findOrFail($this->visitaId);
 
             $visita->update([
                 'fecha_fin' => now(),

@@ -62,14 +62,14 @@ class RegistroVisitanteComponent extends Component
 
     public function mount(Visitantes $visitante, Visitas $visitas)
     {
-        $this->eps = eps::all();
-        $this->arl = arl::all();
+        $this->eps = Eps::all();
+        $this->arl = Arl::all();
         $this->visitante = $visitante;
         $this->visitas = $visitas;
-        $this->tipoDocumento = tiposDocumento::all();
+        $this->tipoDocumento = TiposDocumento::all();
         $this->departamentos = Departamentos::all();
-        $this->razones = razonvisita::all();
-        $this->paises = paises::all();
+        $this->razones = RazonVisita::all();
+        $this->paises = Paises::all();
         $this->empleados = Empleados::where('activo', true)->get();
 
         // Recuperamos la política activa para mostrarla en el formulario
