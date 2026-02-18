@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\empleados;
+use App\Models\Empleados;
 use App\Models\User;
 use LIvewire\Attributes\On;
 use Livewire\Component;
@@ -12,7 +12,7 @@ class PruebasComponent extends Component
     public function render()
     {
         return view('livewire.pruebas-component', [
-            'users' => empleados::all(),
+            'users' => Empleados::all(),
         ]);
     }
 

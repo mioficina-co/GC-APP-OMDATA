@@ -2,8 +2,9 @@
 
 namespace App\Livewire;
 
-use App\Models\empleados;
-use App\Models\departamentos;
+use App\Models\Empleados;
+use App\Models\Departamentos;
+use Illuminate\Support\Facades\Auth;
 use League\Csv\Reader;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
@@ -33,9 +34,9 @@ class RegistroEmpleadoComponent extends Component
         'departamento_id.required' => 'El departamento es requerido',
     ];
 
-    public function mount(empleados $empleados)
+    public function mount(Empleados $empleados)
     {
-        $this->departamentos = departamentos::all();
+        $this->departamentos = Departamentos::all();
         $this->empleados = $empleados;
     }
 
@@ -47,11 +48,12 @@ class RegistroEmpleadoComponent extends Component
     public function registroEmpleado()
     {
         $this->validate();
-        empleados::create([
+        Empleados::create([
             'nombre' => $this->nombre,
             'apellido' => $this->apellido,
             'documento' => $this->documento,
             'departamento_id' => $this->departamento_id,
+            'created_by' => Auth::user()->id, // Auditoría
         ]);
         session()->flash('success', 'Empleado registrado exitosamente.');
         redirect()->route('empleados.listar');
@@ -113,7 +115,7 @@ class RegistroEmpleadoComponent extends Component
             $procesados = 0;
 
             // Obtener los documentos existentes en la base de datos
-            $existingDocuments = empleados::pluck('documento')->toArray();
+            $existingDocuments = Empleados::pluck('documento')->toArray();
 
             foreach ($records as $index => $record) {
                 $record = array_combine($formattedHeaders, $record);
@@ -147,11 +149,12 @@ class RegistroEmpleadoComponent extends Component
                 }
 
                 // Insertar los datos en la base de datos
-                empleados::create([
+                Empleados::create([
                     'nombre' => $record['nombres'],
                     'apellido' => $record['apellidos'],
                     'documento' => $record['documento'],
                     'departamento_id' => $record['departamento_id'],
+                    'created_by' => Auth::user()->id, // Importante: Auditoría
                 ]);
 
                 $procesados++;

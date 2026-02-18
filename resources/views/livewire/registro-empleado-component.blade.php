@@ -8,58 +8,53 @@
                 <span>{{ request()->path() }} </span>
             </li>
         </ul>
-        <div class="pt-5 grid grid-cols-1 lg:grid-cols-1 gap-6 justify-center">
-            <div class="panel col-span-1 lg:col-span-1">
-                <div class="flex items-center justify-between mb-5">
-                    <h5 class="font-semibold text-lg dark:text-white-light">Datos basicos registro de empleados</h5>
-                    <a class="font-semibold hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-600"
-                        href="javascript:;" @click="toggleCode('code12')">
-                        <span class="flex items-center">
-                            <!-- Mensaje de error -->
-                            @if (session()->has('error'))
-                                <div wire:loading.remove
-                                    class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg shadow"
-                                    role="alert">
-                                    <p class="font-medium">{{ session('error') }}</p>
+        <div class="grid grid-cols-1 gap-6 justify-center pt-5 lg:grid-cols-1">
+            <div class="col-span-1 panel lg:col-span-1">
+                <div class="flex justify-between items-center mb-5">
+                    <h5 class="text-lg font-semibold dark:text-white-light">Datos basicos registro de empleados</h5>
+                    {{-- Alertas de Sesión Dinámicas con Autocierre --}}
+                    <div class="mb-5 space-y-3">
+                        @foreach (['success', 'error', 'info'] as $msg)
+                            @if (session()->has($msg))
+                                <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 5000)" x-show="show" x-transition
+                                    wire:key="alert-politica-{{ $msg }}-{{ microtime() }}"
+                                    class="p-3 rounded-lg flex items-center justify-between {{ $msg == 'success' ? 'bg-success/10 text-success border border-success/20' : ($msg == 'error' ? 'bg-danger/10 text-danger border border-danger/20' : 'bg-info/10 text-info border border-info/20') }}">
+                                    <div class="flex gap-2 items-center">
+                                        @if ($msg == 'success')
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                        @endif
+                                        <span
+                                            class="text-xs font-bold tracking-wider uppercase">{{ session($msg) }}</span>
+                                    </div>
+                                    <button @click="show = false" class="hover:opacity-70"><svg width="14"
+                                            height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <path d="M18 6L6 18M6 6l12 12" />
+                                        </svg></button>
                                 </div>
                             @endif
-
-                            <!-- Mensaje de éxito -->
-                            @if (session()->has('success'))
-                                <div wire:loading.remove
-                                    class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg shadow"
-                                    role="status">
-                                    <p class="font-medium">{{ session('success') }}</p>
-                                </div>
-                            @endif
-
-                            <!-- Mensaje de información -->
-                            @if (session()->has('info'))
-                                <div wire:loading.remove
-                                    class="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded-lg shadow"
-                                    role="status">
-                                    <p class="font-medium">{{ session('info') }}</p>
-                                </div>
-                            @endif
-
-                            <!-- Indicador de carga -->
-                            <div wire:loading
-                                class="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded-lg shadow"
-                                role="status">
-                                <p class="font-medium">Procesando, por favor espere...</p>
-                            </div>
-                        </span>
-                    </a>
+                        @endforeach
+                        <!-- Indicador de carga -->
+                        <div wire:loading
+                            class="p-4 mt-4 text-blue-700 bg-blue-100 rounded-lg border border-blue-400 shadow"
+                            role="status">
+                            <p class="font-medium">Procesando, por favor espere...</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="mb-5">
                     <form class="space-y-5" wire:submit.prevent="registroEmpleado">
                         <div class="mb-6">
-                            <h6 class="font-semibold text-lg dark:text-white-light mb-4">Registro de empleados</h6>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                            <h6 class="mb-4 text-lg font-semibold dark:text-white-light">Registro de empleados</h6>
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
                                 <div class="lg:col-span-1 sm:col-span-2">
-                                    <input type="text" placeholder="Nombres completos" class="form-input w-full"
+                                    <input type="text" placeholder="Nombres completos" class="w-full form-input"
                                         wire:model="nombre" />
-                                    <div class="text-sm text-red-600 mt-2">
+                                    <div class="mt-2 text-sm text-red-600">
                                         @error('nombre')
                                             <p class="flex items-center space-x-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
@@ -73,9 +68,9 @@
                                     </div>
                                 </div>
                                 <div class="lg:col-span-1 sm:col-span-2">
-                                    <input type="text" placeholder="Apellidos" class="form-input w-full"
+                                    <input type="text" placeholder="Apellidos" class="w-full form-input"
                                         wire:model="apellido" />
-                                    <div class="text-sm text-red-600 mt-2">
+                                    <div class="mt-2 text-sm text-red-600">
                                         @error('apellido')
                                             <p class="flex items-center space-x-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
@@ -90,8 +85,8 @@
                                 </div>
                                 <div class="lg:col-span-1 sm:col-span-2">
                                     <input type="text" placeholder="Documento de identificación"
-                                        class="form-input w-full" wire:model="documento" />
-                                    <div class="text-sm text-red-600 mt-2">
+                                        class="w-full form-input" wire:model="documento" />
+                                    <div class="mt-2 text-sm text-red-600">
                                         @error('documento')
                                             <p class="flex items-center space-x-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
@@ -109,11 +104,12 @@
                                     <select wire:model="departamento_id" class="form-select text-white-dark">
                                         <option value="">Seleccione un departamento</option>
                                         @foreach ($departamentos as $departamentoItem)
-                                            <option value="{{ $departamentoItem->id }}">{{ $departamentoItem->nombre }}
+                                            <option value="{{ $departamentoItem->id }}">
+                                                {{ $departamentoItem->nombre }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    <div class="text-sm text-red-600 mt-2">
+                                    <div class="mt-2 text-sm text-red-600">
                                         @error('departamento_id')
                                             <p class="flex items-center space-x-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"
@@ -129,11 +125,11 @@
                             </div>
                         </div>
                         <!-- Botón de envío -->
-                        <div class="mt-6 grid sm:grid-cols-1 lg:grid-cols-2 justify-center w-full">
-                            <button type="submit" class="btn btn-primary mx-1 my-1">Registrar empleado</button>
+                        <div class="grid justify-center mt-6 w-full sm:grid-cols-1 lg:grid-cols-2">
+                            <button type="submit" class="mx-1 my-1 btn btn-primary">Registrar empleado</button>
 
                             <label for="file-upload"
-                                class="cursor-pointer text-center tn btn-inline btn-default mx-1 my-1 p-3 bg-gray-200 text-gray-800 rounded-lg shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50">
+                                class="p-3 mx-1 my-1 text-center text-gray-800 bg-gray-200 rounded-lg shadow-md cursor-pointer tn btn-inline btn-default hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50">
                                 Carga masiva
                             </label>
 
@@ -142,7 +138,7 @@
                                 wire:model="archivoEmpleados" />
 
                             <!-- Mensaje de error para el archivo -->
-                            <div class="text-sm text-red-600 mt-2">
+                            <div class="mt-2 text-sm text-red-600">
                                 @error('archivoEmpleados')
                                     <p class="flex items-center space-x-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600"

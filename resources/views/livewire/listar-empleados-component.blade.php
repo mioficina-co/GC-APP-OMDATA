@@ -1,5 +1,4 @@
 <div>
-    {{-- The whole world belongs to you. --}}
     <div class="bg-white shadow rounded-lg p-6">
         <h2 class="text-lg font-semibold text-gray-700 mb-4 flex items-center">
             <svg class="h-6 w-6 text-indigo-500 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -47,38 +46,16 @@
                             <td class="px-4 py-3 text-sm text-gray-600">{{ $empleadoItem->apellido }}</td>
                             <td class="px-4 py-3 text-sm text-gray-600">{{ $empleadoItem->documento }}</td>
                             <td class="px-4 py-3 text-sm text-gray-600">{{ $empleadoItem->departamentos->nombre }}</td>
-                            {{-- <td class="px-4 py-3 text-sm text-gray-600 text-center">
-                                    <div class="flex justify-center space-x-2">
-                                        <button
-                                            class="flex items-center text-indigo-600 hover:text-indigo-800 focus:outline-none"
-                                            wire:click="editar({{ $visitante->id }})">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20"
-                                                fill="currentColor">
-                                                <path
-                                                    d="M17.414 2.586a2 2 0 00-2.828 0L8 9.172V11h1.828l6.586-6.586a2 2 0 000-2.828z" />
-                                                <path fill-rule="evenodd"
-                                                    d="M3 8.586V17h8.414l6.586-6.586-8.414-8.414L3 8.586z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                            Editar
-                                        </button>
-                                        <button class="flex items-center text-red-600 hover:text-red-800 focus:outline-none"
-                                            wire:click="eliminar({{ $visitante->id }})">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20"
-                                                fill="currentColor">
-                                                <path fill-rule="evenodd"
-                                                    d="M6.707 4.293A1 1 0 016 5v12a1 1 0 001 1h6a1 1 0 001-1V5a1 1 0 00-.293-.707l-1-1A1 1 0 0012 3H8a1 1 0 00-.707.293l-1 1zM9 7h2v8H9V7z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                            Eliminar
-                                        </button>
-                                    </div>
-                                </td> --}}
                             <td class="text-center">
                                 <ul class="flex items-center justify-center gap-2">
                                     <li>
-                                        <a href="javascript:;" x-tooltip="Editar">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                        <a href="javascript:;" x-tooltip="Editar"
+                                            wire:click="openModal({{ $empleadoItem->id }})" wire:loading.attr="disabled"
+                                            class="relative inline-flex items-center justify-center">
+
+                                            <!-- Icono de Editar (Se oculta cuando carga) -->
+                                            <svg wire:loading.remove wire:target="openModal({{ $empleadoItem->id }})"
+                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-success">
                                                 <path
                                                     d="M15.2869 3.15178L14.3601 4.07866L5.83882 12.5999L5.83881 12.5999C5.26166 13.1771 4.97308 13.4656 4.7249 13.7838C4.43213 14.1592 4.18114 14.5653 3.97634 14.995C3.80273 15.3593 3.67368 15.7465 3.41556 16.5208L2.32181 19.8021L2.05445 20.6042C1.92743 20.9852 2.0266 21.4053 2.31063 21.6894C2.59466 21.9734 3.01478 22.0726 3.39584 21.9456L4.19792 21.6782L7.47918 20.5844L7.47919 20.5844C8.25353 20.3263 8.6407 20.1973 9.00498 20.0237C9.43469 19.8189 9.84082 19.5679 10.2162 19.2751C10.5344 19.0269 10.8229 18.7383 11.4001 18.1612L11.4001 18.1612L19.9213 9.63993L20.8482 8.71306C22.3839 7.17735 22.3839 4.68748 20.8482 3.15178C19.3125 1.61607 16.8226 1.61607 15.2869 3.15178Z"
@@ -87,10 +64,36 @@
                                                     d="M14.36 4.07812C14.36 4.07812 14.4759 6.04774 16.2138 7.78564C17.9517 9.52354 19.9213 9.6394 19.9213 9.6394M4.19789 21.6777L2.32178 19.8015"
                                                     stroke="currentColor" stroke-width="1.5" />
                                             </svg>
+
+                                            <!-- Spinner de Carga (Se muestra solo cuando carga openModal) -->
+                                            <svg wire:loading wire:target="openModal({{ $empleadoItem->id }})"
+                                                class="animate-spin w-4 h-4 text-success"
+                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                    stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor"
+                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                                </path>
+                                            </svg>
                                         </a>
                                     </li>
+
+                                    <li>
+                                        <div class="flex items-center space-x-1">
+                                            <label x-tooltip="Activar/Desactivar" class="w-8 h-4 relative">
+                                                <input type="checkbox"
+                                                    wire:click="cambiarEstadoEmpleado({{ $empleadoItem->id }})"
+                                                    class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer"
+                                                    @checked($empleadoItem->activo) />
+                                                <span
+                                                    class="bg-[#bd1616] dark:bg-dark block h-full rounded-full before:absolute before:left-1 before:bg-white dark:before:bg-white-dark dark:peer-checked:before:bg-white before:bottom-1 before:w-2 before:h-2 before:rounded-full peer-checked:before:left-5 peer-checked:bg-success before:transition-all before:duration-300"></span>
+                                            </label>
+                                        </div>
+                                    </li>
+
                                     <div x-data="modal">
-                                        <li><a href="javascript:;" x-tooltip="Eliminar" @click="toggle">
+                                        <li>
+                                            <a href="javascript:;" x-tooltip="Eliminar" @click="toggle">
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-danger">
                                                     <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5"
@@ -107,9 +110,8 @@
                                                         d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6"
                                                         stroke="currentColor" stroke-width="1.5" />
                                                 </svg>
-                                            </a></li>
-                                        {{-- <button type="button" class="btn btn-primary"
-                                            @click="toggle">Standard</button> --}}
+                                            </a>
+                                        </li>
                                         <div class="fixed inset-0 bg-[black]/60 z-[999] hidden overflow-y-auto"
                                             :class="open && '!block'">
                                             <div class="flex items-start justify-center min-h-screen px-4"
@@ -152,21 +154,7 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
-
-                                    <li>
-                                        <div class="flex items-center space-x-1">
-                                            <label x-tooltip="Activar/Desactivar" class="w-8 h-4 relative">
-                                                <input type="checkbox"
-                                                    wire:click="cambiarEstadoEmpleado({{ $empleadoItem->id }})"
-                                                    class="custom_switch absolute w-full h-full opacity-0 z-10 cursor-pointer peer"
-                                                    @checked($empleadoItem->activo) />
-                                                <span
-                                                    class="bg-[#bd1616] dark:bg-dark block h-full rounded-full before:absolute before:left-1 before:bg-white dark:before:bg-white-dark dark:peer-checked:before:bg-white before:bottom-1 before:w-2 before:h-2 before:rounded-full peer-checked:before:left-5 peer-checked:bg-success before:transition-all before:duration-300"></span>
-                                            </label>
-                                        </div>
-                                    </li>
                                 </ul>
                             </td>
                         </tr>
@@ -175,8 +163,10 @@
             </table>
         </div>
         <div class="mt-4">
-            {{-- Agregar la paginación aquí si es necesario --}}
-            {{-- {{ $visitantes->links() }} --}}
+            {{ $empleados->links() }}
         </div>
     </div>
+
+    {{-- compnente para realizar la actualización de datos para los empleados --}}
+    <livewire:edit-empleado-component :key="time()" />
 </div>
