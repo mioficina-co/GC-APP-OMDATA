@@ -28,9 +28,9 @@ jobs:
       - name: Definir tag según rama
         run: |
           if [[ "${GITHUB_REF##*/}" == "main" ]]; then
-            echo "IMAGE_TAG=turbovprod" >> $GITHUB_ENV
+            echo "IMAGE_TAG=gcappprod" >> $GITHUB_ENV
           else
-            echo "IMAGE_TAG=turbovpruebas" >> $GITHUB_ENV
+            echo "IMAGE_TAG=gcapppruebas" >> $GITHUB_ENV
           fi
 
       - name: Build y Push
