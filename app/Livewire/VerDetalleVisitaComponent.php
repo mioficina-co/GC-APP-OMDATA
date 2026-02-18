@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\visitas;
+use App\Models\Visitas;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -14,7 +14,7 @@ class VerDetalleVisitaComponent extends Component
     #[On('cargarDetalleVisita')]
     public function loadVisita($id)
     {
-        $this->visita = visitas::with([
+        $this->visita = Visitas::with([
             'visitante.tiposDocumento',
             'empleados',
             'departamentos',

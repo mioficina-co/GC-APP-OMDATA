@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\visitas;
+use App\Models\Visitas;
 use Carbon\Carbon;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -45,7 +45,7 @@ class ListarVisitasComponent extends Component
     public function render()
     {
 
-        $query = visitas::query()
+        $query = Visitas::query()
             ->with(['visitante', 'empleados', 'razonvisita', 'departamentos', 'archivos'])
             ->where(function ($q) {
                 $q->whereHas('visitante', function ($v) {
