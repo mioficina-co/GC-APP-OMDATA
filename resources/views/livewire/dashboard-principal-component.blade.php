@@ -124,13 +124,4 @@
 
     <!-- Scripts necesarios -->
     <script src="/assets/js/countUp.min.js"></script>
-    <script>
-        // Opcional: Si quieres actualizar los contadores cuando los valores cambien (por ejemplo, mediante polling)
-        document.addEventListener('livewire:initialized', () => {
-            Livewire.on('valoresActualizados', () => {
-                // Aquí podrías actualizar los contadores si los valores cambian dinámicamente
-                // Por ahora no es necesario porque los valores son estáticos en mount()
-            });
-        });
-    </script>
 </div>

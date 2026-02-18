@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Visitantes;
 use Livewire\Component;
 
 class DashboardPrincipalComponent extends Component
@@ -14,9 +15,9 @@ class DashboardPrincipalComponent extends Component
     public function mount()
     {
 
-        $this->visitantes = 101;
-        $this->registrosMensuales = 288;
-        $this->concurrenciaUsuarios = 56;
+        $this->visitantes = Visitantes::all()->count();
+        $this->registrosMensuales = Visitantes::whereMonth('created_at', now()->month)->count();
+        $this->concurrenciaUsuarios = Visitantes::all()->count();
     }
     public function render()
     {

@@ -129,10 +129,10 @@
                         </div>
                     </button>
                     <ul x-cloak x-show="activeDropdown === 'visitantes'" x-collapse class="text-gray-500 sub-menu">
-                        {{-- <li>
-                            <a href="{{ route('visitantes.create') }}" wire:navigate
+                        <li>
+                            <a href="{{ route('visitantes.create') }}" rel="external"
                                 :class="{ 'active': isActive('visitantes.create') }">Registro visitantes</a>
-                        </li> --}}
+                        </li>
                         <li>
                             <a href="{{ route('visitantes.listar') }}" wire:navigate
                                 :class="{ 'active': isActive('visitantes.listar') }">Ver visitantes</a>

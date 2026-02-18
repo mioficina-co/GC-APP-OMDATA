@@ -14,7 +14,7 @@
                         <div class="flex justify-between items-center mb-5">
                             <h5 class="text-lg font-semibold dark:text-white-light">Datos del visitante</h5>
                             @auth
-                                <a href="{{ route('dashboard') }}" class="btn btn-primary d-flex align-items-center">
+                                <a href="{{ route('dashboard') }}" rel="external" class="btn btn-primary d-flex align-items-center">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg" class="me-2">
                                         <circle cx="12" cy="6" r="4" stroke="currentColor"
