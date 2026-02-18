@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Livewire\Forms\VisitanteForm;
 use App\Models\Arl;
-use App\Models\eps;
+use App\Models\Eps;
 use App\Models\Paises;
 use App\Models\TiposDocumento;
 use App\Models\Visitantes;
@@ -20,7 +20,7 @@ class EditVisitanteComponent extends Component
 
     public function mount()
     {
-        $this->visitanteForm->eps = eps::all();
+        $this->visitanteForm->eps = Eps::all();
         $this->visitanteForm->arl = Arl::all();
         $this->visitanteForm->tiposDocumento = TiposDocumento::all();
         $this->visitanteForm->paises = Paises::all();

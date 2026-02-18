@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Models\AuditoriaDatos;
 use App\Models\Empleados;
 use App\Models\Razonvisita;
-use App\Models\visitas;
+use App\Models\Visitas;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
