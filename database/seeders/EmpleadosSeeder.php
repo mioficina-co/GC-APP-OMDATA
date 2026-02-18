@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\empleados;
+use App\Models\Empleados;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory;
