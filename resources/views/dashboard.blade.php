@@ -95,7 +95,6 @@
             </div>
         </div>       
     </div>
-    <script src="/assets/js/countUp.min.js"></script>
     <script>
         // hours
         const counter1 = new countUp.CountUp("counter1", 710, {

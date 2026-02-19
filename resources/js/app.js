@@ -1,4 +1,5 @@
 import './bootstrap';
+import './js/countUp.min';
 import SignaturePad from 'signature_pad';
 window.SignaturePad = SignaturePad; // Exponer SignaturePad globalmente
 

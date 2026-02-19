@@ -121,7 +121,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Scripts necesarios -->
-    <script src="/assets/js/countUp.min.js"></script>
 </div>
