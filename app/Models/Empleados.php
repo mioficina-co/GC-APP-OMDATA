@@ -10,6 +10,8 @@ class Empleados extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'empleados';
+
     protected $fillable = [
         'nombre',
         'apellido',
