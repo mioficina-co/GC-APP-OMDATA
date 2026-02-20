@@ -67,7 +67,7 @@ class EditEmpleadoComponent extends Component
                 'apellido' => $this->apellido,
                 'documento' => $this->documento,
                 'departamento_id' => $this->departamento_id,
-                'updated_by' => Auth::user()->id, // Auditoría
+                'updated_by' => Auth::id(), // Auditoría
             ]);
 
             $this->showModal = false;

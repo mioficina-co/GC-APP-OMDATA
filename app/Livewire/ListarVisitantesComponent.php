@@ -102,7 +102,7 @@ class ListarVisitantesComponent extends Component
             // Guardar el PDF en storage/app/public/certificados/
             Storage::disk('public')->put("certificados/{$fileName}", $pdf->output());
 
-            $visitante->update(['deleted_by' => Auth::user()->id]);
+            $visitante->update(['deleted_by' => Auth::id()]);
 
             // Eliminar al visitante (si es necesario)
             $visitante->delete();
