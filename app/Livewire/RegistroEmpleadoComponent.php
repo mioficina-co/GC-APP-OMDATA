@@ -53,7 +53,7 @@ class RegistroEmpleadoComponent extends Component
             'apellido' => $this->apellido,
             'documento' => $this->documento,
             'departamento_id' => $this->departamento_id,
-            'created_by' => Auth::user()->id, // Auditoría
+            'created_by' => Auth::id(), // Auditoría
         ]);
         session()->flash('success', 'Empleado registrado exitosamente.');
         redirect()->route('empleados.listar');
@@ -154,7 +154,7 @@ class RegistroEmpleadoComponent extends Component
                     'apellido' => $record['apellidos'],
                     'documento' => $record['documento'],
                     'departamento_id' => $record['departamento_id'],
-                    'created_by' => Auth::user()->id, // Importante: Auditoría
+                    'created_by' => Auth::id(), // Importante: Auditoría
                 ]);
 
                 $procesados++;

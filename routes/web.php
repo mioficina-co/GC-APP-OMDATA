@@ -21,7 +21,7 @@ Route::get('/index', function () {
     return view('index');
 });
 
-Route::get('/registroVisitante', RegistroVisitanteComponent::class)->name('visitantes.create');
+
 
 Route::get('/pruebas', PruebasComponent::class)->name('pruebas');
 
@@ -30,6 +30,9 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+
+    //registro de  visitante
+    Route::get('/registroVisitante', RegistroVisitanteComponent::class)->name('visitantes.create');
 
 
     Route::get('/dashboard', DashboardPrincipalComponent::class)->name('dashboard');

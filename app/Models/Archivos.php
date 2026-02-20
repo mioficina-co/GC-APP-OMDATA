@@ -10,6 +10,8 @@ class Archivos extends Model
     /** @use HasFactory<\Database\Factories\ArchivosFactory> */
     use HasFactory;
 
+    protected $table = 'archivos';
+
     protected $fillable = [
         'visitante_id',
         'visita_id',

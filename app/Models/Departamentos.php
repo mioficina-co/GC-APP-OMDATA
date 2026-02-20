@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Departamentos extends Model
 {
     //
+
+    protected $table = 'departamentos';
+
+    
     public function visitas(){
         return $this->hasMany(Visitas::class);
     }
