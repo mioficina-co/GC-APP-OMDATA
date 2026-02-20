@@ -37,7 +37,7 @@ class RegistroSalidaComponent extends Component
 
             $visita->update([
                 'fecha_fin' => now(),
-                'updated_by' => Auth::user()->id, // Auditoría
+                'updated_by' => Auth::id(), // Auditoría
             ]);
 
             $this->showModal = false;

@@ -190,7 +190,7 @@ class RegistroVisitanteComponent extends Component
                     'fecha_aceptacion_politica' => now(),
                     'ip_aceptacion' => request()->ip(),
                     'user_agent_aceptacion' => request()->userAgent(),
-                    'created_by' => Auth::user()->id, // Si hay un usuario logueado (ej. Recepcionista)
+                    'created_by' => Auth::id(), // Si hay un usuario logueado (ej. Recepcionista)
                 ]
             );
 
@@ -213,7 +213,7 @@ class RegistroVisitanteComponent extends Component
                 'fecha_inicio' => now(),
                 'total_visitantes' => $this->totalpersonas ?? 1,
                 'pertenencias' => $this->pertenencias,
-                'created_by' => Auth::user()->id,
+                'created_by' => Auth::id(),
             ]);
 
             // 5. Tratamiento de Archivos (Foto y Firma)
