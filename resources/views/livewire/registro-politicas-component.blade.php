@@ -16,28 +16,25 @@
                 <div class="flex items-center">
                     <!-- Mensajes de Estado -->
                     @if (session()->has('error'))
-                        <div wire:loading.remove
-                            class="p-2 bg-red-100 border border-red-400 text-red-700 rounded shadow-sm text-sm">
-                            {{ session('error') }}
-                        </div>
+                    <div wire:loading.remove class="p-2 bg-red-100 border border-red-400 text-red-700 rounded shadow-sm text-sm">
+                        {{ session('error') }}
+                    </div>
                     @endif
                     @if (session()->has('success'))
-                        <div wire:loading.remove
-                            class="p-2 bg-green-100 border border-green-400 text-green-700 rounded shadow-sm text-sm">
-                            {{ session('success') }}
-                        </div>
+                    <div wire:loading.remove class="p-2 bg-green-100 border border-green-400 text-green-700 rounded shadow-sm text-sm">
+                        {{ session('success') }}
+                    </div>
                     @endif
 
                     <!-- Indicador de carga -->
-                    <div wire:loading
-                        class="p-2 bg-blue-100 border border-blue-400 text-blue-700 rounded shadow-sm text-sm">
+                    <div wire:loading class="p-2 bg-blue-100 border border-blue-400 text-blue-700 rounded shadow-sm text-sm">
                         Procesando actualización...
                     </div>
                 </div>
             </div>
 
             <div class="mb-5">
-                <form class="space-y-5" wire:submit.prevent="registroPolitica">
+                <form class="space-y-5" wire:submit.prevent="registroPolitica" autocomplete="off" autocapitalize="off" spellcheck="false">
                     <div class="mb-6">
                         <h6 class="font-semibold text-md dark:text-white-light mb-4">Actualizar Texto de Consentimiento
                             Habitual</h6>
@@ -46,35 +43,28 @@
                             <!-- Input Versión -->
                             <div class="lg:col-span-1">
                                 <label for="version">Versión del Documento</label>
-                                <input type="text" id="version" placeholder="Ejemplo: v1.2 - Febrero 2024"
-                                    class="form-input w-full" wire:model="version" />
+                                <input type="text" id="version" placeholder="Ejemplo: v1.2 - Febrero 2024" class="form-input w-full" wire:model="version" />
                                 @error('version')
-                                    <p class="text-red-600 text-sm mt-1 flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                        </svg>
-                                        {{ $message }}
-                                    </p>
+                                <p class="text-red-600 text-sm mt-1 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12h7M15 12l-3-3M15 12l-3 3" />
+                                    </svg>
+                                    {{ $message }}
+                                </p>
                                 @enderror
                             </div>
 
                             <!-- Textarea Contenido -->
                             <div class="lg:col-span-1">
                                 <label for="contenido">Contenido Legal (Tratamiento de Datos Personales)</label>
-                                <textarea id="contenido" rows="8"
-                                    placeholder="Escriba aquí el texto que aparecerá en el formulario de registro de visitantes..."
-                                    class="form-textarea w-full" wire:model="contenido"></textarea>
+                                <textarea id="contenido" rows="8" placeholder="Escriba aquí el texto que aparecerá en el formulario de registro de visitantes..." class="form-textarea w-full" wire:model="contenido"></textarea>
                                 @error('contenido')
-                                    <p class="text-red-600 text-sm mt-1 flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                        </svg>
-                                        {{ $message }}
-                                    </p>
+                                <p class="text-red-600 text-sm mt-1 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12h7M15 12l-3-3M15 12l-3 3" />
+                                    </svg>
+                                    {{ $message }}
+                                </p>
                                 @enderror
                             </div>
 
@@ -109,17 +99,17 @@
                     </thead>
                     <tbody>
                         @foreach ($politicas as $p)
-                            <tr>
-                                <td>{{ $p->version }}</td>
-                                <td>{{ $p->fecha_publicacion }}</td>
-                                <td>
-                                    @if ($p->activa)
-                                        <span class="badge badge-outline-success">Vigente (Activa)</span>
-                                    @else
-                                        <span class="badge badge-outline-danger">Archivada</span>
-                                    @endif
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>{{ $p->version }}</td>
+                            <td>{{ $p->fecha_publicacion }}</td>
+                            <td>
+                                @if ($p->activa)
+                                <span class="badge badge-outline-success">Vigente (Activa)</span>
+                                @else
+                                <span class="badge badge-outline-danger">Archivada</span>
+                                @endif
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
