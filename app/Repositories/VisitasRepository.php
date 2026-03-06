@@ -3,49 +3,121 @@
 namespace App\Repositories;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class VisitasRepository
 {
     public function tratamientoImagen($base64, $numerodocumento, $tipo)
     {
+        // Campo a reportar en validación según tipo
+        $field = match ($tipo) {
+            'foto' => 'foto',
+            'firma' => 'firma',
+            default => null,
+        };
+
+        if (!$field) {
+            // Si intentan manipular el payload con un tipo inválido → 422 controlado
+            throw ValidationException::withMessages([
+                'foto' => 'Tipo de evidencia no permitido.',
+            ]);
+        }
 
         try {
-            // Validar que sea Base64 con un encabezado de imagen válido
+            $base64 = trim($base64);
+
+            if ($base64 === '') {
+                throw ValidationException::withMessages([
+                    $field => 'La imagen es requerida.',
+                ]);
+            }
+
+            // 1) Validar encabezado Base64 permitido
+            // Acepta: data:image/jpeg;base64,  data:image/jpg;base64,  data:image/png;base64,
             if (!preg_match('/^data:image\/(jpeg|jpg|png);base64,/', $base64)) {
-                throw new \Exception('El formato del archivo no es válido.');
+                throw ValidationException::withMessages([
+                    $field => 'El formato del archivo no es válido. Solo se permite JPG o PNG.',
+                ]);
             }
 
-            // Extraer datos del archivo
-            [$meta, $data] = explode(',', $base64, 2);
-
-            // Decodificar los datos y validar el tamaño
-            $dataDecodificada = base64_decode($data, true);
-            if ($dataDecodificada === false) {
-                throw new \Exception('El archivo no pudo ser decodificado.');
+            // 2) Separar metadatos y data
+            $parts = explode(',', $base64, 2);
+            if (count($parts) !== 2 || $parts[1] === '') {
+                throw ValidationException::withMessages([
+                    $field => 'El contenido de la imagen no es válido.',
+                ]);
             }
 
-            // Validar que sea una imagen válida
-            $infoArchivo = getimagesizefromstring($dataDecodificada);
-            if ($infoArchivo === false) {
-                throw new \Exception('El archivo no es una imagen válida.');
+            [$meta, $data] = $parts;
+
+            // 3) Decodificar Base64 (strict)
+            $decoded = base64_decode($data, true);
+            if ($decoded === false) {
+                throw ValidationException::withMessages([
+                    $field => 'La imagen no pudo ser decodificada.',
+                ]);
             }
 
-            // Determinar el formato de la imagen
-            $extensiones = ['image/jpeg' => 'jpg', 'image/png' => 'png'];
-            $extension = $extensiones[$infoArchivo['mime']] ?? 'png';
+            // 4) Validar tamaño (ajusta según tu operación)
+            $maxBytes = 2 * 1024 * 1024;  // 2MB
+            if (strlen($decoded) > $maxBytes) {
+                throw ValidationException::withMessages([
+                    $field => 'La imagen excede el tamaño permitido (máx. 2MB).',
+                ]);
+            }
 
-            // Construir la ruta de almacenamiento según el tipo
-            $directorio = $tipo === 'foto' ? 'visitantes/fotos/' : 'visitantes/firmas/';
-            $rutaArchivo = $directorio . uniqid('', false) . '_' . $numerodocumento . '.' . $extension;
+            // 5) Validar que sea imagen real
+            $info = @getimagesizefromstring($decoded);
+            if ($info === false) {
+                throw ValidationException::withMessages([
+                    $field => 'El archivo no es una imagen válida.',
+                ]);
+            }
 
-            // Almacenar el archivo
-            Storage::disk('public')->put($rutaArchivo, $dataDecodificada);
+            // 6) Validar MIME permitido
+            $mime = $info['mime'] ?? null;
 
-            return $rutaArchivo;
+            $extMap = [
+                'image/jpeg' => 'jpg',
+                'image/jpg' => 'jpg',
+                'image/png' => 'png',
+            ];
 
-        } catch (\Exception $e) {
-            // Manejar errores
-            return response()->json(['error' => $e->getMessage()], 400);
+            if (!$mime || !isset($extMap[$mime])) {
+                throw ValidationException::withMessages([
+                    $field => 'Tipo de imagen no permitido. Solo se permite JPG o PNG.',
+                ]);
+            }
+
+            $ext = $extMap[$mime];
+
+            // 7) Construir ruta segura
+            $documentoSafe = preg_replace('/\D+/', '', $numerodocumento) ?: 'doc';
+            $dir = $tipo === 'foto' ? 'visitantes/fotos/' : 'visitantes/firmas/';
+            $ruta = $dir . uniqid('', true) . '_' . $documentoSafe . '.' . $ext;
+
+            // 8) Guardar en disk public
+            $ok = Storage::disk('public')->put($ruta, $decoded);
+
+            if (!$ok) {
+                throw ValidationException::withMessages([
+                    $field => 'No fue posible almacenar la imagen. Intente nuevamente.',
+                ]);
+            }
+
+            return [
+                'ruta' => $ruta,
+                'mime' => $mime,
+                'ext' => $ext,
+            ];
+        } catch (ValidationException $e) {
+            // Mantener respuesta 422 (Livewire mostrará errores de validación)
+            throw $e;
+        } catch (\Throwable $e) {
+            // Evitar exponer detalles técnicos; responder 422 controlado
+            throw ValidationException::withMessages([
+                $field => 'Ocurrió un error procesando la imagen. Intente nuevamente.',
+            ]);
         }
     }
 }
