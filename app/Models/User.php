@@ -13,7 +13,6 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens;
-
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
     use HasProfilePhoto;
@@ -63,5 +62,12 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getProfilePhotoUrlAttribute(): string
+    {
+        return $this->profile_photo_path
+            ? route('profile-photo.show', $this)
+            : $this->defaultProfilePhotoUrl();
     }
 }

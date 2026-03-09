@@ -96,8 +96,8 @@ class RegistroVisitanteComponent extends Component
     }
 
     protected $rules = [
-        'foto' => 'required',
-        'firma' => 'required',
+        'foto' => 'required|string',
+        'firma' => 'required|string',
         'empleado' => 'required|exists:empleados,id',
         'razonvisita' => 'required|exists:razonvisitas,id',
         'otrorazonvisita' => 'nullable|required_if:esOtro,true|string|max:255',
@@ -106,7 +106,7 @@ class RegistroVisitanteComponent extends Component
         'apellido' => 'required|string|max:100',
         'tipodocumento' => 'required|exists:tipos_documento,id',
         'numerodocumento' => 'required|regex:/^\d{6,10}$/',
-        'rh' => 'required|string|max:3',
+        'rh' => 'required||in:A+,A-,B+,B-,AB+,AB-,O+,O-',
         'celular' => 'required|regex:/^\d{10}$/',
         'email' => 'required|email|max:255',
         'compania' => 'nullable|string|max:255',
@@ -141,8 +141,7 @@ class RegistroVisitanteComponent extends Component
         'numerodocumento.regex' => 'El número de documento debe tener entre 6 y 10 dígitos.',
         'numerodocumento.unique' => 'El número de documento ya está registrado.',
         'rh.required' => 'El RH es requerido.',
-        'rh.string' => 'El RH debe ser una cadena de texto.',
-        'rh.max' => 'El RH no debe exceder los 3 caracteres.',
+        'rh.in' => 'El RH debe ser uno de los siguientes: A+, A-, B+, B-, AB+, AB-, O+, O-',
         'celular.required' => 'El número de celular es requerido.',
         'celular.regex' => 'El número de celular debe tener 10 dígitos.',
         'email.required' => 'El correo electrónico es requerido.',
@@ -169,9 +168,41 @@ class RegistroVisitanteComponent extends Component
         'aceptaPolitica.accepted' => 'Debe aceptar la política de privacidad.',
     ];
 
+    private function validateEvidencePayloads(): void
+    {
+        foreach (['foto', 'firma'] as $field) {
+            $value = $this->{$field};
+
+            if (!is_string($value) || !str_starts_with($value, 'data:image/png;base64,')) {
+                throw ValidationException::withMessages([
+                    $field => 'La evidencia capturada no tiene un formato permitido.',
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Esto mantiene la experiencia de usuario, pero no debe considerarse
+     * un control de seguridad fuerte porque esos flags vienen del cliente.
+     */
+    private function validateCaptureStateForUx(): void
+    {
+        if (
+            !$this->foto_face_ok ||
+            $this->foto_face_count !== 1 ||
+            ($this->foto_face_score ?? 0) < 0.75
+        ) {
+            throw ValidationException::withMessages([
+                'foto' => $this->foto_face_message ?: 'La foto no contiene un rostro válido. Ubique un único rostro, centrado y vuelva a capturar.',
+            ]);
+        }
+    }
+
     public function submitSignature(VisitasRepository $visitasRepository)
     {
         $this->validate();
+        $this->validateEvidencePayloads();
+        $this->validateCaptureStateForUx();
 
         if (
             !$this->foto_face_ok ||
