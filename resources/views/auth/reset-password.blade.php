@@ -1,36 +1,117 @@
 <x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+    {{-- Fondo y decorativos --}}
+    <div class="absolute inset-0 bg-gradient-to-b from-white to-blue-500">
+        <img src="/assets/images/auth/bg-gradient.png" alt="Imagen de fondo" class="object-cover w-full h-full opacity-50" />
+    </div>
 
-        <x-validation-errors class="mb-4" />
+    <div class="relative flex min-h-screen items-center justify-center bg-[url('/assets/images/auth/map.png')] bg-cover bg-center bg-no-repeat px-6 py-10 dark:bg-[#060818] sm:px-16">
 
-        <form method="POST" action="{{ route('password.update') }}">
-            @csrf
+        {{-- Objetos decorativos omitidos para brevedad, mantenlos igual que en tu login --}}
 
-            <input type="hidden" name="token" value="{{ $request->route('token') }}">
+        <div class="relative flex w-full max-w-[1502px] flex-col justify-between overflow-hidden rounded-md bg-white/60 backdrop-blur-lg dark:bg-black/50 lg:min-h-[758px] lg:flex-row lg:gap-10 xl:gap-0">
 
-            <div class="block">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
+            {{-- Columna Izquierda (Logo e Ilustración) --}}
+            <div class="relative hidden w-full items-center justify-center bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(67,97,238,1)_100%)] p-5 lg:inline-flex lg:max-w-[835px] xl:-ms-32 ltr:xl:skew-x-[14deg] rtl:xl:skew-x-[-14deg]">
+                <div class="ltr:xl:-skew-x-[14deg] rtl:xl:skew-x-[14deg]">
+                    <a href="/" class="block w-48 lg:w-72 ms-10">
+                        <img src="/assets/images/logo_omdata.png" alt="Logo" class="w-full" />
+                    </a>
+
+                    <div class="mt-24 hidden w-full max-w-[430px] lg:block">
+                        <img src="/assets/images/auth/login.svg" alt="Imagen de portada" class="w-full" />
+                    </div>
+                </div>
             </div>
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
+            {{-- Columna Derecha (Formulario) --}}
+            <div class="relative flex w-full flex-col items-center justify-center gap-6 px-4 pb-16 pt-6 sm:px-6 lg:max-w-[667px]">
+                <div class="w-full max-w-[440px] lg:mt-16">
+                    <div class="mb-10">
+                        <h1 class="text-3xl font-extrabold uppercase !leading-snug text-primary md:text-4xl">
+                            Restablecer contraseña
+                        </h1>
+                        <p class="text-base font-bold leading-normal text-white-dark">
+                            Ingresa tu correo electrónico y define una nueva contraseña para recuperar el acceso
+                        </p>
+                    </div>
 
-            <div class="mt-4">
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
+                    {{-- MENSAJES DE ESTADO --}}
+                    @if (session('status'))
+                    <div class="p-4 mb-4 text-sm font-bold text-green-500 rounded border bg-green-500/10 border-green-500/20">
+                        {{ session('status') }}
+                    </div>
+                    @endif
 
-            <div class="flex items-center justify-end mt-4">
-                <x-button>
-                    {{ __('Reset Password') }}
-                </x-button>
+                    {{-- ERRORES DE VALIDACIÓN --}}
+                    @if ($errors->any())
+                    <div class="p-4 mb-4 rounded border bg-danger/10 text-danger border-danger/20">
+                        <ul class="text-sm font-bold list-disc list-inside">
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('password.update') }}" class="space-y-5">
+                        @csrf
+
+                        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+
+                        {{-- Input Email --}}
+                        <div>
+                            <label for="email" class="dark:text-white">Correo Electrónico</label>
+                            <div class="relative text-white-dark">
+                                <input id="email" type="email" name="email" value="{{ old('email', $request->email) }}" placeholder="ejemplo@correo.com" class="form-input ps-10 placeholder:text-white-dark" required autofocus autocomplete="username" />
+                                <span class="absolute top-1/2 -translate-y-1/2 start-4">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                        <polyline points="22,6 12,13 2,6" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+
+                        {{-- Input Nueva Contraseña --}}
+                        <div>
+                            <label for="password" class="dark:text-white">Nueva contraseña</label>
+                            <div class="relative text-white-dark">
+                                <input id="password" type="password" name="password" placeholder="********" class="form-input ps-10 placeholder:text-white-dark" required autocomplete="new-password" />
+                                <span class="absolute top-1/2 -translate-y-1/2 start-4">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+
+                        {{-- Input Confirmar Contraseña --}}
+                        <div>
+                            <label for="password_confirmation" class="dark:text-white">Confirmar contraseña</label>
+                            <div class="relative text-white-dark">
+                                <input id="password_confirmation" type="password" name="password_confirmation" placeholder="********" class="form-input ps-10 placeholder:text-white-dark" required autocomplete="new-password" />
+                                <span class="absolute top-1/2 -translate-y-1/2 start-4">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-gradient !mt-6 w-full border-0 uppercase shadow-[0_10px_20px_-10px_rgba(67,97,238,0.44)]">
+                            Restablecer contraseña
+                        </button>
+
+                        <div class="text-center">
+                            <a href="{{ route('login') }}" class="text-sm font-bold text-primary hover:underline">
+                                Volver al inicio de sesión
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
-    </x-authentication-card>
+        </div>
+    </div>
 </x-guest-layout>

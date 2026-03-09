@@ -3,22 +3,23 @@
 namespace App\Livewire;
 
 use App\Models\Archivos;
-use App\Models\Eps;
 use App\Models\Arl;
 use App\Models\Consentimiento;
 use App\Models\Departamentos;
 use App\Models\Empleados;
+use App\Models\Eps;
 use App\Models\Paises;
 use App\Models\PoliticaPrivacidad;
 use App\Models\RazonVisita;
 use App\Models\TiposDocumento;
 use App\Models\Visitantes;
 use App\Models\Visitas;
-use Livewire\Component;
 use App\Repositories\VisitasRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
+use Livewire\Component;
 
 class RegistroVisitanteComponent extends Component
 {
@@ -46,19 +47,29 @@ class RegistroVisitanteComponent extends Component
     public $eps;
     public $arl;
     public $rh;
-
     public $busquedaRealizada = false;
     public $visitanteEncontrado = false;
-
-    //politica vigente
+    // politica vigente
     public $politicaVigente;
-
     public $esOtro = false;
     public $otrorazonvisita;
     private $visitante;
     private $visitas;
+    // deteccion de rostro
+    public bool $foto_face_ok = false;
+    public int $foto_face_count = 0;
+    public ?float $foto_face_score = null;
+    public array $foto_face_box = [];
+    public ?string $foto_face_message = null;
 
-    public $tipoDocumento, $departamentos, $razones, $paises, $empleados, $eps_id, $arl_id, $aceptaPolitica;
+    public $tipoDocumento,
+        $departamentos,
+        $razones,
+        $paises,
+        $empleados,
+        $eps_id,
+        $arl_id,
+        $aceptaPolitica;
 
     public function mount(Visitantes $visitante, Visitas $visitas)
     {
@@ -77,7 +88,7 @@ class RegistroVisitanteComponent extends Component
 
         // Opcional: Si no hay política, podrías lanzar un error o cargar un texto por defecto
         if (!$this->politicaVigente) {
-            $this->politicaVigente = (object)[
+            $this->politicaVigente = (object) [
                 'contenido' => 'No se ha configurado una política de privacidad activa. Por favor, contacte al administrador.',
                 'version' => 'S/N'
             ];
@@ -85,8 +96,8 @@ class RegistroVisitanteComponent extends Component
     }
 
     protected $rules = [
-        'foto' => 'required',
-        'firma' => 'required',
+        'foto' => 'required|string',
+        'firma' => 'required|string',
         'empleado' => 'required|exists:empleados,id',
         'razonvisita' => 'required|exists:razonvisitas,id',
         'otrorazonvisita' => 'nullable|required_if:esOtro,true|string|max:255',
@@ -95,7 +106,7 @@ class RegistroVisitanteComponent extends Component
         'apellido' => 'required|string|max:100',
         'tipodocumento' => 'required|exists:tipos_documento,id',
         'numerodocumento' => 'required|regex:/^\d{6,10}$/',
-        'rh' => 'required|string|max:3',
+        'rh' => 'required||in:A+,A-,B+,B-,AB+,AB-,O+,O-',
         'celular' => 'required|regex:/^\d{10}$/',
         'email' => 'required|email|max:255',
         'compania' => 'nullable|string|max:255',
@@ -130,8 +141,7 @@ class RegistroVisitanteComponent extends Component
         'numerodocumento.regex' => 'El número de documento debe tener entre 6 y 10 dígitos.',
         'numerodocumento.unique' => 'El número de documento ya está registrado.',
         'rh.required' => 'El RH es requerido.',
-        'rh.string' => 'El RH debe ser una cadena de texto.',
-        'rh.max' => 'El RH no debe exceder los 3 caracteres.',
+        'rh.in' => 'El RH debe ser uno de los siguientes: A+, A-, B+, B-, AB+, AB-, O+, O-',
         'celular.required' => 'El número de celular es requerido.',
         'celular.regex' => 'El número de celular debe tener 10 dígitos.',
         'email.required' => 'El correo electrónico es requerido.',
@@ -158,18 +168,60 @@ class RegistroVisitanteComponent extends Component
         'aceptaPolitica.accepted' => 'Debe aceptar la política de privacidad.',
     ];
 
+    private function validateEvidencePayloads(): void
+    {
+        foreach (['foto', 'firma'] as $field) {
+            $value = $this->{$field};
+
+            if (!is_string($value) || !str_starts_with($value, 'data:image/png;base64,')) {
+                throw ValidationException::withMessages([
+                    $field => 'La evidencia capturada no tiene un formato permitido.',
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Esto mantiene la experiencia de usuario, pero no debe considerarse
+     * un control de seguridad fuerte porque esos flags vienen del cliente.
+     */
+    private function validateCaptureStateForUx(): void
+    {
+        if (
+            !$this->foto_face_ok ||
+            $this->foto_face_count !== 1 ||
+            ($this->foto_face_score ?? 0) < 0.75
+        ) {
+            throw ValidationException::withMessages([
+                'foto' => $this->foto_face_message ?: 'La foto no contiene un rostro válido. Ubique un único rostro, centrado y vuelva a capturar.',
+            ]);
+        }
+    }
 
     public function submitSignature(VisitasRepository $visitasRepository)
     {
         $this->validate();
+        $this->validateEvidencePayloads();
+        $this->validateCaptureStateForUx();
+
+        if (
+            !$this->foto_face_ok ||
+            $this->foto_face_count !== 1 ||
+            ($this->foto_face_score ?? 0) < 0.75
+        ) {
+            throw ValidationException::withMessages([
+                'foto' => $this->foto_face_message ?: 'La foto no contiene un rostro válido. Ubique un único rostro, centrado y vuelva a capturar.',
+            ]);
+        }
 
         DB::transaction(function () use ($visitasRepository) {
-
             // 1. Obtener la política activa
             $politicaActiva = PoliticaPrivacidad::where('activa', true)->first();
-            if (!$politicaActiva) throw new \Exception("No hay una política de privacidad activa.");
-
-
+            if (!$politicaActiva) {
+                throw ValidationException::withMessages([
+                    'aceptaPolitica' => 'No existe una política de privacidad activa. Contacte al administrador.'
+                ]);
+            }
 
             $visitante = Visitantes::updateOrCreate(
                 ['numero_documento' => $this->numerodocumento, 'tipos_documento_id' => $this->tipodocumento],
@@ -190,7 +242,7 @@ class RegistroVisitanteComponent extends Component
                     'fecha_aceptacion_politica' => now(),
                     'ip_aceptacion' => request()->ip(),
                     'user_agent_aceptacion' => request()->userAgent(),
-                    'created_by' => Auth::id(), // Si hay un usuario logueado (ej. Recepcionista)
+                    'created_by' => Auth::id(),  // Si hay un usuario logueado (ej. Recepcionista)
                 ]
             );
 
@@ -224,18 +276,18 @@ class RegistroVisitanteComponent extends Component
                 'visitante_id' => $visitante->id,
                 'visita_id' => $visita->id,
                 'tipo' => 'foto',
-                'ruta' => $foto_ruta,
-                'nombre_original' => "foto_{$this->numerodocumento}.png",
-                'mime_type' => 'image/png'
+                'ruta' => $foto_ruta['ruta'],
+                'nombre_original' => "foto_{$this->numerodocumento}.{$foto_ruta['ext']}",
+                'mime_type' => $foto_ruta['mime']
             ]);
 
             Archivos::create([
                 'visitante_id' => $visitante->id,
                 'visita_id' => $visita->id,
                 'tipo' => 'firma',
-                'ruta' => $firma_ruta,
-                'nombre_original' => "firma_{$this->numerodocumento}.png",
-                'mime_type' => 'image/png'
+                'ruta' => $firma_ruta['ruta'],
+                'nombre_original' => "firma_{$this->numerodocumento}.{$firma_ruta['ext']}",
+                'mime_type' => $firma_ruta['mime']
             ]);
         });
 
@@ -257,6 +309,11 @@ class RegistroVisitanteComponent extends Component
         ]);
     }
 
+    public function limpiar()
+    {
+        $this->dispatch('limpiar');
+    }
+
     /**
      * HOOKS: Se disparan cuando cambian los campos clave
      */
@@ -269,7 +326,6 @@ class RegistroVisitanteComponent extends Component
     {
         $this->buscarOResetearVisitante();
     }
-
 
     public function updatedEmpleado($empleado)
     {
@@ -310,12 +366,18 @@ class RegistroVisitanteComponent extends Component
             'arl_id',
             'aceptaPolitica',
             'busquedaRealizada',
+            'foto_face_ok',
+            'foto_face_count',
+            'foto_face_score',
+            'foto_face_box',
+            'foto_face_message',
+            'esOtro',
+            'otrorazonvisita'
         ]);
 
         $this->dispatch('resetFirma');
         $this->dispatch('resetFoto');
     }
-
 
     /**
      * Lógica central de búsqueda y limpieza
@@ -343,15 +405,13 @@ class RegistroVisitanteComponent extends Component
 
         // 2. Solo buscar si AMBOS campos tienen valor
         if ($this->numerodocumento && $this->tipodocumento) {
-
             $visitante = Visitantes::where('numero_documento', $this->numerodocumento)
                 ->where('tipos_documento_id', $this->tipodocumento)
                 ->first();
 
-            $this->busquedaRealizada = true; // Marcamos que se hizo el intento
+            $this->busquedaRealizada = true;  // Marcamos que se hizo el intento
 
             if ($visitante) {
-
                 $this->visitanteEncontrado = true;
                 // Rellenar campos si el visitante existe
                 $this->nombre = $visitante->nombre;
@@ -369,7 +429,6 @@ class RegistroVisitanteComponent extends Component
             }
         }
     }
-
 
     public function updatedRazonvisita($value)
     {
