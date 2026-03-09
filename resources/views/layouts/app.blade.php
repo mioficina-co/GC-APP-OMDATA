@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    {{-- Scripts de la plantilla Vristo --}}
+    {{-- Scripts de la plantilla --}}
     <script src="{{ asset('assets/js/perfect-scrollbar.min.js') }}"></script>
     <script defer src="{{ asset('assets/js/popper.min.js') }}"></script>
     <script defer src="{{ asset('assets/js/tippy-bundle.umd.min.js') }}"></script>
@@ -92,12 +92,12 @@
 
     <div class="min-h-screen text-black main-container dark:text-white-dark" :class="[$store.app.navbar]">
 
-        {{-- Sidebar de Vristo --}}
+        {{-- Sidebar  --}}
         <x-common.sidebar />
 
         <div class="flex flex-col min-h-screen main-content">
 
-            {{-- Header de Vristo (Reemplaza al navigation-menu de Jetstream) --}}
+            {{-- Header  --}}
             <x-common.header />
 
             <div class="p-6 dvanimation animate__animated" :class="[$store.app.animation]">
@@ -119,7 +119,7 @@
                 </main>
             </div>
 
-            {{-- Footer de Vristo --}}
+            {{-- Footer  --}}
             <x-common.footer />
         </div>
     </div>
