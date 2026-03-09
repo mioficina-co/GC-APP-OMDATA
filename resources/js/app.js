@@ -7,6 +7,9 @@ import flatpickr from "flatpickr"; // Importar Flatpickr
 import "flatpickr/dist/flatpickr.min.css"; // Importar estilos
 import { Spanish } from "flatpickr/dist/l10n/es.js"; // Importar localización en español
 
+import './FotoFirmaRegistroVisitante/RegistroVisitanteFace';
+import './FotoFirmaRegistroVisitante/RegistroVisitanteFirma';
+
 // Configuración global para Flatpickr
 window.flatpickr = flatpickr; // Exponer Flatpickr globalmente si es necesario
 flatpickr.localize(Spanish);
