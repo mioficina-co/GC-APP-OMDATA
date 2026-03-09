@@ -426,65 +426,94 @@
                             </div>
                         </div>
 
-                        <div class="panel" x-data="fotoHandler">
-                            <div class="flex flex-col items-center">
-                                <h5 class="mb-6 text-2xl font-extrabold text-gray-900 dark:text-white">
-                                    Captura de Imagen
-                                </h5>
-                                <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
-                                    <!-- Tarjeta para Video en Vivo -->
-                                    <div class="flex relative flex-col items-center p-4 bg-white rounded-xl shadow-lg dark:bg-gray-800">
-                                        <h6 class="mb-3 text-lg font-semibold text-gray-700 dark:text-gray-300">Video
-                                            en
-                                            Vivo</h6>
-                                        <div class="overflow-hidden relative w-64 h-64 rounded-full border-4 border-blue-400">
-                                            <video id="video" class="object-cover w-full h-full" autoplay playsinline></video>
-                                            <!-- Overlay con guía: círculo para el rostro y curva para hombros -->
-                                            <div class="flex absolute inset-0 justify-center items-center pointer-events-none">
-                                                <svg viewBox="0 0 300 300" class="w-full h-full">
-                                                    <circle cx="150" cy="100" r="50" stroke="white" stroke-dasharray="8 4" fill="none" stroke-width="3" />
-                                                    <path d="M100,150 C130,180 170,180 200,150" stroke="white" stroke-dasharray="8 4" fill="none" stroke-width="3" />
-                                                </svg>
+                        <div class="panel">
+                            <div wire:ignore wire:key="foto-handler-registro" x-data="fotoHandler()">
+                                <div class="flex flex-col items-center">
+                                    <h5 class="mb-6 text-2xl font-extrabold text-gray-900 dark:text-white">
+                                        Captura de Imagen
+                                    </h5>
+
+                                    <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+                                        <!-- Video -->
+                                        <div class="flex relative flex-col items-center p-4 bg-white rounded-xl shadow-lg dark:bg-gray-800">
+                                            <h6 class="mb-3 text-lg font-semibold text-gray-700 dark:text-gray-300">
+                                                Video en Vivo
+                                            </h6>
+
+                                            <div class="overflow-hidden relative w-64 h-64 rounded-full border-4" :class="faceReady ? 'border-green-400' : 'border-blue-400'">
+                                                <video x-ref="video" class="object-cover w-full h-full" autoplay playsinline muted></video>
+
+                                                <div class="flex absolute inset-0 justify-center items-center pointer-events-none">
+                                                    <svg viewBox="0 0 300 300" class="w-full h-full">
+                                                        <circle cx="150" cy="100" r="50" stroke="white" stroke-dasharray="8 4" fill="none" stroke-width="3" />
+                                                        <path d="M100,150 C130,180 170,180 200,150" stroke="white" stroke-dasharray="8 4" fill="none" stroke-width="3" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+
+                                            <div class="mt-4 text-center">
+                                                <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full" :class="faceReady ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'">
+                                                    <span x-text="faceMessage"></span>
+                                                </span>
+
+                                                <div class="mt-2 text-xs text-gray-500" x-show="faceScore !== null">
+                                                    Confianza: <span x-text="Math.round(faceScore * 100) + '%'"></span> |
+                                                    Rostros detectados: <span x-text="faceCount"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Preview -->
+                                        <div class="flex relative flex-col items-center p-4 bg-white rounded-xl shadow-lg dark:bg-gray-800">
+                                            <h6 class="mb-3 text-lg font-semibold text-gray-700 dark:text-gray-300">
+                                                Vista Previa
+                                            </h6>
+
+                                            <div class="flex overflow-hidden relative justify-center items-center w-64 h-64 rounded-full border-4 border-green-400">
+                                                <template x-if="photoPreviewSrc">
+                                                    <img :src="photoPreviewSrc" class="object-cover object-center w-full h-full" alt="Vista previa">
+                                                </template>
+
+                                                <template x-if="!photoPreviewSrc">
+                                                    <div class="flex justify-center items-center w-full h-full">
+                                                        <svg class="w-24 h-24 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A8.963 8.963 0 0012 20c2.232 0 4.282-.77 5.879-2.044M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        </svg>
+                                                    </div>
+                                                </template>
+
+                                                <canvas x-ref="photoCanvas" class="hidden"></canvas>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- Tarjeta para Vista Previa Capturada -->
-                                    <div class="flex relative flex-col items-center p-4 bg-white rounded-xl shadow-lg dark:bg-gray-800">
-                                        <h6 class="mb-3 text-lg font-semibold text-gray-700 dark:text-gray-300">Vista
-                                            Previa</h6>
-                                        <div class="flex overflow-hidden relative justify-center items-center w-64 h-64 rounded-full border-4 border-green-400">
-                                            <!-- Si existe una foto, se muestra la imagen -->
-                                            <img wire:ignore id="photoPreview" class="object-cover object-center w-full h-full" alt="Vista previa" x-show="$wire.foto">
-                                            <!-- Fallback: ícono de usuario cuando no se haya capturado una imagen -->
-                                            <div x-show="!$wire.foto" class="flex justify-center items-center w-full h-full">
-                                                <svg class="w-24 h-24 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A8.963 8.963 0 0012 20c2.232 0 4.282-.77 5.879-2.044M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                </svg>
-                                            </div>
-                                            <canvas id="photoCanvas" class="hidden"></canvas>
-                                        </div>
+
+                                    <div class="flex flex-col justify-center items-center mt-8 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6">
+                                        <button type="button" class="px-8 py-3 font-semibold text-white rounded-full transition duration-300 focus:outline-none focus:ring-2" :class="faceReady
+                        ? 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'
+                        : 'bg-gray-400 cursor-not-allowed'" :disabled="!faceReady || !isDetectorReady || detectorBusy || captureInProgress" @click="capturePhoto()">
+                                            Capturar Foto
+                                        </button>
+
+                                        <button type="button" class="px-8 py-3 font-semibold text-red-500 rounded-full border border-red-500 transition duration-300 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-400" @click="clearPhoto()" x-show="photoPreviewSrc">
+                                            Limpiar Foto
+                                        </button>
                                     </div>
-                                </div>
-                                <div class="flex flex-col justify-center items-center mt-8 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6">
-                                    <button type="button" class="px-8 py-3 font-semibold text-white bg-blue-600 rounded-full transition duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500" @click="capturePhoto()">
-                                        Capturar Foto
-                                    </button>
-                                    <button type="button" class="px-8 py-3 font-semibold text-red-500 rounded-full border border-red-500 transition duration-300 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-400" @click="clearPhoto()" x-show="$wire.foto">
-                                        Limpiar Foto
-                                    </button>
-                                </div>
-                                <div class="mt-4 text-sm text-center text-red-600">
-                                    @error('foto')
-                                    <span class="flex justify-center items-center space-x-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12h7M15 12l-3-3M15 12l-3 3" />
-                                        </svg>
-                                        <span>{{ $message }}</span>
-                                    </span>
-                                    @enderror
                                 </div>
                             </div>
+
+                            <div class="mt-4 text-sm text-center text-red-600">
+                                @error('foto')
+                                <span class="flex justify-center items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12h7M15 12l-3-3M15 12l-3 3" />
+                                    </svg>
+                                    <span>{{ $message }}</span>
+                                </span>
+                                @enderror
+                            </div>
                         </div>
+
+
 
                         <div x-data="{ aceptaPolitica: @entangle('aceptaPolitica') }" class="mt-8">
                             <!-- Sección de Términos y Condiciones -->
@@ -526,7 +555,7 @@
                             </div>
 
                             <!-- Sección de Firma (solo si se acepta la política) - Opción 4 -->
-                            <div class="mt-8" x-data="firmaHandler" x-show="aceptaPolitica" x-transition>
+                            <div class="mt-8" x-data="firmaHandler()" x-show="aceptaPolitica" x-transition>
                                 <h6 class="mb-6 text-2xl font-bold text-center text-gray-800 dark:text-white">
                                     Firma
                                 </h6>
@@ -573,7 +602,7 @@
                     </div>
 
                     <!-- Botón de envío -->
-                    <div x-data="scrollToError" class="grid mt-6 sm:grid-cols-1">
+                    <div x-data="scrollToError()" class="grid mt-6 sm:grid-cols-1">
                         <button type="submit" class="btn btn-primary" @click="scrollToError">Enviar</button>
                     </div>
                 </div>
@@ -582,57 +611,12 @@
     </div>
 </div>
 
+
 <script>
-    document.addEventListener('alpine:init', () => {
-
-        Livewire.on('resetFirma', () => {
-            if (this.signaturePad) {
-                this.signaturePad.clear();
-                @this.set('firma', '');
-            }
-        });
-
-
-        Livewire.on('resetFoto', () => {
-            const photoPreview = document.getElementById('photoPreview');
-            photoPreview.classList.add('hidden');
-        });
-
-        Livewire.on('confirmacionGuardado', () => {
-            Swal.fire({
-                title: "¡Registro Exitoso!"
-                , text: "Gracias por registrarte. Ahora puedes disfrutar de todos nuestros servicios."
-                , icon: "success"
-                , iconColor: "#4CAF50", // Personalización del color del icono
-                confirmButtonText: "¡Genial!"
-                , confirmButtonColor: "#3085d6", // Color del botón
-                background: "#f9f9f9", // Color de fondo de la alerta
-                color: "#333", // Color del texto
-                timer: 5000, // Tiempo en ms para cerrar automáticamente la alerta
-                timerProgressBar: true
-                , showClass: {
-                    popup: "animate__animated animate__fadeInDown" // Animación al aparecer
-                }
-                , hideClass: {
-                    popup: "animate__animated animate__fadeOutUp" // Animación al desaparecer
-                }
-            });
-        });
-
-        Livewire.hook('message.processed', (message, component) => {
-            const firstError = document.querySelector('.text-red-600, .text-red-500, .error-message');
-            if (firstError) {
-                firstError.scrollIntoView({
-                    behavior: 'smooth'
-                    , block: 'center'
-                });
-            }
-        });
-
-        Alpine.data('scrollToError', () => ({
+    window.scrollToError = function() {
+        return {
             scrollToError() {
-                const firstError = document.querySelector(
-                    '.text-red-600, .text-red-500, .error-message');
+                const firstError = document.querySelector('.text-red-600, .text-red-500, .error-message');
                 if (firstError) {
                     firstError.scrollIntoView({
                         behavior: 'smooth'
@@ -640,10 +624,11 @@
                     });
                 }
             }
-        }));
+        };
+    };
 
-
-        Alpine.data('scrollHandler', () => ({
+    window.scrollHandler = function() {
+        return {
             scrolledToBottom: false
             , atBottom: false,
 
@@ -652,28 +637,22 @@
                 const scrollPosition = Math.ceil(element.scrollTop + element.clientHeight);
                 const isAtBottom = scrollPosition >= element.scrollHeight;
 
-                if (isAtBottom) {
-                    this.scrolledToBottom = true;
-                    this.atBottom = true; // Marcar que se ha llegado al final
-
-                } else {
-                    this.scrolledToBottom = false;
-                    this.atBottom = false; // No se ha llegado al final
-                }
+                this.scrolledToBottom = isAtBottom;
+                this.atBottom = isAtBottom;
             }
-        , }));
+        };
+    };
 
-
-        Alpine.data('firmaHandler', () => ({
+    window.firmaHandler = function() {
+        return {
             signaturePad: null,
 
             init() {
                 const canvas = this.$refs.canvas;
-                if (!canvas) return; // Verificar que el elemento existe antes de continuar
+                if (!canvas) return;
 
                 this.signaturePad = new SignaturePad(canvas);
 
-                // Agregar eventos de puntero y táctiles si el canvas existe
                 canvas.addEventListener('mousedown', this.handlePointerStart.bind(this));
                 canvas.addEventListener('mousemove', this.handlePointerMove.bind(this));
                 canvas.addEventListener('mouseup', this.handlePointerEnd.bind(this));
@@ -687,142 +666,494 @@
                 canvas.addEventListener('touchend', this.handlePointerEnd.bind(this), {
                     passive: false
                 });
+
+                Livewire.on('resetFirma', () => {
+                    this.clear();
+                });
             },
 
             clear() {
                 if (this.signaturePad) {
                     this.signaturePad.clear();
-                    @this.set('firma', '');
+                }
+
+                if (this.$wire) {
+                    this.$wire.$set('firma', '');
                 }
             },
 
             captureSignature() {
-                if (this.signaturePad) {
-                    const firmaBase64 = this.signature;
-                    @this.set('firma', firmaBase64);
+                if (!this.signaturePad || this.signaturePad.isEmpty()) {
+                    if (this.$wire) {
+                        this.$wire.$set('firma', '');
+                    }
+                    return;
                 }
-            },
 
-            get signature() {
-                return this.signaturePad && !this.signaturePad.isEmpty() ? this.signaturePad
-                    .toDataURL() : '';
+                const firmaBase64 = this.signaturePad.toDataURL('image/png');
+
+                if (this.$wire) {
+                    this.$wire.$set('firma', firmaBase64);
+                }
             },
 
             getCanvasCoords(event) {
                 const canvas = this.$refs.canvas;
-                if (!canvas) return {
-                    x: 0
-                    , y: 0
-                };
+
+                if (!canvas) {
+                    return {
+                        x: 0
+                        , y: 0
+                    };
+                }
 
                 const rect = canvas.getBoundingClientRect();
-                const isTouchEvent = event.type.startsWith('touch');
-                let x, y;
+                const isTouchEvent = event.type.indexOf('touch') === 0;
+                let x = 0;
+                let y = 0;
 
                 if (isTouchEvent && event.touches.length > 0) {
                     x = event.touches[0].clientX - rect.left;
                     y = event.touches[0].clientY - rect.top;
-                } else if (event.clientX && event.clientY) {
+                } else if (typeof event.clientX !== 'undefined' && typeof event.clientY !== 'undefined') {
                     x = event.clientX - rect.left;
                     y = event.clientY - rect.top;
-                } else {
-                    x = 0;
-                    y = 0;
                 }
 
                 return {
-                    x
-                    , y
+                    x: x
+                    , y: y
                 };
             },
 
             handlePointerStart(event) {
-                if (!this.signaturePad) return; // Verificar que la firma está inicializada
+                if (!this.signaturePad) return;
+
                 event.preventDefault();
-                const {
-                    x
-                    , y
-                } = this.getCanvasCoords(event);
-                this.signaturePad._strokeBegin({
-                    x
-                    , y
-                });
+                const coords = this.getCanvasCoords(event);
+                this.signaturePad._strokeBegin(coords);
             },
 
             handlePointerMove(event) {
                 if (!this.signaturePad || !this.signaturePad._isDrawing) return;
+
                 event.preventDefault();
-                const {
-                    x
-                    , y
-                } = this.getCanvasCoords(event);
-                this.signaturePad._strokeUpdate({
-                    x
-                    , y
-                });
+                const coords = this.getCanvasCoords(event);
+                this.signaturePad._strokeUpdate(coords);
             },
 
             handlePointerEnd(event) {
                 if (!this.signaturePad) return;
+
                 event.preventDefault();
                 this.signaturePad._strokeEnd();
             }
-        }));
+        };
+    };
 
+    window.fotoHandler = function() {
+        let detector = null;
+        let mediaStream = null;
+        let rafId = null;
+        let lastVideoTime = -1;
+        let lastProcessMs = 0;
+        let initialized = false;
+        let resetFotoRegistered = false;
 
-        // Componente para manejar la cámara
-        Alpine.data('fotoHandler', () => ({
-            init() {
-                this.setupCamera();
-            },
+        return {
+            isDetectorReady: false
+            , detectorBusy: false
+            , captureInProgress: false
+            , faceReady: false
+            , faceMessage: 'Inicializando cámara...'
+            , faceScore: null
+            , faceCount: 0
+            , photoPreviewSrc: ''
+            , currentMetrics: null,
 
-            setupCamera() {
-                const video = document.getElementById('video');
-                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                    navigator.mediaDevices.getUserMedia({
-                            video: true
-                        })
-                        .then((stream) => {
-                            video.srcObject = stream;
-                        })
-                        .catch((err) => {
-                            console.error('Error al acceder a la cámara: ', err);
+            async init() {
+                if (initialized) return;
+                initialized = true;
+
+                try {
+                    await this.setupCamera();
+                    await this.setupDetector();
+                    this.startDetectionLoop();
+
+                    if (!resetFotoRegistered) {
+                        resetFotoRegistered = true;
+
+                        Livewire.on('resetFoto', () => {
+                            this.clearPhoto(false);
                         });
+                    }
+                } catch (error) {
+                    console.error('Error init fotoHandler:', error);
+                    this.invalidateFace('No fue posible inicializar la validación facial.');
                 }
             },
 
-            capturePhoto() {
-                const video = document.getElementById('video');
-                const canvas = document.getElementById('photoCanvas');
-                const photoPreview = document.getElementById('photoPreview');
-                const context = canvas.getContext('2d');
+            async setupCamera() {
+                mediaStream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: 'user'
+                        , width: {
+                            ideal: 640
+                        }
+                        , height: {
+                            ideal: 480
+                        }
+                    }
+                    , audio: false
+                });
 
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                this.$refs.video.srcObject = mediaStream;
+                await this.$refs.video.play();
 
-                const dataUrl = canvas.toDataURL('image/png');
-                photoPreview.src = dataUrl;
-                photoPreview.classList.remove('hidden');
-
-                @this.set('foto', dataUrl);
+                this.faceMessage = 'Ubique un único rostro dentro de la guía.';
             },
 
-            clearPhoto() {
-                const photoPreview = document.getElementById('photoPreview');
-                photoPreview.classList.add('hidden');
+            async setupDetector() {
+                const vision = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/vision_bundle.mjs');
+                const FaceDetector = vision.FaceDetector;
+                const FilesetResolver = vision.FilesetResolver;
 
-                @this.set('foto', '');
+                const filesetResolver = await FilesetResolver.forVisionTasks(
+                    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm'
+                );
 
-                const photoCanvas = document.getElementById('photoCanvas');
-                const context = photoCanvas.getContext('2d');
-                context.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
-                photoCanvas.classList.add('hidden');
-                Livewire.on('resetFoto', () => {
-                    photoCanvas.classList.add('hidden');
+                const modelPath = @js(asset('models/blaze_face_short_range.tflite'));
+
+                detector = await FaceDetector.createFromOptions(filesetResolver, {
+                    baseOptions: {
+                        modelAssetPath: modelPath
+                    }
+                    , runningMode: 'VIDEO'
+                    , minDetectionConfidence: 0.75
+                    , minSuppressionThreshold: 0.3
+                });
+
+                this.isDetectorReady = true;
+                this.faceMessage = 'Detector listo. Mire al frente.';
+            },
+
+            startDetectionLoop() {
+                if (rafId) {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
+
+                const loop = async () => {
+                    if (
+                        !detector ||
+                        !this.$refs.video ||
+                        this.$refs.video.readyState < 2 ||
+                        this.captureInProgress ||
+                        this.detectorBusy
+                    ) {
+                        rafId = requestAnimationFrame(loop);
+                        return;
+                    }
+
+                    const now = performance.now();
+
+                    if ((now - lastProcessMs) < 120) {
+                        rafId = requestAnimationFrame(loop);
+                        return;
+                    }
+
+                    if (this.$refs.video.currentTime === lastVideoTime) {
+                        rafId = requestAnimationFrame(loop);
+                        return;
+                    }
+
+                    this.detectorBusy = true;
+
+                    try {
+                        const result = detector.detectForVideo(this.$refs.video, now);
+                        const detections = (result && result.detections) ? result.detections : [];
+
+                        this.handleDetections(
+                            detections
+                            , this.$refs.video.videoWidth
+                            , this.$refs.video.videoHeight
+                        );
+
+                        lastVideoTime = this.$refs.video.currentTime;
+                        lastProcessMs = now;
+                    } catch (error) {
+                        console.error('Error detectForVideo:', error);
+                        this.invalidateFace('Error analizando el video.');
+                    } finally {
+                        this.detectorBusy = false;
+                        rafId = requestAnimationFrame(loop);
+                    }
+                };
+
+                rafId = requestAnimationFrame(loop);
+            },
+
+            handleDetections(detections, frameWidth, frameHeight) {
+                this.faceCount = detections.length;
+
+                if (detections.length === 0) {
+                    this.invalidateFace('No se detecta ningún rostro.');
+                    return;
+                }
+
+                if (detections.length > 1) {
+                    this.invalidateFace('Solo debe haber un rostro en cámara.');
+                    return;
+                }
+
+                const metrics = this.buildMetrics(detections[0], frameWidth, frameHeight);
+                const error = this.validateMetrics(metrics);
+
+                if (error) {
+                    this.invalidateFace(error, metrics);
+                    return;
+                }
+
+                this.faceReady = true;
+                this.faceScore = metrics.score;
+                this.currentMetrics = metrics;
+                this.faceMessage = 'Rostro válido detectado (' + Math.round(metrics.score * 100) + '%).';
+            },
+
+            buildMetrics(detection, frameWidth, frameHeight) {
+                const box = detection.boundingBox;
+
+                let score = 0;
+                if (detection.categories && detection.categories[0]) {
+                    score = detection.categories[0].score;
+                }
+
+                const keypoints = detection.keypoints ? detection.keypoints.length : 0;
+
+                const centerX = box.originX + (box.width / 2);
+                const centerY = box.originY + (box.height / 2);
+
+                const offsetX = Math.abs(centerX - (frameWidth / 2)) / frameWidth;
+                const offsetY = Math.abs(centerY - (frameHeight / 2)) / frameHeight;
+                const areaRatio = (box.width * box.height) / (frameWidth * frameHeight);
+
+                return {
+                    score: Number(score.toFixed(4))
+                    , keypoints: keypoints
+                    , areaRatio: areaRatio
+                    , offsetX: offsetX
+                    , offsetY: offsetY
+                    , box: {
+                        originX: Math.round(box.originX)
+                        , originY: Math.round(box.originY)
+                        , width: Math.round(box.width)
+                        , height: Math.round(box.height)
+                    }
+                };
+            },
+
+            validateMetrics(metrics) {
+                if (metrics.score < 0.75) {
+                    return 'La confianza del rostro es baja. Mire al frente.';
+                }
+
+                if (metrics.keypoints < 6) {
+                    return 'No se detecta el rostro completo.';
+                }
+
+                if (metrics.areaRatio < 0.10) {
+                    return 'Acérquese un poco más a la cámara.';
+                }
+
+                if (metrics.offsetX > 0.18 || metrics.offsetY > 0.20) {
+                    return 'Centre el rostro dentro de la guía.';
+                }
+
+                return null;
+            },
+
+            invalidateFace(message, metrics = null) {
+                this.faceReady = false;
+                this.faceScore = metrics ? metrics.score : null;
+                this.currentMetrics = metrics;
+                this.faceMessage = message;
+            },
+
+            async capturePhoto() {
+                if (!this.faceReady || !detector || this.captureInProgress) {
+                    this.syncLivewireFaceState({
+                        ok: false
+                        , message: 'No hay un rostro válido para capturar.'
+                    });
+                    return;
+                }
+
+                this.captureInProgress = true;
+
+                try {
+                    const video = this.$refs.video;
+                    const canvas = this.$refs.photoCanvas;
+                    const context = canvas.getContext('2d', {
+                        willReadFrequently: true
+                    });
+
+                    const side = Math.min(video.videoWidth, video.videoHeight);
+                    const sx = (video.videoWidth - side) / 2;
+                    const sy = (video.videoHeight - side) / 2;
+
+                    canvas.width = 480;
+                    canvas.height = 480;
+
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    context.drawImage(video, sx, sy, side, side, 0, 0, canvas.width, canvas.height);
+
+                    const metrics = this.currentMetrics;
+
+                    if (!metrics) {
+                        this.clearPhoto();
+                        this.invalidateFace('No hay métricas válidas del rostro. Intente nuevamente.');
+                        this.syncLivewireFaceState({
+                            ok: false
+                            , message: 'No hay métricas válidas del rostro. Intente nuevamente.'
+                        });
+                        return;
+                    }
+
+                    const error = this.validateMetrics(metrics);
+
+                    if (error) {
+                        this.clearPhoto();
+                        this.invalidateFace(error, metrics);
+                        this.syncLivewireFaceState({
+                            ok: false
+                            , message: error
+                            , count: 1
+                            , score: metrics.score
+                            , box: metrics.box
+                        });
+                        return;
+                    }
+
+                    const dataUrl = canvas.toDataURL('image/png');
+
+                    this.photoPreviewSrc = dataUrl;
+                    this.faceReady = true;
+                    this.faceScore = metrics.score;
+                    this.faceCount = 1;
+                    this.faceMessage = 'Foto capturada correctamente con un rostro válido.';
+
+                    this.syncLivewireFaceState({
+                        ok: true
+                        , message: 'Foto validada correctamente.'
+                        , count: 1
+                        , score: metrics.score
+                        , box: metrics.box
+                        , foto: dataUrl
+                    });
+                } catch (error) {
+                    console.error('Error capturePhoto:', error);
+                    this.clearPhoto();
+                    this.invalidateFace('Error validando la foto capturada.');
+                    this.syncLivewireFaceState({
+                        ok: false
+                        , message: 'Error validando la foto capturada.'
+                    });
+                } finally {
+                    this.captureInProgress = false;
+                }
+            },
+
+            syncLivewireFaceState(payload) {
+                payload = payload || {};
+
+                if (!this.$wire) {
+                    console.error('Livewire no está disponible dentro de fotoHandler.');
+                    return;
+                }
+
+                this.$wire.$set('foto', payload.foto ? payload.foto : '');
+                this.$wire.$set('foto_face_ok', payload.ok ? true : false);
+                this.$wire.$set('foto_face_count', typeof payload.count === 'number' ? payload.count : 0);
+                this.$wire.$set('foto_face_score', typeof payload.score === 'number' ? payload.score : null);
+                this.$wire.$set('foto_face_box', payload.box ? payload.box : []);
+                this.$wire.$set('foto_face_message', payload.message ? payload.message : null);
+            },
+
+            clearPhoto(sync) {
+                if (typeof sync === 'undefined') {
+                    sync = true;
+                }
+
+                this.photoPreviewSrc = '';
+
+                const canvas = this.$refs.photoCanvas;
+                if (canvas) {
+                    const context = canvas.getContext('2d');
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                }
+
+                if (sync) {
+                    this.syncLivewireFaceState({
+                        ok: false
+                        , message: 'Debe capturar nuevamente una foto válida.'
+                    });
+                }
+            },
+
+            cleanup() {
+                if (rafId) {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
+
+                if (mediaStream) {
+                    mediaStream.getTracks().forEach(function(track) {
+                        track.stop();
+                    });
+                    mediaStream = null;
+                }
+
+                if (detector && typeof detector.close === 'function') {
+                    detector.close();
+                    detector = null;
+                }
+            }
+        };
+    };
+
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('confirmacionGuardado', () => {
+            Swal.fire({
+                title: '¡Registro Exitoso!'
+                , text: 'Gracias por registrarte. Ahora puedes disfrutar de todos nuestros servicios.'
+                , icon: 'success'
+                , iconColor: '#4CAF50'
+                , confirmButtonText: '¡Genial!'
+                , confirmButtonColor: '#3085d6'
+                , background: '#f9f9f9'
+                , color: '#333'
+                , timer: 5000
+                , timerProgressBar: true
+                , showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                }
+                , hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                }
+            });
+        });
+
+        Livewire.hook('message.processed', () => {
+            const firstError = document.querySelector('.text-red-600, .text-red-500, .error-message');
+            if (firstError) {
+                firstError.scrollIntoView({
+                    behavior: 'smooth'
+                    , block: 'center'
                 });
             }
-        }));
+        });
     });
 
 </script>
-</div>
+
 </div>

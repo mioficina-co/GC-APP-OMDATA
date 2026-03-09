@@ -55,6 +55,12 @@ class RegistroVisitanteComponent extends Component
     public $otrorazonvisita;
     private $visitante;
     private $visitas;
+    // deteccion de rostro
+    public bool $foto_face_ok = false;
+    public int $foto_face_count = 0;
+    public ?float $foto_face_score = null;
+    public array $foto_face_box = [];
+    public ?string $foto_face_message = null;
 
     public $tipoDocumento,
         $departamentos,
@@ -166,6 +172,16 @@ class RegistroVisitanteComponent extends Component
     public function submitSignature(VisitasRepository $visitasRepository)
     {
         $this->validate();
+
+        if (
+            !$this->foto_face_ok ||
+            $this->foto_face_count !== 1 ||
+            ($this->foto_face_score ?? 0) < 0.75
+        ) {
+            throw ValidationException::withMessages([
+                'foto' => $this->foto_face_message ?: 'La foto no contiene un rostro válido. Ubique un único rostro, centrado y vuelva a capturar.',
+            ]);
+        }
 
         DB::transaction(function () use ($visitasRepository) {
             // 1. Obtener la política activa
@@ -319,6 +335,13 @@ class RegistroVisitanteComponent extends Component
             'arl_id',
             'aceptaPolitica',
             'busquedaRealizada',
+            'foto_face_ok',
+            'foto_face_count',
+            'foto_face_score',
+            'foto_face_box',
+            'foto_face_message',
+            'esOtro',
+            'otrorazonvisita'
         ]);
 
         $this->dispatch('resetFirma');

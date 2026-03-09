@@ -74,6 +74,15 @@ class VisitasRepository
                 ]);
             }
 
+            $width = $info[0] ?? 0;
+            $height = $info[1] ?? 0;
+
+            if ($tipo === 'foto' && ($width < 240 || $height < 240)) {
+                throw ValidationException::withMessages([
+                    $field => 'La foto debe tener una resolución mínima de 240x240 píxeles.',
+                ]);
+            }
+
             // 6) Validar MIME permitido
             $mime = $info['mime'] ?? null;
 
